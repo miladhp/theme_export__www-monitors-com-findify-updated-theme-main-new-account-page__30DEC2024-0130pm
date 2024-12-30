@@ -1,0 +1,142 @@
+<div
+  id="{{ id }}"
+  product-id="product-{{ id }}"
+  class="findify-product-card {{ class }} {{ widget }}_{{ id }}"
+  {% if page != blank %}
+  page="{{ page }}"
+  {% endif %}
+>
+  {%- liquid
+    assign showHoverImage = 'false'
+    if use_variant
+      assign target = product.selected_or_first_available_variant
+    else
+      assign target = product
+    endif
+     
+    assign has_discount = false
+
+    assign available_variants = product.variants | where: 'available', true
+
+    assign product = product 
+  -%}
+  
+  {% if target.price != target.compare_at_price
+    and target.price < target.compare_at_price
+  %}
+    {% assign has_discount = true %}
+    {% assign price_diff = target.compare_at_price | minus: target.price | money_without_trailing_zeros %}
+  {% endif %}
+    
+  <div class="findify-sale-sticker"><span>{{ 'findify.custom.save' | t }}</span> {{ price_diff }}</div>  
+  <a href="{{ product_url }}" class='findify-product-card__image'>
+    <div class='findify-image-container'>
+      {% if current_variant.featured_media != null %}
+        {% render 'findify-product-image'
+          , media: product.featured_media
+          , class: 'first-image' %}
+      {% else %}
+        {% render 'findify-product-image'
+          , media: product.featured_media
+          , class: 'first-image' %}
+      {% endif %}
+      {%- if product.media[1] != null and showHoverImage == 'true' -%}
+        {% render 'findify-product-image'
+          , media: product.media[1]
+          , class: 'findify-second-image' %}
+      {%- endif -%}
+    </div>
+  </a>
+  
+  <div class="findify-content-wrapper">
+
+    <div class="findify-component-card-one">
+      <div class="add_to_compare_on_collections_page custom-nav-check">
+        <label class="SPCMP_chk_lbl">
+          <input type="checkbox" class="SPCMP_Add " name='SPCMP_chk' spcmp_collids="{{spcmpCollArr | remove_first: ','}}" spcmp_pid="{{product.id}}" spcmp_vid="{{ product.variants.first.id }}" data_collectionId="{{ collection.id }}" >
+          <span class="SPCMP_Add_span">Add To Compare</span>
+        </label>
+      </div>
+      
+      <div class='findify-product-title findify-cut-text'>
+        <a href="{{ product_url }}">{{ product.title }}</a>
+      </div>
+    </div>
+
+    <div class="findify-component-card-two"> 
+    {% if reviews %}
+      {% render 'findify-rating'
+        , value: reviews
+        , count: reviews_count %}
+    {% endif %}
+
+
+    {% assign product_value = product.options_with_values.first.values %}
+    {% assign free_shipping = "" %}
+    {% assign renewed_text_m = "" %}
+    {% assign has_new = false %}
+    {% assign has_renewed = false %}
+    
+    {% for tag in product.tags %}
+      {% if tag contains 'FREE SHIPPING'%}
+        {% assign free_shipping = "Free Shipping"  %}
+      {% elsif tag contains 'FREE 2-DAY SHIPPING' %}
+        {% assign free_shipping = "Free 2-DAY Shipping"  %}
+      {% endif %}
+
+      {% if tag == 'new' %}
+        {% assign has_new = true %}
+      {% elsif tag == 'renewed' %}
+        {% assign has_renewed = true %}
+      {% endif %} 
+    {% endfor %}
+
+    {% comment %} {% if product_value contains 'New' and product_value contains 'Renewed' %}
+       {% assign renewed_text = "New & Renewed" %}
+    {% elsif product_value contains 'New' %}
+      {% assign renewed_text = "New" %}
+    {% elsif product_value contains 'Renewed' %}
+      {% assign renewed_text = "Renewed" %}
+    {% endif %} {% endcomment %}
+    
+    {% if free_shipping != "" %}
+       <div class="findify-free-shipping">
+         {% render 'findify-icon-free-shipping' %}
+         <span>{{ free_shipping }}</span>
+       </div>
+    {% endif %}
+
+    {% if has_new and has_renewed %}
+    {% assign renewed_text_m = "New & Renewed" %}
+    {% elsif has_new %}
+        {% assign renewed_text_m = "New" %}
+    {% elsif has_renewed %}
+        {% assign renewed_text_m = "Renewed" %}
+    {% endif %}    
+
+    {% if renewed_text_m != "" %}
+       <div class="findify-renewed"><b>Available as:</b> {{ renewed_text_m }}</div>
+    {% endif %}
+
+    
+    {% render 'findify-product-price'
+      , target: target
+      , has_discount: has_discount
+      , available_variants: available_variants
+      , product: product %}
+    
+   </div>
+  </div>
+  
+
+
+  <script>
+        /* IMPORTANT: Script tags are executed within this file element. */
+        const id = "{{id}}";
+        const selected_variant_id = "{{selected_variant_id}}";
+        const widget = "{{widget}}";
+        const page = "{{page}}"
+
+        initOnProductCardClick(id, page, { widget, selected_variant_id });
+  </script>
+</div>

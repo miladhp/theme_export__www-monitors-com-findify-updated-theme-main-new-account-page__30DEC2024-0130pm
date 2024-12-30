@@ -1,0 +1,26 @@
+{% assign availableVariants = product.variants | where: 'available', true %}
+{% assign numberOfAvailableVariants = availableVariants.size %}
+{% if numberOfAvailableVariants == 1 %}
+  {% assign firstAvailableVariant = availableVariants.first %}
+ <a href="/collections/{{collection_handle}}{{product.url}}">
+  <div class="pricing {% if firstAvailableVariant.price != firstAvailableVariant.compare_at_price and firstAvailableVariant.compare_at_price != blank %}discounted{% endif %}">
+  {% unless firstAvailableVariant.metafields.price_option.hide_price == 'yes' or firstAvailableVariant.metafields.price_option.hide_price == 'y' %}
+   {% render 'new-currency-format', price : firstAvailableVariant.price, cart : cart, template : template, product: product, menu : 'yes' %}
+   {% if firstAvailableVariant.price != firstAvailableVariant.compare_at_price and firstAvailableVariant.compare_at_price != blank  %}
+     <del class="nav-compare-price">{{ firstAvailableVariant.compare_at_price | money_without_trailing_zeros }}</del>
+   {% endif %}
+  {% endunless %}
+  </div>
+ </a>
+{% else %}
+   <a href="/collections/{{collection_handle}}{{product.url}}">
+    <div class="pricing {% if product.price_min != product.compare_at_price_min %}discounted{% endif %}">
+     {% unless product.metafields.price_option.hide_price == 'yes' or price_hide_opt == 'y' %}
+      {% render 'new-currency-format', price : product.price_min, cart : cart, template : template, product: product, menu : 'yes' %}
+      {% if product.price_min != product.compare_at_price_min %}
+       <del class="nav-compare-price">{{ product.compare_at_price_min | money_without_trailing_zeros }}</del>
+      {% endif %}
+     {% endunless %} 
+    </div>
+   </a>
+{% endif %}

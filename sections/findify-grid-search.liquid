@@ -1,0 +1,289 @@
+{%- assign page_url = content_for_header | split: '"pageurl":"' | last | split: '"' | first | split: request.host | last | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&' | replace: '%7C', '|' | replace: '%27', "'" -%}
+{%- assign query_parameters = page_url | split: 'sections=findify-search&' | last -%}{%- assign query_parameters_products = page_url | split: 'sections=findify-products&' | last -%}
+
+{%  comment  %} Recommendation fallback configuration {% endcomment %}
+{%- assign recommendation_id = query_parameters | split: 'recommendation_id:' | last | split: '|' | first -%}
+{%- assign desktop_slide_per_view = query_parameters | split: 'desktop_slide_per_view:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign mobile_slide_per_view = query_parameters | split: 'mobile_slide_per_view:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign recommendation_title = query_parameters | split: 'recommendation_title=' | last | split: '&' | first -%}{% include 'findify-grid-connector' %}
+{%- assign desktop_filter_layout = query_parameters | split: 'desktop_filter_layout:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign desktop_filter_position = query_parameters | split: 'desktop_filter_position:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign one_open_filter = query_parameters | split: 'one_open_filter:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign all_filters_hidden = query_parameters | split: 'all_filters_hidden:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign all_filters_collapsed = query_parameters | split: 'all_filters_collapsed:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign sticky_filters = query_parameters | split: 'sticky_filters:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign disable_search_input = query_parameters | split: 'disable_search_input:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign use_grid_toggler_on_desktop = query_parameters | split: 'use_grid_toggler_on_desktop:' | last | split: '|' | first | split: '&' | first -%}
+{%- assign use_grid_toggler_on_mobile = query_parameters | split: 'use_grid_toggler_on_mobile:' | last | split: '|' | first | split: '&' | first -%}
+
+{% if mobile_products_per_view == '1' %}
+  {% assign mobile_products_per_view_alt = '2' %} 
+{% else %}
+  {% assign mobile_products_per_view_alt = '1' %} 
+{% endif %}
+{%  comment  %} Content integration configuration {% endcomment %}
+{%- assign use_content_integration = query_parameters | split: 'use_content_integration:' | last | split: '&' | first -%}
+{% if use_content_integration == 'false' or tabs[0] == 'none' %}
+  {%- assign show_content_integration = false -%}
+{% else %}
+  {%- assign show_content_integration = true -%}
+{% endif %}
+
+{%- assign content_lazy_loading_pagination = query_parameters
+  | split: 'content_lazy_loading_pagination:'
+  | last
+  | split: '|'
+  | first
+  | split: '&'
+  | first
+-%}
+
+{% assign findify_filters_component_id = 'findify-filters-sidebar' %}
+
+<div 
+  id="findify-search" 
+  class="
+    findify-search-section findify-body
+  {% if desktop_filter_layout != 'drawer' and sticky_filters == "true" %} findify-filters-sticky {% endif %}
+  {% if one_open_filter == "true" %} findify-one-filter-open {% endif %}
+  {% if all_filters_collapsed == "true" %} findify-filter-collapsed {% endif %}
+  {% if all_filters_hidden == "true" %} findify-filter-hidden {% endif %}
+  {% if desktop_filter_layout != 'horizontal' %}findify-filters-{{ desktop_filter_position }} {% endif %}
+  {% if disable_search_input == 'true' %} findify-filters-disable_search_input {% endif %}
+  findify-filters-{{ desktop_filter_layout }}"
+>
+
+  {% if results_count > 0 %}
+    <h1 class="findify-heading custom-findify-search-heading">{{ 'findify.search.search_results' | t }}</h1>
+    {% if show_content_integration %}
+      {% render 'findify-content-tabs'
+        , tabs: tabs
+        , resultsCount: results_count %}
+      <div
+        id="findify-product-result-content"
+        class="findify-tab-content"
+        style="display: block;">
+    {% endif %}
+
+    <div class="findify-search-container">
+      {% if desktop_filter_layout != 'drawer' %}
+        {% render 'findify-toolbar-desktop'
+          , results_count: results_count
+          , terms: terms
+          , corrected_q: corrected_q
+          , query_type: query_type
+          , sort_options: sort_options
+          , default_sort_by: default_sort_by
+          , sort_by: sort_by
+          , active_filters: active_filters
+          , color_layout: color_layout
+          , filter_component_id: findify_filters_component_id
+          , use_grid_toggler: use_grid_toggler_on_desktop
+          , products_per_view_alt: desktop_products_per_view_alt
+          , products_per_view: desktop_products_per_view
+        %}
+      {% endif %}
+      {% render 'findify-toolbar-mobile'
+        , results_count: results_count
+        , terms: terms
+        , corrected_q: corrected_q
+        , query_type: query_type
+        , sort_options: sort_options
+        , default_sort_by: default_sort_by
+        , sort_by: sort_by
+        , active_filters: active_filters
+        , filter_component_id: findify_filters_component_id
+        , use_grid_toggler: use_grid_toggler_on_mobile
+        , products_per_view: mobile_products_per_view
+        , products_per_view_alt: mobile_products_per_view_alt
+       %} 
+
+        <div id="findify-search-main" class="findify-search-main">
+        <div class="findify-loader-overlay">
+          {% render 'findify-loader' %}
+        </div>
+
+        {% render 'findify-filters'
+          , component_id: findify_filters_component_id,
+          , active_filters: active_filters
+          , color_layout: color_layout 
+          , one_open_filter: one_open_filter
+          , all_filters_collapsed: all_filters_collapsed
+          , all_filters_hidden: all_filters_hidden
+        %}
+        <!-- product grid section! -->
+        <div class="findify-products-section">
+          
+         {% comment %}  {% render 'findify-toolbar-desktop-modified'
+            , results_count: results_count
+            , terms: terms
+            , corrected_q: corrected_q
+            , query_type: query_type
+            , sort_options: sort_options
+            , default_sort_by: default_sort_by
+            , sort_by: sort_by
+            , active_filters: active_filters
+            , color_layout: color_layout
+            , filter_component_id: findify_filters_component_id
+            , use_grid_toggler: use_grid_toggler_on_desktop
+            , products_per_view_alt: desktop_products_per_view_alt
+            , products_per_view: desktop_products_per_view
+          %}
+
+          {% render 'findify-toolbar-mobile'
+            , results_count: results_count
+            , terms: terms
+            , corrected_q: corrected_q
+            , query_type: query_type
+            , sort_options: sort_options
+            , default_sort_by: default_sort_by
+            , sort_by: sort_by
+            , active_filters: active_filters
+            , filter_component_id: findify_filters_component_id
+            , use_grid_toggler: use_grid_toggler_on_mobile
+            , products_per_view: mobile_products_per_view
+            , products_per_view_alt: mobile_products_per_view_alt
+          %} {% endcomment %}
+          
+          {% if use_lazy_loading_pagination == 'true' %}
+            <div class="findify-lazy-loading-pagination-container">
+              {% if curr_page == 1 %}
+                {% assign hide_load_prev = true %}
+              {% else %}
+                {% assign hide_load_prev = false %}
+              {% endif %}
+              {% render 'findify-button'
+                , id: 'findify-pagination-load-previous'
+                , text: 'findify.pagination.load_previous'
+                , hide: hide_load_prev %}
+            </div>
+          {% endif %}
+          <div id="findify-product-grid" class="findify-product-list" data-template="main">
+            {% comment %}
+              This element #findify-product-grid will be replaced with rendered html from sections/findify-products
+            {% endcomment %}
+          </div>
+          <div id='findify-pagination'>
+            {% comment %}
+              This element #findify-pagination will be replaced with rendered html from sections/findify-pagination
+            {% endcomment %}
+            {% if use_lazy_loading_pagination == 'true' %}
+              {% if curr_page < last_page and lazy_loading_pagination_threshold > 0 %}
+                {% render 'findify-lazy-loading-pagination'
+                  , id: 'findify-grid' %}{% endif %}
+              <div class="findify-lazy-loading-pagination-container">
+                {% if curr_page < last_page and lazy_loading_pagination_threshold == 0 %}
+                  {% assign hide_load_more = false %}
+                {% elsif curr_page == last_page %}
+                  {% assign hide_load_more = true %}
+                {% else %}
+                  {% assign hide_load_more = true %}
+                {% endif %}
+                {% render 'findify-button'
+                  , id: 'findify-pagination-load-more'
+                  , text: 'findify.pagination.load_more'
+                  , hide: hide_load_more %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- product grid section! -->
+
+    {% if show_content_integration %}
+      </div>
+      {% for tab in tabs %}
+        {% assign content_id = tab | split: '~' | first %}
+        <div id="{{content_id}}-content" class="findify-tab-content">
+          {% render 'findify-content-grid'
+            , content_id: content_id
+            , content_lazy_loading_pagination: content_lazy_loading_pagination 
+          %}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+  {% else %}
+    <div class="findify-zero-result-container">
+      <h1>{{ 'findify.search.no_results_for' | t }} "{{ terms | url_decode }}"</h1>
+      <h3>{{ 'findify.search.no_results_message' | t }}</h3>
+    </div>
+    <div id={{ recommendation_id }} class='swiper'></div>
+  {% endif %}
+
+  <style>
+     @media (min-width: 768px) {
+      #findify-product-grid.findify-product-list[data-template='main'] {
+        grid-template-columns: repeat({{desktop_products_per_view}}, minmax(180px, 1fr));
+      }
+      #findify-product-grid.findify-product-list[data-template='alt'] {
+        grid-template-columns: repeat({{desktop_products_per_view_alt}}, minmax(180px, 1fr));
+      }
+    }
+    @media (max-width: 576px) {
+      #findify-product-grid.findify-product-list[data-template='main'] {
+        grid-template-columns: repeat({{mobile_products_per_view}}, minmax(180px, 1fr));
+      }
+      #findify-product-grid.findify-product-list[data-template='alt'] {
+        grid-template-columns: repeat({{mobile_products_per_view_alt}}, minmax(180px, 1fr));
+      }
+    }
+  </style>
+
+  <script>
+    if("{{ results_count }}" != "0"){
+      if("{{ show_content_integration }}" == 'true') {
+        initFindifyTabsEvents();
+      }
+
+      if("{{ use_lazy_loading_pagination }}" == "true") {
+        initFindifyLazyLoadingPagination("{{lazy_loading_pagination_threshold}}");
+      }
+
+      if("{{ use_lazy_loading_pagination }}" == "false") {
+        initScrollToProductForPagination();
+      }
+
+      setFindifyIsLoading(false);
+    } else {
+      const id = "{{ recommendation_id }}";
+      
+      const initRecommendation = async () => {
+        if (!id) {
+          console.warn(
+            'To display a Findify recommendation you should insert the ID within the Findify Recommendation App Block'
+          );
+          return;
+        }
+        await findify.recommendation.init({
+          id,
+          desktop_slide_per_view: "{{ desktop_slide_per_view }}",
+          title: "{{ recommendation_title }}",
+          mobile_slide_per_view: "{{ mobile_slide_per_view }}",
+        });
+      };
+
+      findify.core.init.then(() => {
+        initRecommendation();
+
+        window.addEventListener('popstate', () => { 
+          initRecommendation();
+        });
+      });
+    }
+
+  </script>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Findify search",
+    "tag": "section",
+    "class": "section",
+    "settings": []
+  }
+{% endschema %}
+
+

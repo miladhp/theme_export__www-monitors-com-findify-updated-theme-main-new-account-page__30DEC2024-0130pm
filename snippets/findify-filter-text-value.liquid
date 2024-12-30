@@ -1,0 +1,112 @@
+{% liquid
+  if has_children
+    assign class = 'findify-filters--checkbox-nested-value'
+    if is_selected
+      assign selected_class = 'findify-filters--checkbox-nested-value-selected'
+    endif
+  else
+    assign class = 'findify-filters-checkbox-item-value'
+    if is_selected
+      assign selected_class = 'findify-filters-checkbox-item-value-selected'
+    endif
+  endif
+%}
+
+<div class="{{class}} {{selected_class}}">
+ 
+{% if name == 'custom_fields.Processor' %}
+  {% if filter_element_id == 'findify-filter-Ryzen+Threadripper+Pro+5955wx+%2816-core+%40+4.5ghz%29' or filter_element_id == 'findify-filter-Ryzen+Threadripper+Pro+5965wx+%2824-core+%40+4.5ghz%29' or filter_element_id == 'findify-filter-Ryzen+Threadripper+Pro+5945wx+%2812-core+%40+4.5ghz%29' %} 
+    <div class= "marquee-container">
+     <span class="marquee-content">
+      {{ text | url_decode 
+         | replace: 'ghz', 'GHz'  
+         | replace: 'I3', 'i3' 
+         | replace: 'I5', 'i5' 
+         | replace: 'I7', 'i7' 
+         | replace: 'I9', 'i9'
+         | replace: 'core', 'Core'
+         | replace: '5x', '5X' 
+         | replace: '0x', '0X'
+         | replace: '0Xe', '0XE'  
+         | replace: '0h', '0H'
+         | replace: '5h', '5H'
+         | replace: '0k', '0K'
+         | replace: 'wx', 'WX'
+         | replace: 'Hx', 'HX'
+         | replace: '0t', '0T'
+         | replace: '5r', '5R'
+         | replace: '3m', '3M'
+      }}
+    </span>
+    </div>
+  {% else %}
+    <span class="{{ name }}">
+      {{ text | url_decode 
+         | replace: 'ghz', 'GHz'  
+         | replace: 'I3', 'i3' 
+         | replace: 'I5', 'i5' 
+         | replace: 'I7', 'i7' 
+         | replace: 'I9', 'i9'
+         | replace: 'core', 'Core'
+         | replace: '5x', '5X' 
+         | replace: '0x', '0X'
+         | replace: '0Xe', '0XE'  
+         | replace: '0h', '0H'
+         | replace: '5h', '5H'
+         | replace: '0k', '0K'
+         | replace: 'wx', 'WX'
+         | replace: 'Hx', 'HX'
+         | replace: '0t', '0T'
+         | replace: '5r', '5R'
+         | replace: '3m', '3M'
+         | replace: '6s', '6S' 
+      }}
+    </span>
+  {% endif %}  
+{% elsif name == 'custom_fields.Model' %}
+  <span class="{{ name }}">
+    {{ text | url_decode
+    | replace: 'Px', 'PX' 
+    | replace: '0c', '0C'
+    | replace: 'Sff', 'SFF'
+    }}
+  </span>  
+{% else %}
+  <span>
+    {{ text | url_decode }}
+  </span>
+{% endif %}
+</div>
+
+<style>
+
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  white-space: nowrap;
+}
+.marquee-content {
+  text-overflow: unset!important;
+  overflow: unset!important;
+  white-space: unset!important;
+  display: inline-block;
+  position: relative;
+  animation: none;
+  will-change: transform;
+}
+
+.marquee-container:hover .marquee-content {
+  animation: marquee 5s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-30%);
+  }
+}
+
+</style>

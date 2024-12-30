@@ -1,0 +1,138 @@
+.findify-product-link:not(.button),
+.findify-product-link:visited:not(.button) {
+  text-decoration: none;
+  color: unset;
+}
+.findify-product-card__image{
+  min-width: 42%;
+}
+.findify-product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.findify-content-wrapper {
+  flex: 1;
+}
+
+.findify-free-shipping {
+  color: #616265;
+  font-family: Encode Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: .18px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.findify-free-shipping svg {
+  margin-right: 6px;
+}
+
+.findify-renewed {
+  font-size: 13px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  line-height: 20px;
+}
+
+.findify-renewed b {
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.findify-sale-sticker {
+  background: #ee0000;
+  position: absolute;
+  left: 0;
+  top: 8px;
+  padding: 0 4px;
+  font-size: 13px;
+  line-height: 1;
+  padding: 4px 10px;
+  border-radius: 0 3px 3px 0;
+  color: #fff;
+  z-index: 3;
+}
+
+.findify-adapt {
+  width: 100%;
+  aspect-ratio: 1/1.5;
+  object-fit: cover;
+}
+
+.findify-product-title {
+  color: var(--findify-text-color);
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.findify-cut-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  height: 1.5em;
+  white-space: nowrap;
+}
+
+.findify-product-price b {
+  font-weight: 500;
+}
+
+.findify-product-price {
+  color: var(--findify-text-color);
+}
+.findify-product-link{
+  display: block;
+}
+.findify-product-price-with-compare {
+  color: #e00;
+}
+
+.findify-product-price-compare-at {
+  color: var(--findify-text-secondary-color);
+  font-size: 12px;
+}
+
+.findify-image-container {
+  position: relative;
+  padding-top: var(--findify-product-card-aspect-ratio);
+  display: inline-block;
+  width: 100%;
+}
+.findify-image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.findify-image-container .findify-second-image {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.findify-image-container:hover .findify-second-image {
+  display: inline;
+}
+
+.findify-product-brand {
+  font-style: italic;
+  font-size: smaller;
+}
+@media (max-width: 576px) {
+  .findify-product-card {
+    min-height: 300px;
+  }  
+}

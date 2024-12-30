@@ -1,0 +1,46 @@
+<form id="customer-info-form" action="/account_customer" class="custom-profile-form custom-read-input" accept-charset="UTF-8" method="post" data-customer-id="{{ customer.id }}" data-customer-country="{{ customer.default_address.country_code }}">
+    <input type="hidden" name="_method" value="put">
+     <div class="form-row">
+      <div class="form-col">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" name="customer[first_name]" value="{{ customer.first_name }}" class="toggle-disable" required disabled />
+      </div>
+      <div class="form-col">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" name="customer[last_name]" value="{{ customer.last_name }}" class="toggle-disable" required disabled />
+      </div>
+     </div>
+    <div class="form-row">
+      <div class="form-col">
+          <label>Email</label>
+          <input type="email" name="customer[email]" value="{{ customer.email }}" disabled required class="toggle-disable" id="email" />
+      </div>
+      <div class="form-col">
+          <label for="phone">Phone Number</label>
+          <div class="phone-flex">
+            <div class="select-dropdown-flex">
+              <span class="bg-flag"></span>
+              <select id="phoneCodesSelect">
+              </select>
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </div>
+            <input type="tel" id="phone_code" class="" value="" disabled />
+            <input type="tel" class="toggle-disable" id="phone" name="customer[phone]" value="{{ customer.phone }}" disabled required/>
+          </div>
+      </div>
+    </div>
+    <div id="profileEditBtn" class="custom-button-icon custom-profile-edit-button btn-float" data-tippy-content="Edit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.211 0.789217C11.1587 -0.263082 9.45259 -0.263071 8.40031 0.789241L7.80181 1.38776L7.79306 1.379L6.7324 2.43966L6.74117 2.44843L0.861091 8.32869C0.345384 8.84441 0.0556641 9.54387 0.0556641 10.2732V12.1948C0.0556641 12.3937 0.134683 12.5845 0.275335 12.7251C0.415987 12.8658 0.606752 12.9448 0.805665 12.9448L2.72722 12.9448C3.45658 12.9448 4.15606 12.6551 4.67179 12.1393L12.211 4.59983C13.2633 3.54755 13.2633 1.84149 12.211 0.789217ZM7.80183 3.50909L1.92177 9.38933C1.68736 9.62375 1.55566 9.94169 1.55566 10.2732L1.55566 11.4448H2.72722C3.05875 11.4448 3.37669 11.3131 3.61112 11.0787L9.49116 5.19843L7.80183 3.50909ZM10.5518 4.13775L11.1503 3.53919C11.6168 3.07269 11.6168 2.31637 11.1503 1.84987C10.6838 1.38337 9.92748 1.38338 9.46098 1.84989L8.86247 2.44842L10.5518 4.13775Z" fill="#707070"/>
+      </svg>
+    </div>
+    <div class="close-btn btn-float" id="editProfileClose" style="display: none;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"><path id="Layer_2" data-name="Layer 2" d="M12.5,0A12.5,12.5,0,1,0,25,12.5,12.5,12.5,0,0,0,12.5,0Zm0,24.2A11.7,11.7,0,1,1,24.2,12.5,11.65,11.65,0,0,1,12.5,24.2ZM18.2,6.8a.38.38,0,0,0-.6,0h0l-5.1,5.1L7.4,6.8a.37.37,0,0,0-.6,0,.38.38,0,0,0,0,.6h0l5.1,5.1L6.8,17.6a.38.38,0,0,0,0,.6.37.37,0,0,0,.6,0h0l5.1-5.1,5.1,5.1a.37.37,0,0,0,.6,0h0a.37.37,0,0,0,0-.6l-5.1-5.1,5.1-5.1a.38.38,0,0,0,0-.6Z"></path></svg>
+    </div>
+
+    <button type="submit" class="custom-save-button" id="save-button" style="display:none;">
+      Save changes
+    </button>      
+  </form>

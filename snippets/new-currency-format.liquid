@@ -1,0 +1,57 @@
+{% if template contains 'product' %}
+  
+  {% if cart.currency.iso_code == 'EUR' or cart.currency.iso_code == 'QAR'  or cart.currency.iso_code == 'RON' or cart.currency.iso_code == 'PLN' or cart.currency.iso_code == 'HUF' or cart.currency.iso_code == 'DKK' or cart.currency.iso_code == 'CZK' or cart.currency.iso_code == 'BAM' %}
+    {% assign mod_price_first = price | money_without_currency | split: ',' | first  %}
+    {% assign mod_price_last = price | money_without_currency %}
+    {% if mod_price_last contains ',' %}
+      {% assign mod_price_last = mod_price_last | split: ',' | last %}
+    {% else %}
+      {% assign mod_price_last = '' %}
+    {% endif %}
+  {% else %}
+    {% assign mod_price_first = price | money_without_currency | split: '.' | first  %}
+    {% assign mod_price_last = price | money_without_currency %}
+    {% if mod_price_last contains '.' %}
+      {% assign mod_price_last = mod_price_last | split: '.' | last %}
+    {% else %}
+      {% assign mod_price_last = '' %}
+    {% endif %}
+  {% endif %}
+  {% if mod_price_last == '00' %}
+    {% assign mod_price_last = '' %}
+  {% endif %}
+  {% if menu == 'yes' %}
+    <p class="nav-price">{% if product.price_varies %}<span class="price-from-text">From</span>{% endif %} <span class="price-symbol">{{ cart.currency.symbol }}</span>{{ mod_price_first }}<span class="price-fraction">{{ mod_price_last }}</span></p>
+  {% else %}
+  <span class="price price--highlight"><span class="product-price-symbol">{{ cart.currency.symbol }}</span>{{ mod_price_first }}<span class="product-price-fraction">{{ mod_price_last }}</span>{% if cart.currency.iso_code != 'USD' and cart.currency.iso_code != "SAR" %}<span class='abr test11 {{ cart.currency.iso_code }}'>{% if cart.currency.iso_code == 'TRY' %} TL{% else %} {{ cart.currency.iso_code }}{% endif %}</span>{% endif %}</span>
+  {% endif %}
+  
+{% else %}
+
+  {% if cart.currency.iso_code == 'EUR' or cart.currency.iso_code == 'QAR'  or cart.currency.iso_code == 'RON' or cart.currency.iso_code == 'PLN' or cart.currency.iso_code == 'HUF' or cart.currency.iso_code == 'DKK' or cart.currency.iso_code == 'CZK' or cart.currency.iso_code == 'BAM' %}
+    {% assign mod_price_first = price | money_without_currency | split: ',' | first  %}
+    {% assign mod_price_last = price | money_without_currency %}
+    {% if mod_price_last contains ',' %}
+      {% assign mod_price_last = mod_price_last | split: ',' | last %}
+    {% else %}
+      {% assign mod_price_last = '' %}
+    {% endif %}
+  {% else %}
+    {% assign mod_price_first = price | money_without_currency | split: '.' | first  %}
+    {% assign mod_price_last = price | money_without_currency %}
+    {% if mod_price_last contains '.' %}
+      {% assign mod_price_last = mod_price_last | split: '.' | last %}
+    {% else %}
+      {% assign mod_price_last = '' %}
+    {% endif %}
+  {% endif %}
+  {% if mod_price_last == '00' %}
+    {% assign mod_price_last = '' %}
+  {% endif %}
+  {% if menu == 'yes' %}
+    <p class="nav-price">{% if product.price_varies %}<span class="price-from-text">From</span>{% endif %} <span class="price-symbol">{{ cart.currency.symbol }}</span>{{ mod_price_first }}<span class="price-fraction">{{ mod_price_last }}</span></p>
+  {% else %}
+   <span class="price price--highlight">{% if product.price_varies %}<span class="price-from-text">From</span> {% endif %}<span class="price-symbol">{{ cart.currency.symbol }}</span>{{ mod_price_first }}<span class="price-fraction">{{ mod_price_last }}</span>{% if cart.currency.iso_code != 'USD' and cart.currency.iso_code != "SAR" %}<span class='abr test22'>{% if cart.currency.iso_code == 'TRY' %} TL{% else %} {{ cart.currency.iso_code }}{% endif %}</span>{% endif %}</span>
+  {% endif %}
+  
+{% endif %}

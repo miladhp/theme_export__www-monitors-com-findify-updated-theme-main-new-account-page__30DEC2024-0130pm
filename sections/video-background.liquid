@@ -1,0 +1,509 @@
+<section class="section section--text-centered" data-section-id="{{ section.id }}" data-section-type="video">
+  <div class="container">
+{%- if section.blocks.size > 0 -%}
+	{%- for block in section.blocks -%}
+		{%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+         {% assign video_height = block.settings.video_height %}
+         {% assign heading_font_desk = block.settings.title_size_desktop %} 
+         {% assign heading_font_mob = block.settings.title_size_mobile %}
+         {% assign text_font_desk = block.settings.text_size_desktop %}
+         {% assign text_font_mob = block.settings.text_size_mobile %}
+         {% assign image_height_desk = block.settings.featured_image_height_desk %}
+         {% assign image_height_mob = block.settings.featured_image_height_mob %}
+
+		{% if block.type == 'video' %}
+			<div class="videoBox" style="{%- if block.settings.video_link == blank -%}background-image: url('{{ block.settings.video_image  | img_url: 'master' }}');{%- endif -%}">
+
+				{%- if block.settings.video_link != blank -%}
+					<div class="fullscreen-video-wrap">
+						<video class="video-js" loop autoplay preload="none" muted playsinline
+						poster="https:{{ block.settings.video_image | img_url: 'master' }}">
+							<source src="{{ block.settings.video_link }}" type="video/mp4">
+						</video>
+					</div>
+				{% endif %}
+
+                <div class="horizontal-image">
+                  <!-- Add your horizontal image here -->
+                  <img class="image" src="{{ block.settings.featured_image | image_url }}" loading="lazy">
+                </div>
+				<div class="videoBoxInfo videoBoxInfo-inner--{{ block.settings.content_position | replace: '_', '-' }}">
+					{% if block.settings.title != blank %}
+						<span class="videoBoxInfoTitle heading" style="color: {{ block.settings.color_text }}">
+							{{ block.settings.title  }}
+						</span>
+					{% endif %}
+
+					{%- style -%}
+						.videoBackground .imageBoxInfoDescription p {
+							color: {{ block.settings.color_text }}!important;
+						}
+					{%- endstyle -%}
+
+					{% if block.settings.text != blank %}
+						<div class="videoBoxInfoDescription" id="{{ block.id }}" style="color: {{ block.settings.color_text }}">
+							<p>{{ block.settings.text }}</p>
+						</div>
+					{% endif %}
+
+					{% if block.settings.button_link != blank and block.settings.button_label != blank %}
+						<a href="{{ block.settings.button_link }}" class="videoBoxInfoBtn" style="color: {{ block.settings.color_btn_text }}; background: {{ block.settings.color_btn_bg }}">
+							{{ block.settings.button_label | escape }}
+						</a>
+					{% endif %}
+				</div>
+			</div>
+		{% endif %}
+	{%- endfor -%}
+
+{% else %}
+	 <div class="placeholderNoblocks">
+      	This section doesn’t currently include any content. Add content to this section using the sidebar.
+    </div>
+{%- endif -%}
+  </div>
+</section>
+
+<style>
+	body.template-index .main-content .videoBackground {
+		margin-top: -55px;
+	}
+	.videoBackground {
+		position: relative;
+	}
+	.videoBackground .fullscreen-video-wrap {
+		position: absolute;
+		top: 0;
+		left: 0;
+		min-width: 100%;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+	.videoBackground .fullscreen-video-wrap .video-js {
+		position: absolute;
+		top: 0;
+		left: 0;
+		min-height: 100%;
+		min-width: 100%;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.videoBackground .fullscreen-video-wrap video {
+		min-height: 100%;
+		min-width: 100%;
+		object-fit: cover;
+	}
+	.videoBackground .videoBox {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 100px 20px 80px;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		min-height: 500px;
+      	max-height: 800px;
+        height: {{ video_height }}px;
+		position: relative;
+	}
+
+	.videoBackground .videoBoxInfo {
+		z-index: 3;
+        position: absolute;
+        padding: 60px;
+        text-align:left;
+	}
+	.videoBackground .overlay {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background: #000;
+		z-index: 1;
+	}
+	.videoBackground .videoBoxInfoBtn {
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-webkit-user-select: none;
+		user-select: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		display: inline-block;
+		width: auto;
+		text-decoration: none;
+		text-align: center;
+		vertical-align: middle;
+		cursor: pointer;
+		border: 1px solid transparent;
+		border-radius: 5px;
+		padding: 8px 15px;
+		font-style: normal;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		white-space: normal;
+		font-size: 15px;
+		margin-top: 20px;
+	}
+	.videoBackground .videoBoxInfoTitle {
+		font-size: {{ heading_font_desk }}px;
+		line-height: 40px;
+	}
+	.videoBackground .videoBoxInfoDescription {
+        min-width: 290px;
+		max-width: 500px;
+        width: 100%;
+	}
+	.videoBackground .videoBoxInfoDescription p {
+		font-size: {{ text_font_desk }}px;
+		line-height: 28px;
+	}
+	.videoBackground .placeholderNoblocks {
+		text-align: center;
+		max-width: 500px;
+		margin: 0 auto;
+	}
+    @media screen and (max-width: 767px) {
+		body.template-index .main-content .videoBackground {
+			margin-top: -35px;
+		}
+		.videoBackground .fullscreen-video-wrap {
+			z-index: 3;
+		}
+		.videoBackground .videoBox {
+          	min-height: 500px;
+          	height: 100%;
+          	position: relative;
+			padding: 0;
+      	}
+		.videoBackground .fullscreen-video-wrap {
+			position: relative;
+			min-height: 300px;
+		}
+        .videoBackground .videoBoxInfoTitle {
+    		font-size: {{ heading_font_mob }}px;
+    	}
+    	.videoBackground .videoBoxInfoDescription p {
+    		font-size: {{ text_font_mob }}px;
+    	} 
+      
+         .horizontal-image{
+          z-index:4;
+        }
+
+        .horizontal-image img{
+          height:  {{ image_height_mob }}px !important;
+        }
+
+        .videoBackground .videoBoxInfo {
+          transform: inherit;
+          z-index: 4;
+          /* margin-top: 150px; */
+          padding: 13px;
+        }
+
+      .videoBackground .videoBoxInfoDescription p {
+        max-width: 290px;
+        line-height: 1.2;
+      }
+    }
+
+  @media screen and (min-width: 768px) {
+    .videoBoxInfo-inner--top-left {
+        top: 0;
+        left: 0;
+    }
+    
+    .videoBoxInfo-inner--top-center {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .videoBoxInfo-inner--top-right {
+        top: 0;
+        right: 0;
+    }
+
+    .videoBoxInfo-inner--middle-left {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    }
+    
+    .videoBoxInfo-inner--middle-center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .videoBoxInfo-inner--middle-right {
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+    
+    .videoBoxInfo-inner--bottom-left {
+        bottom: 0;
+        left: 0;
+    }
+    
+    .videoBoxInfo-inner--bottom-center {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .videoBoxInfo-inner--bottom-right {
+        bottom: 0;
+        right: 0;
+    } 
+  }
+
+    .horizontal-image{
+      width: 100%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .horizontal-image img{
+      height: {{ image_height_desk }}px;
+      object-fit:cover;
+    }
+</style>
+
+{% schema %}
+{
+"name": {
+		"en": "Video Background"
+	},
+	"class": "videoBackground",
+	"max_blocks": 1,
+	"blocks": [
+		{
+		"type": "video",
+		"name": "Video",
+		"settings": [
+			{
+				"type": "url",
+				"id": "video_link",
+				"label": {
+				"en": "Video link"
+				}
+			},
+			{
+				"type": "image_picker",
+				"id": "video_image",
+				"label": {
+				"en": "Cover image"
+				}
+			},
+            {
+				"type": "image_picker",
+				"id": "featured_image",
+				"label": "featured image"
+			},
+			{
+				"type": "header",
+				"content": {
+					"en": "Text"
+				}
+			},
+			{
+				"type": "richtext",
+				"id": "title",
+				"label": {
+					"en": "Heading"
+				},
+				"default": "<h2>Video slide</h2>"
+			},
+            {
+              "type": "range",
+              "id": "featured_image_height_desk",
+              "label": "Featured Image Height Desk",
+              "min": 500,
+              "max": 700,
+              "step": 25,
+              "default": 650,
+              "unit": "px"
+            },
+            {
+              "type": "range",
+              "id": "featured_image_height_mob",
+              "label": "Featured Image Height Mob",
+              "min": 250,
+              "max": 550,
+              "step": 25,
+              "default": 250,
+              "unit": "px"
+            },
+            {
+              "type": "range",
+              "id": "title_size_desktop",
+              "label": "Title Size Desktop",
+              "min": 10,
+              "max": 40,
+              "step": 1,
+              "default": 32,
+              "unit": "px"
+            },
+            {
+              "type": "range",
+              "id": "title_size_mobile",
+              "label": "Title Size Mobile",
+              "min": 10,
+              "max": 30,
+              "step": 1,
+              "default": 18,
+              "unit": "px"
+            },
+			{
+				"type": "richtext",
+				"id": "text",
+				"label": {
+					"en": "Description"
+				},
+				"default": {
+					"en": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+				}
+			},
+            {
+              "type": "range",
+              "id": "text_size_desktop",
+              "label": "Text Size Desktop",
+              "min": 10,
+              "max": 30,
+              "step": 1,
+              "default": 16,
+              "unit": "px"
+            },
+            {
+              "type": "range",
+              "id": "text_size_mobile",
+              "label": "Text Size Mobile",
+              "min": 10,
+              "max": 30,
+              "step": 1,
+              "default": 16,
+              "unit": "px"
+            },
+            {
+              "type": "select",
+              "id": "content_position",
+              "label": "Content position",
+              "info": "On mobile, content is always centered.",
+              "options": [
+                {
+                  "value": "top_left",
+                  "label": "Top left"
+                },
+                {
+                  "value": "top_center",
+                  "label": "Top center"
+                },
+                {
+                  "value": "top_right",
+                  "label": "Top right"
+                },
+                {
+                  "value": "middle_left",
+                  "label": "Middle left"
+                },
+                {
+                  "value": "middle_center",
+                  "label": "Middle center"
+                },
+                {
+                  "value": "middle_right",
+                  "label": "Middle right"
+                },
+                {
+                  "value": "bottom_left",
+                  "label": "Bottom left"
+                },
+                {
+                  "value": "bottom_center",
+                  "label": "Bottom center"
+                },
+                {
+                  "value": "bottom_right",
+                  "label": "Bottom right"
+                }
+              ],
+              "default": "middle_center"
+            },
+			{
+				"type": "color",
+				"id": "color_text",
+				"label": {
+					"en": "Text color"
+				},
+				"default": "#ffffff"
+			},
+			{
+				"type": "text",
+				"id": "button_label",
+				"label": {
+					"en": "Button label"
+				}
+			},
+			{
+				"type": "url",
+				"id": "button_link",
+				"label": {
+					"en": "Button link"
+				}
+			},
+			{
+				"type": "color",
+				"id": "color_btn_bg",
+				"label": {
+					"en": "Background button color"
+				},
+				"default": "#ffffff"
+			},
+			{
+				"type": "color",
+				"id": "color_btn_text",
+				"label": {
+					"en": "Button text color"
+				},
+				"default": "#ffffff"
+			},
+            {
+              "type": "range",
+              "id": "video_height",
+              "min": 500,
+              "max": 800,
+              "step": 50,
+              "unit": "px",
+              "label": "Set Video Height",
+              "default": 500
+            }
+		]
+		}
+	],
+	"presets": [
+		{
+			"name": {
+				"en": "Video Background"
+			},
+			"category": {
+				"en": "Main"
+			},
+			"blocks": [
+				{
+					"type": "video"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,1184 @@
+<link rel="stylesheet" href="{{ 'shop-pay-custom.css' | asset_url }}">
+
+{%- assign selected_variant = product.selected_or_first_available_variant -%}
+{%- assign color_label = 'color,colour,couleur,cor,colore,farbe,색,色,カラー,färg,farve,szín,barva' | split: ',' -%}
+
+{%- unless product.has_only_default_variant -%}
+  <div class="product-form__variants" {{ block.shopify_attributes }}>
+    {%- for option in product.options_with_values -%}
+      {%- assign downcase_option = option.name | downcase -%}
+      {%- capture option_name -%}{{ section.id }}-{{ product.id }}-{{ forloop.index }}{%- endcapture -%}
+
+      {%- assign option_selector_type = 'select' -%}
+
+      {%- if block.settings.color_mode != 'block' and block.settings.color_mode != 'dropdown' and color_label contains downcase_option -%}
+        {%- comment -%}NOTE: even if the merchant is using the mode to display variant images, if ALL variant do not have an associated image, we fallback to color{%- endcomment -%}
+
+        {%- assign has_image_attached_to_all_variants = true -%}
+
+        {%- for variant in product.variants -%}
+          {%- unless variant.image -%}
+            {%- assign has_image_attached_to_all_variants = false -%}
+            {%- break -%}
+          {%- endunless -%}
+        {%- endfor -%}
+
+        {%- if block.settings.color_mode == 'color' or has_image_attached_to_all_variants == false -%}
+          {%- assign option_selector_type = 'color' -%}
+        {%- else -%}
+          {%- assign option_selector_type = 'variant' -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- if color_label contains downcase_option -%}
+          {%- if block.settings.color_mode == 'block' -%}
+            {%- assign option_selector_type = 'block' -%}
+          {%- endif -%}
+        {%- elsif block.settings.selector_mode == 'block' -%}
+          {%- assign option_selector_type = 'block' -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      <div class="product-form__option" data-selector-type="{{ option_selector_type }}">
+        {%- case option_selector_type -%}
+          {%- when 'color' -%}
+            <span class="product-form__option-name text--strong">{{ option.name }}: <span class="product-form__selected-value">{{ option.selected_value }}</span></span>
+
+            <div class="color-swatch-list color-swatch-list--large">
+              {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+
+              {%- for value in option.values -%}
+                {%- assign downcased_value = value | downcase -%}
+                {%- capture color_id -%}{{ option_name }}-{{ forloop.index }}{%- endcapture -%}
+
+                <div class="color-swatch {% if downcased_value == 'white' or downcased_value == 'blanc' %}color-swatch--white{% endif %}">
+                  <input class="color-swatch__radio product-form__single-selector" type="radio" name="{{ option_name }}" id="{{ color_id }}" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %} data-option-position="{{ option.position }}">
+                  <label class="color-swatch__item" for="{{ color_id }}" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: downcased_value %}" title="{{ value | escape }}">
+                    <span class="visually-hidden">{{ value }}</span>
+                    {%- render 'icon', icon: 'cross-sold-out' -%}
+                  </label>
+                </div>
+              {%- endfor -%}
+            </div>
+
+          {%- when 'variant' -%}
+            <span class="product-form__option-name text--strong">{{ option.name }}: <span class="product-form__selected-value">{{ option.selected_value }}</span></span>
+
+            <div class="variant-swatch-list">
+              {%- capture option_name -%}option{{ option.position }}{%- endcapture -%}
+
+              {%- for value in option.values -%}
+                {%- capture variant_swatch_id -%}{{ option_name }}-{{ forloop.index }}{%- endcapture -%}
+
+                {%- for variant in product.variants -%}
+                  {%- if variant[option_name] == value and variant.image -%}
+                    <div class="variant-swatch">
+                      <input class="variant-swatch__radio product-form__single-selector" type="radio" name="{{ option_name }}" id="{{ variant_swatch_id }}" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %} data-option-position="{{ option.position }}">
+
+                      <label class="variant-swatch__item" for="{{ variant_swatch_id }}" title="{{ value | escape }}">
+                        <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: variant.image.aspect_ratio }}%">
+                          {{- variant.image | image_url: width: variant.image.width | image_tag: loading: 'lazy', sizes: '120px', widths: '120,240' -}}
+                        </div>
+
+                        {% render 'icon', icon: 'cross-sold-out' %}
+                      </label>
+                    </div>
+
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+
+          {%- when 'block' -%}
+            {% assign count = count | plus: 1 %}
+            <div class="option-availability">
+              <span class="product-form__option-name text--strong">{{ option.name }}:{% if forloop.first %} <span class="product-meta__sku"><span class="product-meta__sku-number">{{ selected_variant.sku }}</span></span>{% endif %}</span>
+              <div class="availability_{{count}} availability"></div>
+            </div>
+            <div class="block-swatch-list vrt_option_{{count}}">
+              {%- for value in option.values -%}
+                {%- capture block_swatch_id -%}{{ option_name }}-{{ forloop.index }}{%- endcapture -%}
+
+                <div class="block-swatch">
+                  <input class="block-swatch__radio product-form__single-selector" type="radio" name="{{ option_name }}" id="{{ block_swatch_id }}" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %} data-option-position="{{ option.position }}" aria-hidden="true">
+                  <label class="block-swatch__item" for="{{ block_swatch_id }}" title="{{ value | escape }}">
+                   <span class="block-swatch__item-text">{% if value contains 'Renewed' %}<img src="{{'icon-leaf.png' | asset_url}}" class="leaf">  {% endif %} {% if value == 'Pair' %} {%- render 'icon', icon: 'pair' -%}  {% endif %} {% if value contains 'Single' %}  {%- render 'icon', icon: 'single' -%}  {% endif %} {% if value contains 'Dual-Stand' %}  {%- render 'icon', icon: 'dualstand' -%}  {% endif %} {{ value }} {% if value contains 'Renewed' %}
+                      <a draggable="false" data-tooltip="Monitors.com's Renewed products, for the most part, consist of open-box and demo items used at trade shows and conventions. Renewed products are identical to new items in terms of functionality, quality, and backed by a generous long term warranty and are guaranteed to meet all medical quality standards. All renewed products come with a 30-day money-back satisfaction guarantee." class="que">?</a>
+                      {% endif %}
+                      {% if value contains 'PacsGear' %}
+                        <a draggable="false" data-tooltip="This package includes a full license of PacsGear PacsScan with Mammography workflow option and includes a plug-and-play pro configured Windows10 Pro workstation." class="que">?</a>
+                      {% endif %}
+                    </span>
+                  </label>
+                </div>
+              {%- endfor -%}
+            </div>
+
+          {%- when 'select' -%}
+            <label for="{{ option_name }}" class="product-form__option-name text--strong">{{ option.name }}: <span class="product-form__selected-value">{{ option.selected_value }}</span></label>
+
+            <div class="select-wrapper select-wrapper--primary">
+              {%- render 'icon', icon: 'arrow-bottom' -%}
+
+              <select class="product-form__single-selector" name="{{ option_name }}" id="{{ option_name }}" data-option-position="{{ option.position }}">
+                {%- for value in option.values -%}
+                  <option value="{{ value | escape }}" {% if value == option.selected_value %}selected="selected"{% endif %}>{{ value }}</option>
+                {%- endfor -%}
+              </select>
+            </div>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+
+    <div class="no-js product-form__option">
+      <label class="product-form__option-name text--strong" for="product-select-{{ product.id }}">{{ 'product.form.variant' | t }}</label>
+
+      <div class="select-wrapper select-wrapper--primary">
+        <select id="product-select-{{ product.id }}" name="id">
+          {%- for variant in product.variants -%}
+            <option {% if variant == selected_variant %}selected="selected"{% endif %} {% unless variant.available %}disabled="disabled"{% endunless %} value="{{ variant.id }}" data-sku="{{ variant.sku }}">{{ variant.title }} - {{ variant.price | money }}</option>
+          {%- endfor -%}
+        </select>
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  <input type="hidden" name="id" data-sku="{{ selected_variant.sku }}" value="{{ selected_variant.id }}">
+{%- endunless -%}
+
+{%- if block.settings.show_inventory_quantity and product.template_suffix != 'pre-order' -%}
+  <div class="product-form__info-item bora" style="display:none;">
+    <span class="product-form__info-title text--strong">Availability:</span>
+    <div class="product-form__info-content">
+      {%- if selected_variant.available -%}
+        {%- if selected_variant.inventory_management and selected_variant.inventory_policy == 'deny' and block.settings.low_inventory_threshold > 0 -%}
+          {%- if selected_variant.inventory_quantity <= block.settings.low_inventory_threshold -%}
+            <span class="product-form__inventory inventory inventory--low">Low stock</span>
+          {%- else -%}
+            <span class="product-form__inventory inventory inventory--high">{{ 'product.form.in_stock' | t }}</span>
+          {%- endif -%}
+        {%- else -%}
+          <span class="product-form__inventory inventory inventory--high">{{ 'product.form.in_stock' | t }}</span>
+        {%- endif -%}
+      {%- else -%}
+        <span class="product-form__inventory inventory">{{ 'product.form.sold_out' | t }}</span>
+      {%- endif -%}
+
+      {%- for tag in product.tags -%}
+        {%- if tag contains '__stock:' -%}
+          {%- assign stock_countdown_max = tag | split: '__stock:' | last | times: 1.0 -%}
+          {%- assign stock_countdown_progress = selected_variant.inventory_quantity | divided_by: stock_countdown_max | times: 100.0 | at_least: 0 | at_most: 100 -%}
+          <span class="inventory-bar {% if stock_countdown_progress == 0 %}inventory-bar--hidden{% endif %}" data-stock-countdown-max="{{ stock_countdown_max }}">
+            <span class="inventory-bar__progress" style="width: 100%"></span>
+          </span>
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="stock-shipping {% if selected_variant.metafields.specs.shipping == 'hide' %}d_none{% endif %}">
+      <div class="stock-av" {%- unless selected_variant.available -%}style="display:none"{%- endunless -%}>
+        <p>(Ships&nbsp<span id="shipping_here">{{selected_variant.metafields.specs.shipping}}</span>)</p>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<div id="esc-oos-form"></div>
+
+{% assign price_hide_opt = selected_variant.metafields.price_option.hide_price | downcase %}
+{% assign money_back_opt = selected_variant.metafields.specs.moneyback_guarantee | downcase %}
+{% assign buyback_opt = selected_variant.metafields.specs.buyback_guarantee | downcase %}
+
+<div class="product-form__info-list">
+  <div class="product-form__info-item pro-info-main-price {% if price_hide_opt == 'yes' or price_hide_opt == 'y' %}{%else%}price-border{%endif%}">
+    <span class="product-form__info-title text--strong">{{ 'product.form.price' | t }}:</span>
+
+     <div class="product-form__info-content"{%- unless selected_variant.available -%} style="display:none" {%- endunless -%} role="region" aria-live="polite">
+       <div class="hide-price_option" {% if price_hide_opt == 'yes' or price_hide_opt == 'y' %}style="display:none;"{% endif %}>
+        <div class="fpfle">
+          <div class="price-list nmmnqw">
+            {%- if selected_variant.compare_at_price > selected_variant.price -%}
+              <span class="price price--highlight">{{ selected_variant.price | money_without_trailing_zeros }}</span>
+              <span class="price price--compare">{{ selected_variant.compare_at_price | money_without_trailing_zeros }}</span>
+            {%- else -%}
+              <span class="price">{{ selected_variant.price | money_without_trailing_zeros }}</span>
+            {%- endif -%}
+          </div>
+          {% for tag in product.tags %}
+            {% if tag contains 'FREE SHIPPING'%}
+              <div class="free-shipp"  {%- unless selected_variant.available -%} style="display:none" {%- endunless -%} >
+                <img src="{{'shipping-truck.svg' | asset_url}}">
+                <span>FREE SHIPPING</span>
+              </div>
+            {% endif %}
+            {% endfor %} 
+            {% for tag in product.tags %}
+            {% if tag contains 'FREE 2-DAY SHIPPING'%}
+              <div class="free-shipp"  {%- unless selected_variant.available -%} style="display:none" {%- endunless -%} >
+                <img src="{{'shipping-truck.svg' | asset_url}}">
+                <span>FREE 2-DAY SHIPPING</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="product-form__price-info" style="display: {% if selected_variant.unit_price_measurement %}block{% else %}none{% endif %}">
+        <div class="unit-price-measurement">
+          <span class="unit-price-measurement__price">{{ selected_variant.unit_price | money_without_trailing_zeros }}</span>
+          <span class="unit-price-measurement__separator">/ </span>
+
+          <span class="unit-price-measurement__reference-value" {%- if selected_variant.unit_price_measurement.reference_value == 1 -%}style="display: none"{% endif %}>
+            {{- selected_variant.unit_price_measurement.reference_value -}}
+          </span>
+
+          <span class="unit-price-measurement__reference-unit">{{ selected_variant.unit_price_measurement.reference_unit }}</span>
+        </div>
+      </div>
+
+      {{- form | payment_terms -}}
+
+    {%- if template != 'product.quick-view' -%}
+       {%  if cart.currency.name == 'United States Dollar' %} 
+       <p class="custom-shopify-shop-pay" id="custom-shopify-shop-pay" {% if selected_variant.price < 5000 or selected_variant.price > 1750000 %} style="display:none;" {% endif %}>
+        <span class="custom-shopify-shop-pay__content" id="custom-shopify-shop-pay-content">
+          Finance It. <strong><span class="custom-price-emi"></span></strong>/mo for 12 months.
+        </span>
+          <a type="button" id="custom-checkout-shoppay" class="custom-shopify-shop-pay__learn-more" data-action="open-modal" aria-controls="modal-custom-shop-pay">View&nbsp;sample&nbsp;plans</a>
+       </p>
+      {% endif %}
+    {% endif %}
+      
+      {%- if block.settings.show_taxes_included -%}
+        {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+          <p class="product-form__price-info">
+            {%- if cart.taxes_included -%}
+              {{ 'product.general.include_taxes' | t }}
+            {%- endif -%}
+
+            {%- if shop.shipping_policy.body != blank -%}
+              {{ 'product.general.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+      {%- endif -%}
+
+      <div class="custom-raq-saw-text" {% if selected_variant.metafields.custom.saw_for_less == blank %}style="display:none;"{% endif %}>
+        <span>Saw It For Less? <a class="cus-raq-btn" id="custom-raq-text" type="button" class="custom-raq-new" data-redirect-url="{% if customer %}{{ pages['new-addresses'].url }}{% else %}{{ pages['request-quote-register'].url }}{% endif %}"> Request A Quote </a></span>
+      </div>
+
+      <div class="custom-raq-want-text"  {% if selected_variant.metafields.custom.want_for_lower_price == blank %}style="display:none;"{% endif %}>
+        <span>Want it for lower Price? <a class="cus-raq-btn" id="custom-raq-text" type="button" class="custom-raq-new" data-redirect-url="{% if customer %}{{ pages['new-addresses'].url }}{% else %}{{ pages['request-quote-register'].url }}{% endif %}"> Request A Quote </a></span>
+      </div>
+
+    </div>
+  </div>
+
+ {%- if template != 'product.quick-view' -%} 
+  {% render 'custom-add-ons-async' %}
+ {% endif %}
+
+   <div class="flinine"  {%- unless selected_variant.available -%} style="display:none" {%- endunless -%} >
+    <div class="flininea">
+
+      {%- if product.template_suffix != 'contact' -%}
+      {%- if block.settings.show_quantity_selector -%}
+      <div class="product-form__info-item product-form__info-item--quantity">
+        <div class="attachagain">
+          <div class="goesinsticky">
+
+            <div class="qtydiv">
+              <div class="qtybox">
+                <span class="btnqty qtyminus icon-minus disabled"><span>-</span></span>
+                <input type="number" inputmode="numeric" id="quantity" name="quantity" value="1" min="1" class="quantity-selector quantity-input">
+                <span class="btnqty qtyplus icon-plus"><span>+</span></span>
+              </div>
+              <div class="qtybox mobile">
+                <div class="mob-qty-box">
+                  <input type="number" inputmode="numeric" id="quantity" name="quantity" value="1" min="1" class="quantity-selector quantity-input">
+                </div>
+                <div class="mob-qty-btn">
+                  <span class="btnqty qtyplus icon-plus"><span>+</span></span>
+                  <span class="btnqty qtyminus icon-minus disabled"><span>-</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%- else -%}
+      <input type="hidden" name="quantity" value="1">
+      {%- endif -%}
+      {%- endif -%}
+
+      {%- if product.template_suffix != 'contact' -%}
+      {%- if selected_variant.available -%}
+      {%- if product.template_suffix == 'pre-order' -%}
+      <button type="submit" class="product-form__add-button button button--primary gatc" data-action="add-to-cart">{{ 'product.form.pre_order' | t }}</button>
+      {%- else -%}
+      <button type="submit" {% if price_hide_opt == 'yes' or price_hide_opt == 'y' %}style="display:none;"{% endif %} class="product-form__add-button button button--primary gatc klamaq hide-addbtn_option" data-action="add-to-cart">{{ 'product.form.add_to_cart' | t }}</button>
+      {%- endif -%}
+      {%- else -%}
+      <button type="submit" class="product-form__add-button button button--disabled" disabled>{{ 'product.form.sold_out' | t }}</button>
+      {%- endif -%}
+
+      {%- if block.settings.show_payment_button -%}
+      {{ form | payment_button }}
+      {%- endif -%}
+      {%- else -%}
+      <a href="mailto:{{ shop.email }}" class="button button--primary">{{ 'product.form.contact_us' | t }}</a>
+      {%- endif -%}
+      
+      <a id="custom-request-quote" type="button" class="button button--small button--ternary usca {% unless price_hide_opt == 'yes' or price_hide_opt == 'y' %}d_none{%endunless%}"
+        data-redirect-url="{% if customer %}{{ pages['new-addresses'].url }}{% else %}{{ pages['request-quote-register'].url }}{% endif %}">
+        Request A Quote
+      </a>
+
+      <div id="modal-custom-shop-pay" class="modal" aria-hidden="true">
+        <div class="modal__dialog modal__dialog--mid" role="dialog" style="border-radius: 7px; width:464px; height: 662px;">
+         <div class="custom-shop-pay-container">
+          <shopify-installments-sample-plans-modal>
+           <div id="shopify-payment-terms-modal" role="dialog" aria-modal="true" aria-labelledby="shopify-payment-terms-modal-heading" tabindex="-1">
+            <section class="modal-wrapper">
+              <header>
+                <div id="header-icons">
+                  <h1 id="shopify-payment-terms-modal-heading">Get it now, pay later</h1>
+                  <button type="button" class="btn__close btn__close--icon" aria-label="Close" data-action="close-modal">
+                    <svg class="close__icon" aria-hidden="true"><use xlink:href="#close"></use></svg>
+                  </button>
+                </div>
+              </header>
+              <div hidden="" id="shopify-payment-terms-modal-warning-text">Opens in a new window.</div>
+              <p class="tagline">Sample plans for <b><span class="custom-variant-based-price">{{ selected_variant.price | money}}</span></b> purchase</p>
+              <ul class="list">
+          
+                  <li class="list-item">
+                    <div class="list-item__financial-container">
+                      <span class="list-item__amount-per-interval">
+                        <b class="list-item__price-per-term"><span class="custom-emi-twelve"></span></b>&nbsp;<span class="list-item__frequency">/ month</span>
+                      </span>
+                      <div class="list-item__payment-length">
+                        <span class="list-item__number-of-terms">12 months</span>
+                      </div>
+                    </div>
+                    <div class="list-item__interest-details-container">
+                      <div class="list-item__interest-detail">
+                        <span class="list-item__interest-detail-label">Interest</span>
+                        <span class="list-item__interest-detail-value custom-interest-twelve"></span>
+                      </div>
+                      <div class="list-item__interest-detail">
+                        <span class="list-item__interest-detail-label">Total</span>
+                        <span class="list-item__interest-detail-value custom-total-price-twelve"></span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-item">
+                    <div class="list-item__financial-container">
+                      <span class="list-item__amount-per-interval">
+                        <b class="list-item__price-per-term"><span class="custom-emi-three"></span></b>&nbsp;<span class="list-item__frequency">/ month</span>
+                      </span>
+                      <div class="list-item__payment-length">
+                        <span class="list-item__number-of-terms">3 months</span>
+                      </div>
+                    </div>
+                    <div class="list-item__interest-details-container">
+                      <div class="list-item__interest-detail">
+                        <span class="list-item__interest-detail-label">Interest</span>
+                        <span class="list-item__interest-detail-value custom-interest-three"></span>
+                      </div>
+                      <div class="list-item__interest-detail">
+                        <span class="list-item__interest-detail-label">Total</span>
+                        <span class="list-item__interest-detail-value  custom-total-price-three"></span>
+                      </div>
+                    </div>
+                  </li> 
+                
+              </ul>
+              <div class="navigation-buttons">
+               {%- if customer -%}
+                  <a href="#" class="shop-pay-button" id="custom-shopify-shop-pay-continue">Continue to checkout</a>
+                {% else %}
+                  <a href="#" class="shop-pay-button" id="custom-shopify-shop-pay-continue">Continue to checkout</a>
+                {% endif %}    
+                <!--             <shop-pay-button style="width: 100%; --shop-pay-button-width: auto;" store-url="https://monitors.com" button-text="Continue to checkout" payment-option="shop_pay_installments" source="installments_modal" source-token="a0da491b-3441-46d2-a6e3-fd725ccc9717"></shop-pay-button> -->
+                <button class="btn__close sample-close-button" data-action="close-modal">Close</button>
+              </div>
+              <p id="eligibility-approval" class="help_text">
+                <small>
+                  The estimated payment amount excludes taxes and shipping. Rates range from 0-36% APR. Payment options through Shop Pay Installments are subject to an eligibility check and are provided by these lending partners: <a class="help_text__link" href="https://www.affirm.com/lenders" target="_blank" aria-describedby="shopify-payment-terms-modal-warning-text">affirm.com/lenders</a>. Options depend on your purchase amount, and a down payment may be required. More options may be available upon approval. State notices to consumers: <a class="help_text__link" href="https://www.affirm.com/licenses" target="_blank" aria-describedby="shopify-payment-terms-modal-warning-text">affirm.com/licenses</a>.
+                </small>
+              </p>
+              <footer>
+                <div class="shop-pay-logo-wrapper">
+                  <shop-pay-logo role="img" aria-label="Shop Pay" size="large"></shop-pay-logo>
+                </div>
+                <div class="affirm-text">
+                  <span>Installments in partnership with</span>
+                    <svg role="img" aria-labelledby="shopify-payment-terms-modal-affirm" class="affirm-logo"><use xlink:href="#affirm"></use></svg>
+                </div>
+              </footer>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="fees-icon" viewBox="0 0 21 18" fill="none">
+                  <path d="M18.5 10.5474C18.5 15.267 14.5995 19.1236 9.75 19.1236C4.90048 19.1236 1 15.267 1 10.5474C1 5.82767 4.90048 1.97107 9.75 1.97107C14.5995 1.97107 18.5 5.82767 18.5 10.5474Z" stroke="#0B0B0C" stroke-width="2"></path>
+                  <path d="M11.4875 8.06938C11.8819 8.456 12.515 8.4497 12.9016 8.05531C13.2882 7.66092 13.2819 7.02778 12.8875 6.64117L11.4875 8.06938ZM10.0408 6.55725V7.55725V6.55725ZM7.1335 12.4337C6.70617 12.0838 6.07613 12.1466 5.72626 12.5739C5.37639 13.0013 5.43917 13.6313 5.8665 13.9812L7.1335 12.4337ZM12.1875 7.35527C12.8875 6.64117 12.8872 6.64088 12.887 6.6406C12.8869 6.6405 12.8866 6.64021 12.8864 6.64001C12.8859 6.63961 12.8855 6.6392 12.8851 6.63878C12.8842 6.63793 12.8833 6.63703 12.8823 6.63609C12.8804 6.63419 12.8782 6.6321 12.8758 6.62982C12.871 6.62526 12.8654 6.61993 12.8589 6.61388C12.8459 6.6018 12.8294 6.58683 12.8096 6.5694C12.7699 6.53459 12.7164 6.48973 12.6497 6.43832C12.5166 6.33585 12.328 6.20519 12.0884 6.07602C11.6099 5.81808 10.9106 5.55725 10.0408 5.55725V7.55725C10.5036 7.55725 10.8777 7.69544 11.1394 7.83651C11.2698 7.90684 11.3681 7.97569 11.4293 8.02285C11.4597 8.04625 11.4802 8.06374 11.4903 8.07257C11.4953 8.07696 11.4976 8.07914 11.4972 8.07874C11.497 8.07854 11.4961 8.07769 11.4944 8.07615C11.4936 8.07538 11.4927 8.07443 11.4915 8.07331C11.4909 8.07274 11.4903 8.07214 11.4896 8.07148C11.4893 8.07116 11.4889 8.07082 11.4886 8.07047C11.4884 8.07029 11.4881 8.07002 11.488 8.06993C11.4877 8.06966 11.4875 8.06938 12.1875 7.35527ZM10.0408 5.55725C8.12515 5.55725 6.90378 6.0365 6.19464 6.83562C5.49081 7.62876 5.5 8.51566 5.5 8.77398L7.5 8.77398C7.5 8.58897 7.50919 8.3675 7.69057 8.1631C7.86664 7.96469 8.41567 7.55725 10.0408 7.55725V5.55725ZM5.5 8.77398C5.5 10.0149 6.8138 11.5474 10.0408 11.5474V9.54737C7.35373 9.54737 7.5 8.41981 7.5 8.77398L5.5 8.77398ZM10.0408 11.5474C11.3127 11.5474 11.7267 11.9199 11.8526 12.072C11.9294 12.1647 11.9638 12.2521 11.9797 12.3098C11.9877 12.3388 11.9908 12.3595 11.9919 12.3681C11.9924 12.3721 11.9925 12.3743 11.9927 12.376C11.9927 12.3767 11.9928 12.3777 11.9929 12.3796C11.993 12.3801 11.9934 12.3859 11.9937 12.3909C11.9938 12.3916 11.9953 12.4128 11.9983 12.4379C11.9991 12.4448 12.004 12.4884 12.0163 12.5424C12.0206 12.5613 12.0384 12.6404 12.081 12.7343C12.1072 12.7876 12.1909 12.9199 12.2529 12.9949C12.374 13.1073 12.744 13.2896 12.9915 13.3208V11.3208C13.239 11.3519 13.609 11.5342 13.7301 11.6466C13.7921 11.7215 13.8758 11.8538 13.9019 11.907C13.9445 12.0008 13.9622 12.0798 13.9664 12.0985C13.9786 12.152 13.9835 12.195 13.9842 12.201C13.9859 12.2154 13.9869 12.2264 13.9873 12.2305C13.9877 12.2355 13.988 12.2393 13.9881 12.2405C13.9882 12.2421 13.9883 12.2437 13.988 12.2392C13.9878 12.2363 13.9874 12.2314 13.987 12.2257C13.9852 12.2014 13.9821 12.1655 13.9765 12.121C13.9655 12.0326 13.9455 11.9148 13.9076 11.7775C13.8317 11.5027 13.6833 11.1468 13.3928 10.7961C12.7843 10.0615 11.7261 9.54737 10.0408 9.54737V11.5474ZM12.9915 13.3208C12.7152 13.2818 12.3392 13.0787 12.2329 12.9723C12.1834 12.9097 12.1152 12.8024 12.0934 12.7604C12.0576 12.6873 12.0393 12.6263 12.0345 12.6106C12.0212 12.5665 12.014 12.5313 12.0123 12.5227C12.0071 12.4972 12.0042 12.4778 12.0034 12.4721C12.0011 12.4564 12.0001 12.4462 11.9998 12.4436C11.9991 12.4365 11.9995 12.4381 11.9998 12.4473C12.0003 12.4656 12.0003 12.5037 11.9945 12.5544C11.9827 12.6586 11.9503 12.7886 11.8754 12.9129C11.7692 13.089 11.4095 13.5375 10.0408 13.5375V15.5375C11.9075 15.5375 13.0264 14.8776 13.5883 13.9454C13.8474 13.5154 13.9465 13.0913 13.9818 12.7798C13.9996 12.6227 14.002 12.4876 13.9988 12.3847C13.9972 12.3333 13.9941 12.2872 13.9902 12.2477C13.9883 12.2288 13.9858 12.2062 13.9822 12.1821C13.9808 12.1723 13.9774 12.1497 13.9717 12.122C13.9698 12.1124 13.9624 12.0764 13.9489 12.0317C13.9441 12.0157 13.9257 11.9545 13.8899 11.8814C13.868 11.8393 13.7998 11.7319 13.7502 11.6693C13.6439 11.5628 13.2679 11.3597 12.9915 11.3208V13.3208ZM10.0408 13.5375C9.30305 13.5375 8.58044 13.2774 8.00962 12.9834C7.73057 12.8397 7.50347 12.696 7.34846 12.59C7.27131 12.5372 7.21302 12.4944 7.17616 12.4666C7.15775 12.4527 7.14477 12.4426 7.13753 12.4369C7.13392 12.434 7.13175 12.4323 7.13106 12.4317C7.13071 12.4314 7.13074 12.4315 7.13115 12.4318C7.13135 12.432 7.13165 12.4322 7.13204 12.4325C7.13224 12.4327 7.13245 12.4329 7.1327 12.4331C7.13282 12.4331 7.13302 12.4333 7.13308 12.4334C7.13329 12.4335 7.1335 12.4337 6.5 13.2074C5.8665 13.9812 5.86672 13.9814 5.86696 13.9816C5.86704 13.9816 5.86728 13.9818 5.86745 13.982C5.86779 13.9822 5.86816 13.9825 5.86855 13.9829C5.86934 13.9835 5.87023 13.9842 5.87122 13.985C5.8732 13.9866 5.87559 13.9886 5.87838 13.9908C5.88396 13.9953 5.89114 14.001 5.89989 14.0079C5.91739 14.0217 5.94118 14.0402 5.97093 14.0626C6.03039 14.1075 6.11399 14.1687 6.21908 14.2406C6.42854 14.3839 6.72734 14.5727 7.09394 14.7615C7.81445 15.1326 8.86225 15.5375 10.0408 15.5375V13.5375Z" fill="#0B0B0C"></path>
+                  <path d="M9.75 4.96118L9.75 16.1335" stroke="#0B0B0C" stroke-width="2" stroke-linecap="round"></path>
+                </symbol>
+                <symbol id="cc-icon" viewBox="0 0 21 16" fill="none">
+                  <path d="M17.3636 1H2.63636C1.73262 1 1 1.7835 1 2.75V13.25C1 14.2165 1.73262 15 2.63636 15H17.3636C18.2674 15 19 14.2165 19 13.25V2.75C19 1.7835 18.2674 1 17.3636 1Z" stroke="#0B0B0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M1 6L19 6" stroke="#0B0B0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M13 11H15" stroke="#0B0B0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </symbol>
+                <symbol id="affirm" viewBox="0 0 40 22" fill="none">
+                  <title id="shopify-payment-terms-modal-affirm">Affirm</title>
+                  <path fill="#000000" d="M3.058 14.543c-.482 0-.724-.236-.724-.623 0-.72.812-.965 2.292-1.121 0 .962-.656 1.744-1.569 1.744zm.638-5.413c-1.058 0-2.275.495-2.936 1.017l.604 1.26c.53-.48 1.386-.892 2.159-.892.734 0 1.14.243 1.14.734 0 .33-.269.497-.777.563C1.99 12.056.5 12.575.5 14.026c0 1.15.826 1.846 2.116 1.846.92 0 1.74-.507 2.129-1.176v.99H6.46v-4.148c0-1.712-1.2-2.408-2.764-2.408zM20.92 9.318v6.367h1.837v-3.068c0-1.458.89-1.886 1.51-1.886.243 0 .57.07.785.23l.334-1.684a2.104 2.104 0 00-.822-.147c-.944 0-1.538.415-1.929 1.258v-1.07h-1.714zM33.899 9.13c-.971 0-1.697.57-2.075 1.118-.35-.709-1.093-1.118-1.983-1.118-.971 0-1.643.535-1.954 1.15v-.962h-1.77v6.367h1.838v-3.277c0-1.177.621-1.742 1.201-1.742.525 0 1.007.337 1.007 1.207v3.812h1.835v-3.277c0-1.19.606-1.742 1.213-1.742.486 0 .998.35.998 1.193v3.826h1.834v-4.401c0-1.431-.971-2.154-2.144-2.154zM16.452 9.317h-1.664v-.648c0-.842.485-1.083.903-1.083.462 0 .822.203.822.203l.566-1.284s-.573-.372-1.617-.372c-1.173 0-2.508.656-2.508 2.716v.468h-2.785v-.648c0-.842.485-1.083.903-1.083.238 0 .557.054.822.203l.566-1.284c-.338-.196-.88-.372-1.617-.372-1.173 0-2.508.656-2.508 2.716v.468H7.269v1.405h1.066v4.963h1.834v-4.963h2.785v4.963h1.834v-4.963h1.664V9.317zM17.547 15.684h1.832V9.317h-1.832v6.367z"></path>
+                  <path fill="#5A31F4" d="M28.24.434c-4.956 0-9.372 3.413-10.625 7.8h1.795C20.457 4.968 24.012 2.1 28.24 2.1c5.14 0 9.582 3.882 9.582 9.925 0 1.356-.177 2.58-.513 3.66h1.743l.017-.059c.286-1.115.431-2.326.431-3.6 0-6.74-4.95-11.59-11.26-11.59z"></path>
+                </symbol>
+                <symbol id="squiggle" viewBox="0 0 43 10" fill="none">
+                  <path d="M9.62095 5.04617C8.94881 5.25492 8.31699 5.39409 7.71878 5.63067C5.84572 6.36986 4.08993 7.39479 2.50965 8.6715C2.22013 8.91561 1.9685 9.20426 1.76356 9.52739C1.64079 9.72655 1.45521 9.87557 1.23834 9.94914C1.02147 10.0227 0.786683 10.0163 0.573866 9.93098C0.150414 9.81964 0.0159848 9.46476 0.0025419 9.03334C-0.0117113 8.78028 0.0341362 8.52746 0.136075 8.29699C0.238015 8.06651 0.392942 7.86541 0.587309 7.71124C1.44731 6.98191 2.34482 6.30131 3.27589 5.67243C4.88859 4.53384 6.69839 3.72817 8.60601 3.2996C9.16432 3.2139 9.72969 3.18825 10.2931 3.22306C10.5766 3.23472 10.8466 3.35146 11.0539 3.552C11.2611 3.75254 11.3919 4.02352 11.4223 4.31553C11.4514 4.96274 11.4401 5.61122 11.3887 6.25693C11.3887 6.47264 11.3416 6.68835 11.2946 7.03628C11.5734 6.98943 11.8463 6.91006 12.1079 6.79969C13.1228 6.23606 14.1243 5.6933 15.1191 5.04617C16.7687 3.80877 18.5394 2.75456 20.4022 1.90096C21.4062 1.47852 22.4848 1.27937 23.568 1.31645C23.7541 1.30668 23.9402 1.33708 24.1144 1.40573C24.2886 1.47438 24.447 1.57978 24.5798 1.71523C24.7125 1.85068 24.8166 2.01322 24.8854 2.19254C24.9542 2.37186 24.9862 2.56402 24.9795 2.75685C24.9795 3.30656 24.9123 3.85628 24.8719 4.46166C24.9997 4.3712 25.1542 4.27378 25.3088 4.17636C26.7002 3.24394 28.0646 2.2628 29.4963 1.393C30.9457 0.454744 32.6266 -0.028641 34.3358 0.00131229C35.3238 0.0361044 35.8078 0.50232 35.8078 1.51129C35.8195 1.97782 35.7835 2.44432 35.7002 2.90297C35.5848 3.41514 35.4389 3.91943 35.2633 4.41295C35.5053 4.26682 35.6666 4.18332 35.8145 4.0859C37.5361 2.791 39.3752 1.67239 41.3059 0.745863C41.5215 0.653045 41.7472 0.587624 41.9781 0.551028C42.1749 0.499154 42.3835 0.528135 42.5601 0.6319C42.7368 0.735666 42.8678 0.906168 42.9258 1.1077C43.0097 1.31745 43.0229 1.55039 42.9631 1.76883C42.9033 1.98728 42.7742 2.17848 42.5964 2.31151C42.5112 2.38001 42.4187 2.43837 42.3209 2.48547C40.393 3.40943 38.5543 4.52081 36.8294 5.80463C36.453 6.05514 36.0766 6.30564 35.6868 6.54223C35.4484 6.71142 35.1882 6.84495 34.9138 6.93886C33.4082 7.32853 32.5882 6.93886 32.8638 5.28971C32.9948 4.73065 33.1702 4.18373 33.388 3.65448C33.5762 3.11868 33.7913 2.5968 34.0602 1.93575C33.5628 2.02621 33.1864 2.07492 32.8302 2.17234C31.1747 2.70218 29.6179 3.5186 28.226 4.58691C27.1035 5.37321 26.0146 6.20126 24.8652 6.9319C24.4142 7.18452 23.9125 7.32507 23.3999 7.34244C23.2503 7.3709 23.0962 7.3608 22.9512 7.31303C22.8062 7.26527 22.6747 7.18131 22.5685 7.06855C22.4622 6.9558 22.3844 6.81771 22.3418 6.66646C22.2993 6.51521 22.2933 6.35545 22.3245 6.20126C22.4231 5.49335 22.5782 4.79511 22.7883 4.11374C22.8992 3.78799 23.0294 3.46962 23.1781 3.16044C22.6262 3.27341 22.0843 3.43401 21.5583 3.64057C20.2543 4.33641 18.9571 5.03225 17.7001 5.72809C16.3559 6.54223 15.0116 7.44682 13.6673 8.28183C12.8993 8.75227 12.0091 8.96383 11.1198 8.88721C10.8941 8.89799 10.6688 8.85872 10.459 8.77204C10.2491 8.68537 10.0595 8.55327 9.903 8.38461C9.74644 8.21596 9.6265 8.01462 9.5512 7.79409C9.4759 7.57355 9.44697 7.3389 9.46636 7.10586C9.48652 6.50048 9.54702 5.83943 9.62095 5.04617Z" fill="#BDADFB"></path>
+                </symbol>
+                <symbol id="close" viewBox="0 0 14 14" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.547 6.77l5.322-5.086A.468.468 0 0014 1.347a.662.662 0 00-.131-.379l-.875-.842A.725.725 0 0012.6 0c-.175 0-.262.042-.35.126L7 5.136 1.75.127A.508.508 0 001.4 0c-.175 0-.306.042-.394.126L.131.968a.662.662 0 00-.131.38c0 .126.044.252.175.336L5.453 6.73.13 11.816a.468.468 0 00-.131.337c0 .126.044.252.131.379l.875.842a.724.724 0 00.394.126c.175 0 .263-.042.35-.126L7 8.364l5.25 5.01a.508.508 0 00.35.126c.175 0 .306-.042.394-.126l.875-.842a.662.662 0 00.131-.38.378.378 0 00-.175-.336L8.547 6.77z" fill="#000000"></path>
+                </symbol>
+              </svg>
+            </section>
+            <button aria-hidden="true" class="visually-hidden"></button></div></shopify-installments-sample-plans-modal>
+          </div>
+         </div>
+       </div>
+       
+      <div id="modal-quick-view-request" class="modal" aria-hidden="true">
+        <div class="modal__dialog modal__dialog--mid" role="dialog">
+
+              <!-- Modal content -->
+                <div class="modal-header">
+                  <span class="check" style="float:left; margin-top: 1%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="18" height="18" x="0" y="0" viewBox="0 0 20 20" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><g xmlns="http://www.w3.org/2000/svg" fill="rgb(0,0,0)"><path d="m10 0c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" fill="#ffffff" data-original="#ffffff" class=""></path><path d="m8.3 11.2-1.9-1.9-1.4 1.4 3.3 3.4 6.7-6.7-1.4-1.4z" fill="#ffffff" data-original="#ffffff" class=""></path></g></g></svg>
+                  </span>
+<!--                    <span class="check" style="float:left;">&check;</span> -->
+                   <a class="close" data-action="close-modal">{%- render 'icon', icon: 'close' -%}</a>
+                  <h5 style="margin-left:30px;">This item has been added to your quote.</h5>
+                </div>
+                <div class="modal-body" style="padding: 10px;">
+                  <div style="display:flex; ">
+                  <div style="width:50%; text-align: center;">
+                      <img src="{{ product.featured_image | img_url: '200x' }}">
+                  </div>
+                 <div style="width:50%;">
+                  <strong style="">{{ product.title | replace: "Barco", "Barco&reg;" }}</strong>
+                   <div class="price-list nmmnqw" style="margin-top: 3%;">
+                      {%- if selected_variant.compare_at_price > selected_variant.price -%}
+                        <span class="price price--highlight" style="font-size:18px;">{{ selected_variant.price | money_without_trailing_zeros }}</span>
+                        <span class="price price--compare" style="font-size:16px;">{{ selected_variant.compare_at_price | money_without_trailing_zeros }}</span>
+                      {%- else -%}
+                        <span class="price" style="font-size:18px;">{{ selected_variant.price | money_without_trailing_zeros }}</span>
+                      {%- endif -%}
+                    </div>
+                 </div>
+                  </div>
+                  <div style="display:flex; text-align: center; margin-top: 10px; margin-bottom: 10px;">
+                    <div style="width:50%;">
+                      <a data-action="close-modal" class="custom-button-secondary">Continue Shopping</a>
+                    </div>
+                    <div style="width:50%; text-align: center;">
+                    <a id="pwq" class="custom-button-primary" {% if customer %}href="{{ pages['new-addresses'].url }}"{% else %}href="{{ pages['request-a-quote'].url }}"{% endif %}> Proceed with Quote </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+              </div>  
+        </div>
+      </div>
+    </div>
+    <div class="clear:both"></div>
+    
+    <div class="service-list" {%- unless selected_variant.available -%} style="display:none" {%- endunless -%} >
+      {% for tag in product.tags %}
+      {% if tag == 'hide-hot-swap-coverage' %}
+      {% assign hide_hotswapcoverage = true %}
+      {% endif %}
+      {% endfor %}
+      <ul>
+        {% comment %} added by sp {% endcomment %}
+        {%- for variant in product.variants -%}
+        {%- if variant.available -%}
+        <li class="sp-pro-warranty" data-id="{{ variant.id }}" style="display: none;">
+          <span class="icons">
+            <img id="image1" src="{{'warranty-icon.svg' | asset_url}}">
+          </span>
+          <div class="service-text">
+            <span id="Warranty" class="pro-Warranty">{{variant.metafields.specs.Warranty}}</span>-Year Premium Warranty 
+            <a data-html="true" draggable="false"  data-tooltip="- {{variant.metafields.specs.Warranty}}-year{% if product.vendor contains 'Barco' %} premium Monitors.com{% endif %} warranty on parts & labor &#10;  - {{variant.metafields.specs.Warranty}}-year{% if product.vendor contains 'Barco' %} premium Monitors.com{% endif %} loaner coverage &#10;  - {{variant.metafields.specs.Warranty}}-year premium{% if product.vendor contains 'Barco' %} Monitors.com{% endif %} technical support" class="que pro-wtolp" id="wtolp" data-tooltip-break>?</a>
+          </div>
+        </li>
+        <li class="sp-pro-warranty sp-pro-coverages{% if hide_hotswapcoverage == true %} hide_coverage{% endif %}" data-id="{{ variant.id }}" style="display:none;">
+          <span class="icons">
+            <img id="image2" src="{{'coverage-icon.svg' | asset_url}}">
+          </span>
+          <div class="service-text">
+            <span id="Coverage" class="pro-Coverage">{{variant.metafields.specs.Warranty}}</span>-Year Hot-Swap Coverage 
+            <a draggable="false" data-tooltip="If your equipment fails, we will send you a replacement product so you do not have to wait for a repair." class="que">?</a>
+          </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if selected_variant.metafields.specs.Warranty != blank %}
+        <li class="sp-pro-warranty">
+          <span class="icons">
+            <img id="image1" src="{{'warranty-icon.svg' | asset_url}}">
+          </span>
+          <div class="service-text">
+            <span id="Warranty" class="pro-Warranty">{{selected_variant.metafields.specs.Warranty}}</span>-Year Premium Warranty 
+            <a data-html="true" draggable="false"  data-tooltip="- {{selected_variant.metafields.specs.Warranty}}-year{% if product.vendor contains 'Barco' %} premium Monitors.com{% endif %} warranty on parts & labor &#10;  - {{selected_variant.metafields.specs.Warranty}}-year{% if product.vendor contains 'Barco' %} premium Monitors.com{% endif %} loaner coverage &#10;  - {{selected_variant.metafields.specs.Warranty}}-year premium{% if product.vendor contains 'Barco' %} Monitors.com{% endif %} technical support" class="que pro-wtolp" id="wtolp" data-tooltip-break>?</a>
+          </div>
+        </li>
+        {% endif %}
+        {% if selected_variant.metafields.specs.Warranty != blank %}
+        <li style="{% if hide_hotswapcoverage == true %}display:none;{% endif %}" class="sp-pro-warranty sp-pro-coverages">
+          <span class="icons">
+            <img id="image2" src="{{'coverage-icon.svg' | asset_url}}">
+          </span>
+          <div class="service-text">
+            <span id="Coverage" class="pro-Coverage">{{selected_variant.metafields.specs.Warranty}}</span>-Year Hot-Swap Coverage 
+            <a draggable="false" data-tooltip="If your equipment fails, we will send you a replacement product so you do not have to wait for a repair." class="que">?</a>
+          </div>
+        </li>
+        {% endif %}
+        <li class="show_moneyback_guarantee" {%- unless money_back_opt == 'yes' or money_back_opt == 'y' -%}style="display:none;"{%- endunless -%}>
+          <span class="icons">
+            <img id="image3" src="{{'return-icon.svg' | asset_url}}"> 
+          </span>
+          <div class="service-text">30-Day Return Guarantee</div>
+        </li>
+        <li {% if buyback_opt == 'yes' or buyback_opt == 'y' %} style="display:inline-block" {% else %} style="display:none" {% endif %}class="buyback_guarantee">
+          <span class="icons">
+            <img id="image4" src="{{'buyback-icon-new.svg' | asset_url}}">
+          </span>
+          <div class="service-text">
+            Buyback Guarantee
+            <a draggable="false" data-tooltip="This item qualifies for Monitors.com's buyback guarantee program. We buyback this item at any time in any condition at a fair market value." class="que">?</a>
+          </div>
+        </li>
+        <li>
+          <span class="icons">
+            <img id="image5" src="{{'tech-support-icon.svg' | asset_url}}">
+          </span>
+          <div class="service-text">Free Technical Support</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .sticky-p-right .price-list{
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+  }
+  .sticky-selected-dropdown{flex: 1 1 auto;text-align: center;}
+
+  @media screen and (max-width: 999px) and (min-width: 320px){
+    .sticky-selected-dropdown{color: #ffffff; text-align: right;}
+    .sticky-p-right .price-list {display:none; margin-right: 0;}
+  }
+
+  shopify-payment-terms{
+    display:none !important;
+  }
+</style>
+
+<script>
+  var avai = $(".product-form__info-item.bora").html();
+  $(".availability_1").append(avai);
+
+  $("#custom-request-quote, #custom-request-quote-sticky, #custom-raq-text").click(function(e){
+    e.preventDefault();
+    let redirectURL = $(this).attr('data-redirect-url');
+    console.log(`redirectURL : ${redirectURL}`);
+
+    var formElement = document.querySelector('form[action*="/cart/add"]');
+    document.dispatchEvent(new CustomEvent('theme:loading:start'));
+    fetch("".concat(window.routes.cartAddUrl, ".js"), {
+      body: JSON.stringify(custom_serialize(formElement)),
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    }).then(function (response) {
+      document.dispatchEvent(new CustomEvent('theme:loading:end'));
+      if (response.ok) {
+        AddonFunction(redirectURL);
+        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+          bubbles: true
+        }));
+        // $('#modal-quick-view-request').modal('show');
+      } else {
+        response.json().then(function (content) {
+          console.log(content['description']);
+        });
+        alert('Failed to add to quote, please try again');
+      }
+    }).catch(function (error) {
+      console.log(error);
+      document.dispatchEvent(new CustomEvent('theme:loading:end'));
+    });;
+
+    function AddonFunction(redirectURL)
+    {
+      // console.log('addonFunction');
+      var stories = [],
+          variant_id,
+          pro_quantity = 0,
+          dataQuantity = [];
+      // console.log(stories);
+      $('.add-on-access-checkbox').each(function(){
+        if($(this).is(':checked')){
+          variant_id =  $(this).val();
+          //alert(variant_id);
+          stories.push(variant_id);
+        }
+      });
+
+      if (!stories.length) {
+        window.location.href = `${window.location.origin}${redirectURL}`;
+        return;
+      }
+
+      pro_quantity = 1;
+      stories.map(function(item,index){
+        dataQuantity.push({quantity:1,id :item});
+      });
+      data = {
+        items: dataQuantity
+      }
+      console.log(data);
+      jQuery.ajax({
+        type: 'POST',
+        url: '/cart/add.js',
+        data: data,
+        dataType: 'json',
+        beforeSend: function(){
+          document.dispatchEvent(new CustomEvent('theme:loading:start'));
+        },
+        success: function() {
+          window.location.href = `${window.location.origin}${redirectURL}`;
+          document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+            bubbles: true
+          }));
+          document.dispatchEvent(new CustomEvent('theme:loading:end'));
+          //console.log("success");
+          //$('.add-on-access-checkbox').prop('checked', false);
+        },
+        error: function(error){
+          console.log(error);
+          document.dispatchEvent(new CustomEvent('theme:loading:end'));
+        }
+      });
+      //console.log(pro_quantity);
+    }
+
+    function custom_serialize(form) {
+      function custom_stringKey(key, value) {
+        var beginBracket = key.lastIndexOf('[');
+
+        if (beginBracket === -1) {
+          var _hash = {};
+          _hash[key] = value;
+          return _hash;
+        }
+
+        var newKey = key.substr(0, beginBracket);
+        var newValue = {};
+        newValue[key.substring(beginBracket + 1, key.length - 1)] = value;
+        return custom_stringKey(newKey, newValue);
+      }
+
+      var hash = {};
+
+      for (var i = 0, len = form.elements.length; i < len; i++) {
+        var formElement = form.elements[i];
+
+        if (formElement.name === '' || formElement.disabled) {
+          continue;
+        }
+
+        if (formElement.name && !formElement.disabled && (formElement.checked || /select|textarea/i.test(formElement.nodeName) || /hidden|text|search|tel|url|email|password|datetime|date|month|week|time|datetime-local|number|range|color/i.test(formElement.type))) {
+          var stringKeys = custom_stringKey(formElement.name, formElement.value);
+          hash = custom_extend(hash, stringKeys);
+        }
+      }
+
+      return hash;
+    }
+
+    function custom_extend() {
+      var extended = {};
+      var i = 0;
+
+      var merge = function merge(obj) {
+        for (var prop in obj) {
+          if (obj.hasOwnProperty(prop)) {
+            if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+              extended[prop] = custom_extend(extended[prop], obj[prop]);
+            } else {
+              extended[prop] = obj[prop];
+            }
+          }
+        }
+      };
+
+      for (; i < arguments.length; i++) {
+        merge(arguments[i]);
+      }
+
+      return extended;
+    }
+
+  });
+
+  $(document).ready(function() {
+    var pvariant_id = jQuery(".select-wrapper select").val();
+    var addonlength = jQuery(".addon-product-list > li."+pvariant_id).length;
+
+    $(".product-form__add-button[data-action='add-to-cart']").click(function() {
+      // console.log('addonFunction');
+      // console.log('test');
+      var stories= [],variant_id,pro_quantity=0,dataQuantity=[];
+      console.log(stories);
+      $('.add-on-access-checkbox').each(function(){
+        if($(this).is(':checked')){
+          variant_id =  $(this).val();
+          //alert(variant_id);
+          stories.push(variant_id);
+        }
+      });
+      pro_quantity = 1;
+      stories.map(function(item,index){
+        dataQuantity.push({quantity:1,id :item});
+      });
+      data = {
+        items: dataQuantity
+      }
+      // console.log(data);
+      jQuery.ajax({
+        type: 'POST',
+        url: '/cart/add.js',
+        data: data,
+        dataType: 'json',
+        success: function() {
+          //console.log("success");
+          //$('.add-on-access-checkbox').prop('checked', false);
+        }
+      });
+      //console.log(pro_quantity);
+    });
+  });
+
+  function calculateEMI(principal, interestRate, loanTerm) {
+    interestRate /= 100;
+    const monthlyInterestRate = interestRate / 12;
+  
+    const totalPayments = loanTerm * 12;
+  
+    const monthlyInterestFactor =
+      monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalPayments) /
+      (Math.pow(1 + monthlyInterestRate, totalPayments) - 1);
+  
+    const emi = principal * monthlyInterestFactor;
+  
+    return emi;
+  }
+  
+  const price = `{{ selected_variant.price | money_without_currency }}`; 
+  const principal = parseFloat(price.replace(/,/g, ''));
+  const interestRate = 15; // Annual interest rate
+    
+  const loanTerm12 = 1; // Loan term in years
+  const loanTerm3 = 0.25; 
+  const decimals = 2;
+  const decPoint = '.';
+  const thousandsSep = ',';
+  
+  const emi12 = calculateEMI(principal, interestRate, loanTerm12);
+  const emi12formated = custom_number_format(emi12, decimals, decPoint, thousandsSep);
+  const emi3 =  calculateEMI(principal, interestRate, loanTerm3);
+  const emi3formated = custom_number_format(emi3, decimals, decPoint, thousandsSep);
+  
+  const listItem = document.querySelector('.custom-price-emi');
+  listItem.textContent = "$" + emi12formated;
+  
+  const emiTwelve = document.querySelector('.custom-emi-twelve'); 
+  emiTwelve.textContent = "$" + emi12formated;
+  
+  const emiThree = document.querySelector('.custom-emi-three'); 
+  emiThree.textContent = "$" + emi3formated;  
+  
+  const totalPriceTwelve = document.querySelector('.custom-total-price-twelve'); 
+  const totalPriceTwelveFormated = custom_number_format(emi12*12, decimals, decPoint, thousandsSep);
+  totalPriceTwelve.textContent = "$" + totalPriceTwelveFormated;
+  
+  const totalPriceThree = document.querySelector('.custom-total-price-three'); 
+  const totalPriceThreeFormated = custom_number_format(emi3*3, decimals, decPoint, thousandsSep);
+  totalPriceThree.textContent = "$" + totalPriceThreeFormated;
+  
+  const interestTwelve = document.querySelector('.custom-interest-twelve'); 
+  interestTwelve.textContent = "$" + (emi12*12 - principal).toFixed(2);
+  
+  const interestThree = document.querySelector('.custom-interest-three'); 
+  interestThree.textContent = "$" + (emi3*3 - principal).toFixed(2);     
+  
+  var element = document.querySelector('.custom-shopify-shop-pay__learn-more');
+  element.setAttribute('data-custom-price', price);  
+    
+  let variantWiseShopPaySchemes = {};
+  
+  function renderVariantWiseshopPay(currentVariant)
+  {
+    if(currentVariant.price < 5000 || currentVariant.price > 1750000){
+      document.querySelector('.custom-shopify-shop-pay').style.display = "none";
+    }
+    else{
+      document.querySelector('.custom-shopify-shop-pay').style.display = "block";
+    }
+    const principal = currentVariant.price / 100 ;
+    const interestRate = 15; // Annual interest rate
+      
+    const loanTerm12 = 1; // Loan term in years
+    const loanTerm3 = 0.25; 
+    const decimals = 2;
+    const decPoint = '.';
+    const thousandsSep = ',';
+    
+    const emi12 = calculateEMI(principal, interestRate, loanTerm12);
+    const emi12formated = custom_number_format(emi12, decimals, decPoint, thousandsSep);
+    const emi3 =  calculateEMI(principal, interestRate, loanTerm3); 
+    const emi3formated = custom_number_format(emi3, decimals, decPoint, thousandsSep);
+    
+    const listItem = document.querySelector('.custom-price-emi');
+    listItem.textContent = "$" + emi12formated;
+    
+    const variantBasedPrice =  document.querySelector('.custom-variant-based-price');
+    const variantBasedPriceFormated = custom_number_format(principal, decimals, decPoint, thousandsSep); 
+    variantBasedPrice.textContent = "$" + variantBasedPriceFormated;
+
+    const emiTwelve = document.querySelector('.custom-emi-twelve'); 
+    emiTwelve.textContent = "$" + emi12formated;
+    
+    const emiThree = document.querySelector('.custom-emi-three'); 
+    emiThree.textContent = "$" + emi3formated;  
+    
+    const totalPriceTwelve = document.querySelector('.custom-total-price-twelve'); 
+    const totalPriceTwelveFormated = custom_number_format(emi12*12, decimals, decPoint, thousandsSep);
+    totalPriceTwelve.textContent = "$" + totalPriceTwelveFormated;
+    
+    const totalPriceThree = document.querySelector('.custom-total-price-three'); 
+    const totalPriceThreeFormated = custom_number_format(emi3*3, decimals, decPoint, thousandsSep);
+    totalPriceThree.textContent = "$" + totalPriceThreeFormated;
+    
+    const interestTwelve = document.querySelector('.custom-interest-twelve'); 
+    interestTwelve.textContent = "$" + (emi12*12 - principal).toFixed(2);
+    
+    const interestThree = document.querySelector('.custom-interest-three'); 
+    interestThree.textContent = "$" + (emi3*3 - principal).toFixed(2);  
+    
+    var element = document.querySelector('.custom-shopify-shop-pay__learn-more');
+    element.setAttribute('data-custom-price', principal);  
+  }
+
+  function custom_number_format(number, decimals, decPoint, thousandsSep)
+  {
+    	number = (number + '').replace(/[^0-9+\-Ee.]/g, '')
+    	const n = !isFinite(+number) ? 0 : +number
+    	const prec = !isFinite(+decimals) ? 0 : Math.abs(decimals)
+    	const sep = (typeof thousandsSep === 'undefined') ? ',' : thousandsSep
+    	const dec = (typeof decPoint === 'undefined') ? '.' : decPoint
+    	let s = ''
+  
+    	const toFixedFix = function (n, prec) {
+      	if (('' + n).indexOf('e') === -1) {
+        		return +(Math.round(n + 'e+' + prec) + 'e-' + prec)
+      	} else {
+        		const arr = ('' + n).split('e')
+        		let sig = ''
+        		if (+arr[1] + prec > 0) {
+          		sig = '+'
+        		}
+        		return (+(Math.round(+arr[0] + 'e' + sig + (+arr[1] + prec)) + 'e-' + prec)).toFixed(prec)
+      	}
+    	}
+  
+    	// @todo: for IE parseFloat(0.55).toFixed(0) = 0;
+    	s = (prec ? toFixedFix(n, prec).toString() : '' + Math.round(n)).split('.')
+    	if (s[0].length > 3) {
+      	s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep)
+    	}
+  
+  	if ((s[1] || '').length < prec) {
+      	s[1] = s[1] || ''
+      	s[1] += new Array(prec - s[1].length + 1).join('0')
+    	}
+  
+    	return s.join(dec)
+  }
+  
+  $('#custom-shopify-shop-pay-continue').click(function(event){
+    event.preventDefault();
+  
+    let shop = "{{shop.url}}";
+  
+    shoppayClearCartData(shop);
+  });
+  
+  function shoppayClearCartData(shop)
+  {
+    let cartURL = `${shop}/cart/clear.js`;
+  
+    jQuery.ajax({
+      type: 'POST',
+      url: cartURL,
+      dataType: 'json',
+      beforeSend: function() {
+        shoppaySetButtonLoadingState();
+      },
+      success: function(response) {
+        shoppayResetButtonLoadingState();
+        if (response.token) {
+          shoppayAddProductToCart(shop);
+        } else {
+          shoppayErrorFallBack('shoppayClearCartData token missing', '');
+        }
+      },
+      error: function(err) {
+        shoppayResetButtonLoadingState();
+        shoppayErrorFallBack('shoppayClearCartData Error', err);
+      }
+    });
+  }
+  
+  function shoppayAddProductToCart(shop)
+  {
+    var formElement = document.querySelector('form[action*="/cart/add"]');
+  
+    shoppaySetButtonLoadingState();
+  
+    fetch("".concat(window.routes.cartAddUrl, ".js"), {
+      body: JSON.stringify(shoppayCartCustomSerialize(formElement)),
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    }).then(function (response) {
+      shoppayResetButtonLoadingState();
+      if (response.ok) {
+        shoppayGetCartData(shop);
+      } else {
+        shoppayErrorFallBack('shoppayAddProductToCart response error', '');
+      }
+    }).catch(function (err) {
+      shoppayResetButtonLoadingState();
+      shoppayErrorFallBack('shoppayAddProductToCart Error', err);
+    });
+  }
+  
+  function shoppayGetCartData(shop)
+  {
+    let cartURL = `${shop}/cart.js`;
+  
+    jQuery.ajax({
+      type: 'GET',
+      url: cartURL,
+      dataType: 'json',
+      beforeSend: function() {
+        shoppaySetButtonLoadingState();
+      },
+      success: function(response) {
+        shoppayResetButtonLoadingState();
+        if (response.token &&
+          response.currency) {
+          let payload = {
+            shop : shop,
+            token : response.token,
+            currency : response.currency
+          };
+  
+          shoppayGetPaymentAccessToken(payload);
+        } else {
+          shoppayErrorFallBack('shoppayGetCartData token & currency missing', '');
+        }
+      },
+      error: function(err) {
+        shoppayResetButtonLoadingState();
+        shoppayErrorFallBack('shoppayGetCartData Error', err);
+      }
+    });
+  }
+  
+  function shoppayGetPaymentAccessToken(payload)
+  {
+    let paymentConfigURL = `${payload.shop}/payments/config.json`;
+  
+    jQuery.ajax({
+      type: 'GET',
+      url: paymentConfigURL,
+      dataType: 'json',
+      beforeSend: function() {
+        shoppaySetButtonLoadingState();
+      },
+      success: function(response) {
+        shoppayResetButtonLoadingState();
+        if (response.paymentInstruments &&
+          response.paymentInstruments.accessToken) {
+          payload.payment_access_token = window.btoa(encodeURIComponent(response.paymentInstruments.accessToken));
+  
+          shoppayGetCheckoutURL(payload);
+        } else {
+          shoppayErrorFallBack('shoppayGetPaymentAccessToken paymentInstruments.accessToken missing', '');
+        }
+      },
+      error: function(err) {
+        shoppayResetButtonLoadingState();
+        shoppayErrorFallBack('shoppayGetPaymentAccessToken Error', err);
+      }
+    });
+  }
+  
+  function shoppayGetCheckoutURL(payload)
+  {
+    let checkoutWalletURL = `${payload.shop}/wallets/checkouts.json`;
+  
+    let data = {};
+  
+    data.checkout = {
+      "cart_token": payload.token,
+      "presentment_currency": payload.currency,
+      "has_selling_plans": false,
+      "secret": true,
+      "wallet_name": "ShopifyPay",
+      "page_type": "cart_page"
+    };
+  
+    jQuery.ajax({
+      type: 'POST',
+      url: checkoutWalletURL,
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `Basic ${payload.payment_access_token}`
+      },
+      data: JSON.stringify(data),
+      dataType: 'json',
+      beforeSend: function() {
+        shoppaySetButtonLoadingState();
+      },
+      success: function(response) {
+        if (response.checkout &&
+          response.checkout.shop_pay_configuration &&
+          response.checkout.shop_pay_configuration.transaction_url) {
+          let checkoutURL = new URL(response.checkout.shop_pay_configuration.transaction_url);
+          window.location.assign(checkoutURL);
+        } else {
+          shoppayResetButtonLoadingState();
+          shoppayErrorFallBack('shoppayGetCheckoutURL checkout.shop_pay_configuration.transaction_url missing', '');
+        }
+      },
+      error: function(err) {
+        shoppayResetButtonLoadingState();
+        shoppayErrorFallBack('shoppayGetCheckoutURL Error', err);
+      }
+    });
+  }
+  
+  function shoppayErrorFallBack(section, err)
+  {
+    let defaultCheckoutURL = {%- if customer -%}`{{shop.url}}/checkout`{%- else -%}`{{shop.url}}/pages/guest-checkout`{%- endif -%};
+    console.log(`shoppayErrorFallBack (${section}) : ${err}`);
+    window.location.assign(defaultCheckoutURL);
+  }
+  
+  function shoppayCartCustomSerialize(form)
+  {
+    function shoppayCartCustomStringKey(key, value)
+    {
+      var beginBracket = key.lastIndexOf('[');
+  
+      if (beginBracket === -1) {
+        var _hash = {};
+        _hash[key] = value;
+        return _hash;
+      }
+  
+      var newKey = key.substr(0, beginBracket);
+      var newValue = {};
+      newValue[key.substring(beginBracket + 1, key.length - 1)] = value;
+      return shoppayCartCustomStringKey(newKey, newValue);
+    }
+  
+    var hash = {};
+  
+    for (var i = 0, len = form.elements.length; i < len; i++) {
+      var formElement = form.elements[i];
+  
+      if (formElement.name === '' || formElement.disabled) {
+        continue;
+      }
+  
+      if (formElement.name && !formElement.disabled && (formElement.checked || /select|textarea/i.test(formElement.nodeName) || /hidden|text|search|tel|url|email|password|datetime|date|month|week|time|datetime-local|number|range|color/i.test(formElement.type))) {
+        var stringKeys = shoppayCartCustomStringKey(formElement.name, formElement.value);
+        hash = shoppayCartCustomExtend(hash, stringKeys);
+      }
+    }
+  
+    return hash;
+  }
+  
+  function shoppayCartCustomExtend()
+  {
+    var extended = {};
+    var i = 0;
+  
+    var merge = function merge(obj) {
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+            extended[prop] = shoppayCartCustomExtend(extended[prop], obj[prop]);
+          } else {
+            extended[prop] = obj[prop];
+          }
+        }
+      }
+    };
+  
+    for (; i < arguments.length; i++) {
+      merge(arguments[i]);
+    }
+  
+    return extended;
+  }
+  
+  function shoppaySetButtonLoadingState()
+  {
+    if ($('#custom-shopify-shop-pay-continue').length) {
+      if (!$('#custom-shopify-shop-pay-continue').hasClass('loading-true')) {
+        $('#custom-shopify-shop-pay-continue').addClass('loading-true');
+      }
+  
+      $('#custom-shopify-shop-pay-continue').attr('disabled', 'disabled');
+    }
+  }
+  
+  function shoppayResetButtonLoadingState()
+  {
+    if ($('#custom-shopify-shop-pay-continue').length) {
+      if ($('#custom-shopify-shop-pay-continue').hasClass('loading-true')) {
+        $('#custom-shopify-shop-pay-continue').removeClass('loading-true');
+      }
+  
+      $('#custom-shopify-shop-pay-continue').removeAttr('disabled');
+    }
+  }
+</script>

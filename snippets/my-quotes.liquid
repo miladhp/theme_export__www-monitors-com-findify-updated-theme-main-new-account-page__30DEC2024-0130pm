@@ -1,0 +1,1021 @@
+<div id="quote-container"></div>
+<div id="pagination-container" class="pagination-wrapper"></div>
+
+<script>
+
+  const emptyQuotesContainer = `
+    <div class="no-quotes-container">
+                <div class="no-quotes">
+                    {% render 'empty-order-box-icon.liquid' %}
+                    <h3>
+                        You haven't requested for any quotes yet.
+                    </h3>
+                </div>
+        </div>
+  `;
+
+  let currentPage = 1;
+  const perPage = 10;
+  const customerId = {{ customer.id }};
+
+  function fetchQuotes(page) {
+    fetch(`https://developmentquote.monitors.com/shopify/customer/quotes/v1?customer_id=${customerId}&page=${page}&per_page=${perPage}`)
+    .then(response => response.json())
+    .then(data => {
+        displayQuotes(data.records);
+        setupPagination(data.current_page, data.last_page, data.has_next_page, data.has_prev_page);
+    })
+    .catch(error => console.error('Error fetching quote data:', error));
+  }
+  
+function displayQuotes(quotes) {
+    const container = document.getElementById('quote-container');
+    container.innerHTML = ''; 
+
+    if (!quotes || quotes.length === 0) {
+        container.innerHTML = emptyQuotesContainer;
+        return;
+    }
+
+    const currencyList = [
+    { code: "USD", symbol: "$" },
+    { code: "CAD", symbol: "$" },
+    { code: "EUR", symbol: "€" },
+    { code: "GBP", symbol: "£" },
+    { code: "ZAR", symbol: "R" },
+    { code: "VND", symbol: "₫" },
+    { code: "UAH", symbol: "₴" },
+    { code: "TRY", symbol: "₺" },
+    { code: "THB", symbol: "฿" },
+    { code: "SGD", symbol: "$" },
+    { code: "SEK", symbol: "kr" },
+    { code: "SAR", symbol: "ر.س" },
+    { code: "RON", symbol: "Lei" },
+    { code: "QAR", symbol: "ر.ق" },
+    { code: "PLN", symbol: "zł" },
+    { code: "NZD", symbol: "$" },
+    { code: "NOK", symbol: "kr" },
+    { code: "MYR", symbol: "RM" },
+    { code: "MKD", symbol: "ден" },
+    { code: "KRW", symbol: "₩" },
+    { code: "JPY", symbol: "¥" },
+    { code: "ISK", symbol: "kr" },
+    { code: "INR", symbol: "₹" },
+    { code: "HUF", symbol: "Ft" },
+    { code: "HKD", symbol: "$" },
+    { code: "DKK", symbol: "kr." },
+    { code: "CZK", symbol: "Kč" },
+    { code: "CNY", symbol: "¥" },
+    { code: "CHF", symbol: "CHF" },
+    { code: "BGN", symbol: "лв." },
+    { code: "AUD", symbol: "$" },
+    { code: "AED", symbol: "د.إ" }
+  ];
+  
+  function getCurrencySymbol(currencyCode) {
+    const currency = currencyList.find(c => c.code === currencyCode);
+    const symbol = currency ? currency.symbol : "$";
+    return symbol;
+  }
+  
+    quotes.forEach(quote => {
+        const cartData = quote.cart_data;
+        const products = Object.values(cartData.products); 
+        const customItems = cartData.custom_items; 
+        const currency_symbol = getCurrencySymbol(cartData.quote_market_region_currency_code);
+      
+        let statusText = '';
+        let statusColor = '';
+
+        if (quote.is_expired === "1") {
+            statusText = 'Expired';
+            statusColor = '#E00';
+        } else {
+            if (quote.status === "0") {
+                statusText = 'Pending';
+                statusColor = '#DF8600';
+            } else if (quote.status === "1") {
+                statusText = 'Draft';
+                statusColor = '#f8d62d';
+            }
+              else if (quote.status === "2") {
+                statusText = 'Approved';
+                statusColor = '#287153';
+            }
+        }
+        
+        const quoteElement = document.createElement('div');
+        quoteElement.classList.add('quote-item');
+        quoteElement.innerHTML = `
+            <div class="quote-item-main-info">
+             <div class="left-info-with-icon">
+                
+                <div class="quote-item-left-info">
+                <div class="header-tab-cta">
+                  <div>
+                    <svg class="drop-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="9" viewBox="0 0 16 9" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.35946 8.64054C0.83874 9.11982 1.61581 9.11982 2.09509 8.64054L7.77273 2.9629L13.4504 8.64054C13.9296 9.11982 14.7067 9.11982 15.186 8.64054C15.6653 8.16126 15.6653 7.38419 15.186 6.90491L8.64054 0.35946C8.16126 -0.11982 7.38419 -0.11982 6.90491 0.35946L0.35946 6.90491C-0.11982 7.38419 -0.11982 8.16126 0.35946 8.64054Z" fill="#4A4A4A"/>
+                      </svg>
+                    </div>
+                    <div class="quote-placed custom-qflex-col"><span class="quote-placed-text custom-q-heading">Quote Number:</span> <span class="quote-placed-value custom-q-value"> ${quote.quote_number}</span></div>
+                  </div>
+                  <div class="quote-placed custom-qflex-col"><span class="quote-placed-text custom-q-heading">Quote Placed:</span> <span class="quote-placed-value custom-q-value">${formatDate(quote.created_date.split(' ')[0])}</span></div>
+                  ${cartData.quote_location ? ` <div class="quote-item-reference custom-qflex-col address-on-hover"><span class="quote-item-reference-text custom-q-heading">Reference:</span> <span class="quote-item-reference-value custom-q-value">${cartData.quote_location.split(" ")[0]}
+                    <svg style="margin: 0px 0px 1px 2px;" xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M0.21967 0.46967C0.512563 0.176777 0.987437 0.176777 1.28033 0.46967L4.75 3.93934L8.21967 0.46967C8.51256 0.176777 8.98744 0.176777 9.28033 0.46967C9.57322 0.762563 9.57322 1.23744 9.28033 1.53033L5.28033 5.53033C4.98744 5.82322 4.51256 5.82322 4.21967 5.53033L0.21967 1.53033C-0.0732233 1.23744 -0.0732233 0.762563 0.21967 0.46967Z" fill="#4A4A4A"/>
+                    </svg>
+                    </span>
+                    <div class="address-hover-container">
+                    <div class="arrow-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="13" viewBox="0 0 21 13" fill="none">
+                        <path d="M1.5 11L10.5 2L19.4999 11" stroke="#E5E5E5" stroke-width="2"/>
+                        <path d="M10.5 2L0 12.5L20.5 12L10.5 2Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="hover-address">
+                      <p class="name">
+                        ${cartData.quote_location}
+                      </p>  
+                    </div>
+                  </div>
+                  </div>` : `<div class="quote-item-reference custom-qflex-col"><span class="quote-item-reference-text custom-q-heading">Reference:</span> <span class="quote-item-reference-value custom-q-value" style="text-align: center;width: 100%;">
+                    </span>
+                  </div>`}
+                  <div class="quote-item-status custom-qflex-col"><span class="quote-item-status-text custom-q-heading">Status:</span> <span class="quote-item-status-value custom-q-value" style="color: ${statusColor};">${statusText} ${quote.status === "2" && quote.is_expired !== "1" ? `<span class="quote-appd-text"> (Expires on ${formatDate(quote.expiry_date.split(' ')[0])}) </span>` : ''}${quote.is_expired === "1" ? `<span class="quote-expd-text"> (Request a Quote Refresh) </span>` : ''}</span></span></div>
+                </div>
+             </div>
+             <div class="quote-item-right-info">
+              <div class="quote-number-accordion custom-qflex-col">
+                <span class="quote-buttons">
+                 <span class="q-btn">
+                  ${quote.status === "2" && quote.is_expired !== "1" ? `<button href="${quote.quote_pdf}" title="Download PDF" class="pdf-download-btn" onclick="handleDownloadPDF(${quote.quote_number})">
+                      <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/download-pdf-icon.png?v=1729500011" loading="lazy" width="24px" height="25px" />
+                    </button>` : ''}
+                 </span>
+                </span> 
+              </div>
+             </div>
+            </div>
+            <div class="quote-item-product-info">
+              <table class="quote-product-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody class="quote-product-list">
+                </tbody>
+              </table>
+              <div class="quote-item-payment-info">
+                ${cartData.quote_notes ? `
+                  <div class="quote-notes-container">
+                    <div class="quote-notes">
+                      <h3>Quote Note:</h3>
+                      <p>${cartData.quote_notes}</p>
+                    </div>
+                  </div>
+                ` : ''}
+                
+                <div class="payment-info-main">
+                <div class="custom-payment-info-flex"> 
+                 <span class="custom-payment-info-head"> Subtotal </span>
+                 <span class="custom-payment-info-data"> ${currency_symbol}${parseFloat(cartData.payment_section.sub_total).toFixed(2)} </span>
+                </div>
+                <div class="custom-payment-info-flex"> 
+                 <span class="custom-payment-info-head"> Shipping: ${cartData.payment_section.shipping_rate_name} </span>
+                 <span class="custom-payment-info-data"> ${currency_symbol}${cartData.payment_section.shipping_charge} </span>
+                </div>
+                <div class="custom-payment-info-flex"> 
+                 <span class="custom-payment-info-head"> Tax </span>
+                 <span class="custom-payment-info-data"> ${currency_symbol}${cartData.payment_section.total_tax} </span>
+                </div>
+                <div class="custom-payment-info-flex custom-payment-info-total"> 
+                 <span class="custom-payment-info-total-head"> Total USD </span>
+                 <span class="custom-payment-info-total-data">${currency_symbol}${parseFloat(cartData.payment_section.total).toFixed(2)} </span>
+                </div>
+                 ${quote.is_expired === "1" ? `
+                 <div class="custom-payment-info-flex" style="justify-content: end;"> 
+                  <a href="${quote.draft_invoice_url}" class="custom-credit-pay-btn" onclick=handleRefreshQuote(event,"${quote.quote_number}",this)> Request a Quote Refresh </a>
+                </div>` : ''}
+                ${quote.status === "2" && quote.is_expired !== "1" ? `<div class="custom-payment-info-flex"> 
+                 <a href=" https://checkout.monitors.com/?aCht0k3n=${quote.ach_url_token}" class="custom-ach-pay-btn"> <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                    <path d="M10.1123 2.58898C10.1017 2.61297 10.091 2.6343 10.0803 2.6583C10.0031 2.83158 9.87523 2.93022 9.68343 2.94355C9.6488 2.94355 9.61151 2.94355 9.57688 2.94355C6.59872 2.94355 3.62056 2.94355 0.64507 2.94355C0.546508 2.94355 0.439955 2.93022 0.354713 2.88757C0.189556 2.81026 0.112305 2.66363 0.112305 2.48234C0.117632 2.29573 0.208202 2.15976 0.376023 2.07978C0.655725 1.94915 0.938091 1.82385 1.22046 1.69855C2.4325 1.15203 3.64454 0.608175 4.85658 0.0589885C5.02973 -0.0183242 5.18689 -0.0209902 5.3627 0.0589885C6.84912 0.730809 8.33553 1.39996 9.82461 2.06912C9.97911 2.13843 10.067 2.2584 10.115 2.41569V2.59165L10.1123 2.58898Z" fill="#333333"/>
+                    <path d="M0.483011 10.0001C0.453709 9.98679 0.424407 9.97346 0.395105 9.96279C0.208637 9.88548 0.0914291 9.69087 0.115404 9.49358C0.139378 9.28831 0.29388 9.12568 0.498994 9.09636C0.557599 9.08836 0.616203 9.08569 0.674807 9.08569C3.62899 9.08569 6.58317 9.08569 9.53735 9.08569C9.88365 9.08569 9.9982 9.16567 10.1127 9.49092V9.58956C10.0675 9.80817 9.93693 9.94146 9.72116 10.0001H0.483011Z" fill="#333333"/>
+                    <path d="M8.98056 3.81501V7.89659C9.06313 7.90725 9.14305 7.90992 9.21497 7.92858C9.42275 7.98723 9.55861 8.18984 9.5373 8.39512C9.51332 8.62973 9.34816 8.79235 9.11907 8.81101C9.07645 8.81368 9.03383 8.81368 8.99121 8.81368C6.40464 8.81368 3.8154 8.81368 1.22882 8.81368C1.15157 8.81368 1.07166 8.81101 0.99707 8.78968C0.786628 8.72837 0.653437 8.51776 0.682739 8.30981C0.712041 8.08587 0.887853 7.92058 1.10629 7.90992C1.14891 7.90992 1.18887 7.90992 1.23681 7.90992V3.82034C1.19153 3.81501 1.14358 3.81234 1.0983 3.80435C0.986415 3.78568 0.911828 3.70037 0.909164 3.59107C0.909164 3.48443 0.973096 3.39645 1.07965 3.37246C1.11961 3.36446 1.16223 3.35913 1.20485 3.35913C3.80474 3.35913 6.40463 3.35913 9.00719 3.35913C9.01785 3.35913 9.02584 3.35913 9.03649 3.35913C9.20432 3.3618 9.30821 3.45244 9.30821 3.5884C9.30821 3.7217 9.21231 3.80435 9.04449 3.81501C9.02584 3.81501 9.00719 3.81501 8.97789 3.82034L8.98056 3.81501ZM4.43607 3.81501V7.89659H5.78663V3.81501H4.43607ZM8.05887 7.89925V3.81501H6.70565V7.89925H8.05887ZM3.51438 3.81501H2.16383V7.89659H3.51438V3.81501Z" fill="#333333"/>
+                  </svg> ACH eCheck Payment </a>
+                  <a href="${quote.draft_invoice_url}" class="custom-credit-pay-btn"> <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                    <g clip-path="url(#clip0_622_677)">
+                      <path d="M10.8679 2.42084C10.7977 2.68854 10.7276 2.95365 10.66 3.22136C10.4079 4.2376 10.1584 5.25644 9.90625 6.27269C9.83867 6.54299 9.71132 6.64176 9.43582 6.64176H3.38773C3.10443 6.64176 2.97967 6.54559 2.9147 6.26749C2.50144 4.5339 2.08819 2.8029 1.67493 1.06931C1.65241 0.972277 1.59003 0.923761 1.4878 0.923761C1.2019 0.923761 0.913398 0.92636 0.627498 0.921161C0.429967 0.915963 0.271422 0.767815 0.248031 0.575482C0.224639 0.38315 0.344197 0.198614 0.531332 0.146633C0.580714 0.133637 0.632696 0.131038 0.684678 0.131038C1.09274 0.131038 1.50079 0.128439 1.90885 0.131038C2.15576 0.131038 2.28832 0.232402 2.3455 0.474118C2.45466 0.92376 2.56122 1.376 2.67038 1.82564C2.67818 1.85943 2.68858 1.89322 2.69897 1.93481H10.3741C10.4884 1.93481 10.6106 1.92961 10.699 2.01538C10.7666 2.08295 10.8133 2.17652 10.8679 2.25709V2.42084ZM2.88871 2.73793C3.13562 3.77756 3.38253 4.812 3.62945 5.84644C3.65804 5.84904 3.67883 5.84904 3.69962 5.84904C5.50079 5.84904 7.30196 5.84904 9.10313 5.85164C9.17071 5.85164 9.1967 5.83344 9.21229 5.76327C9.38903 5.04072 9.56837 4.32077 9.74511 3.59822C9.81528 3.31232 9.88546 3.02902 9.95823 2.73533C7.60086 2.73793 5.25128 2.73793 2.88871 2.73793Z" fill="#333333" stroke="#333333" stroke-width="0.259909" stroke-miterlimit="10"/>
+                      <path d="M5.17032 8.54156C5.17292 9.26931 4.58553 9.8645 3.85778 9.8697C3.12484 9.8749 2.52965 9.2875 2.52445 8.55456C2.51925 7.81902 3.10664 7.22642 3.84219 7.22123C4.57253 7.21603 5.16512 7.80602 5.17032 8.54156ZM4.3724 8.54676C4.375 8.25566 4.13848 8.01655 3.84998 8.01395C3.55889 8.01135 3.31197 8.25566 3.31457 8.54676C3.31717 8.83526 3.55889 9.07438 3.84479 9.07438C4.13069 9.07438 4.3724 8.83526 4.3724 8.54676Z" fill="#333333" stroke="#333333" stroke-width="0.259909" stroke-miterlimit="10"/>
+                      <path d="M7.33302 8.54689C7.33042 7.81394 7.92301 7.21875 8.65595 7.21875C9.3889 7.21875 9.97369 7.80614 9.97889 8.53649C9.98149 9.27203 9.3941 9.86462 8.66115 9.86982C7.92821 9.87242 7.33562 9.28243 7.33302 8.54689ZM8.12834 8.53909C8.12574 8.83019 8.35966 9.0693 8.64816 9.0745C8.93925 9.0797 9.18617 8.83538 9.18617 8.54429C9.18617 8.25319 8.94445 8.01667 8.65855 8.01667C8.36745 8.01407 8.12834 8.25059 8.12834 8.53909Z" fill="#333333" stroke="#333333" stroke-width="0.259909" stroke-miterlimit="10"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_622_677">
+                        <rect width="10.8827" height="10" fill="white" transform="translate(0.115234)"/>
+                      </clipPath>
+                    </defs>
+                  </svg> Credit Card Payment </a>
+                </div>
+                <div class="custom-payment-info-flex"> 
+                 <span></span>
+                 <span class="custom-payment-icons"> <svg width="165" height="14" viewBox="0 0 165 14" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <rect x="0.115234" width="164.471" height="13.3299" fill="url(#pattern0_622_687)"/>
+                  <defs>
+                  <pattern id="pattern0_622_687" patternContentUnits="objectBoundingBox" width="1" height="1">
+                  <use xlink:href="#image0_622_687" transform="scale(0.0044843 0.05)"/>
+                  </pattern>
+                  <image id="image0_622_687" width="223" height="20" xlink:href="data:image/png;base64,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"/>
+                  </defs>
+                  </svg>
+                  </span>
+                </div>` : ''}
+                </div>
+              </div>
+           </div>
+        `;
+        
+        const productList = quoteElement.querySelector('.quote-product-list');
+
+        // Iterate over each product in the quote and append it to quote-product-list
+        products.forEach(productInfo => {
+            const variantTitle = productInfo.product_variant_title || "";
+            const slashIndex = variantTitle.indexOf('/');
+            const condition = slashIndex !== -1 ? variantTitle.substring(0, slashIndex).trim() : variantTitle.trim();
+            const options = slashIndex !== -1 ? variantTitle.substring(slashIndex + 1).trim() : "";
+            const productRow = document.createElement('tr');
+            productRow.classList.add('product-row');
+            productRow.innerHTML = `
+                <td>
+                    <div class="product-info">
+                        <img src="${productInfo.product_image}" alt="${productInfo.product_title}" class="product-image" onerror="this.src='https://cdn.shopify.com/s/files/1/2372/2681/files/custom_item_logo_1_1.jpg?v=1732700839'">
+                        <div class="product-details">
+                            <div class="product-title">
+                            <h3 class="product-title-info">
+                                <a href="/products/${productInfo.product_handle}">
+                                  ${productInfo.product_title}
+                                </a>
+                              </h3>
+                            </div>
+                            <div class="product-variant-meta-info">
+                             ${condition ? `<p><span class="custom-info-heading">Condition:</span> ${condition}</p>` : ''}
+                             ${options ? `<p><span class="custom-info-heading">Options:</span> ${options}</p>` : ''}
+                             ${productInfo.product_variant_metafield_configuration ? `<p><span class="custom-info-heading">Configuration:</span> ${productInfo.product_variant_metafield_configuration}</p>` : ""}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="product-quantity">${productInfo.product_variant_quantity}</td>
+                <td class="product-total">
+                    ${productInfo.product_variant_discounted_price > productInfo.product_variant_price 
+                      ? `<p class="price-compare-price">${currency_symbol}${productInfo.product_variant_discounted_price}</p>` 
+                      : ''}
+                    <p class="price-variant-price">${currency_symbol}${productInfo.product_variant_price}</p>
+                </td>
+            `;
+            productList.appendChild(productRow);
+        });
+
+        if (customItems && Object.keys(customItems).length > 0) {
+            for (const key in customItems) {
+                const customItem = customItems[key];
+                const customItemRow = document.createElement('tr');
+                customItemRow.classList.add('product-row');
+                customItemRow.innerHTML = `
+                    <td>
+                        <div class="product-info">
+                             <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/custom_item_logo_1_1.jpg?v=1732700839" alt="${customItem.name}" class="product-image" onerror="this.src='https://cdn.shopify.com/s/files/1/2372/2681/files/custom_item_logo_1_1.jpg?v=1732700839'">
+                            <div class="product-details">
+                                <div class="product-title">
+                                    <h3 class="product-title-info">${customItem.name}</h3>
+                                </div>
+                                <div class="product-variant-meta-info">
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="product-quantity">${customItem.quantity}</td>
+                    <td class="product-total">${currency_symbol}${customItem.discounted_price}</td>
+                `;
+                productList.appendChild(customItemRow);
+            }
+        }
+
+        container.appendChild(quoteElement);
+
+        const mainInfoSection = quoteElement.querySelector('#quote-container .header-tab-cta');
+        const productInfoSection = quoteElement.querySelector('.quote-item-product-info');
+        
+        mainInfoSection.addEventListener('click', () => {
+     
+            if (productInfoSection.classList.contains('active')) {
+                productInfoSection.classList.remove('active');
+                mainInfoSection.classList.remove('active'); 
+            } else {
+                productInfoSection.classList.add('active'); 
+                mainInfoSection.classList.add('active');
+            }
+        });
+
+      const quoteActionButtons = quoteElement.querySelectorAll('.quote-item-main-info button');
+
+      quoteActionButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+          event.stopPropagation();
+        });
+      });
+
+    });
+}
+
+     function setupPagination(currentPage, lastPage, hasNext, hasPrev) {
+    const paginationContainer = document.getElementById('pagination-container');
+    paginationContainer.innerHTML = '';
+
+    const paginationList = document.createElement('ul');
+    paginationList.classList.add('pagination-list');
+    
+    const prevButton = document.createElement('li');
+    prevButton.classList.add('pagination-item');
+    prevButton.textContent = 'Prev';
+    prevButton.classList.toggle('disabled', !hasPrev);
+    if (hasPrev) {
+        prevButton.addEventListener('click', () => changePage(currentPage - 1));
+    }
+    paginationList.appendChild(prevButton);
+    
+    for (let i = 1; i <= lastPage; i++) {
+        if (i === currentPage || (i <= 3) || (i === lastPage) || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            const pageItem = document.createElement('li');
+            pageItem.classList.add('pagination-item');
+            pageItem.textContent = i;
+            if (i === currentPage) {
+                pageItem.classList.add('active');
+            } else {
+                pageItem.addEventListener('click', () => changePage(i));
+            }
+            paginationList.appendChild(pageItem);
+        } else if (i === 4 || (i === currentPage + 2 && i < lastPage - 1)) {
+            const dots = document.createElement('li');
+            dots.classList.add('pagination-item');
+            dots.textContent = '...';
+            paginationList.appendChild(dots);
+        }
+    }
+
+    const nextButton = document.createElement('li');
+    nextButton.classList.add('pagination-item');
+    nextButton.textContent = 'Next';
+    nextButton.classList.toggle('disabled', !hasNext);
+    if (hasNext) {
+        nextButton.addEventListener('click', () => changePage(currentPage + 1));
+    }
+    paginationList.appendChild(nextButton);
+
+    paginationContainer.appendChild(paginationList);
+  }
+
+  function changePage(page) {
+    currentPage = page;
+    fetchQuotes(currentPage);
+  }
+  
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', options);
+    }  
+
+    // Initial fetch
+    fetchQuotes(currentPage);
+
+// function to handle download of PDF 
+
+function handleDownloadPDF(quoteNumber){
+   fetch(`https://developmentquote.monitors.com/shopify/customer/invoice?quote_number=${quoteNumber}`)
+
+   .then(response => {
+     if (response.ok) {
+       return response.json();
+     } else {
+       throw new Error('Failed to fetch invoice data');
+     }
+   })
+   .then(data => {
+    console.log("data", data)
+     if (data && data.data) {
+        fetch(data.data)
+          .then(pdfResponse => {
+            if (pdfResponse.ok) {
+              return pdfResponse.blob();
+            } else {
+              throw new Error('Failed to fetch the PDF file');
+            }
+          })
+          .then(blob => {
+            const downloadUrl = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = `invoice_${quoteNumber}.pdf`;
+            link.click();
+            
+            URL.revokeObjectURL(downloadUrl);
+          })
+          .catch(error => {
+            console.error('Error fetching PDF:', error);
+            alert('Failed to retrieve the PDF. Please try again.');
+          });
+     } else {
+       alert('No URL found in the response');
+     }
+   })
+   .catch(error => {
+     console.error('Error:', error);
+     alert('Failed to retrieve the PDF. Please try again.');
+   });
+}
+
+// end download function
+
+// handle refresh a quote
+
+function handleRefreshQuote(e, quoteId,button){
+  e.preventDefault();
+
+  const quotes = document.querySelector('#my-quotes');
+  let customerId;
+
+  if(quotes){
+    customerId = quotes.getAttribute('data-customer-id');
+  }
+  
+  //console.log("Refreshed...!!!", quoteId, customerId);
+
+  const formData = new FormData();
+  formData.append('customer_id', customerId);
+  formData.append('quote_id', quoteId);
+
+  fetch('https://developmentquote.monitors.com/shopify/customer/refresh-quote', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status) {
+
+      const parentElement = button.parentElement;
+      button.remove();
+      parentElement.style.justifyContent = "end";
+      const successMessage = document.createElement('span');
+      successMessage.style.color = "#DF8600";
+      successMessage.textContent = 'Quote Refresh Pending';
+      parentElement.appendChild(successMessage);
+
+      const mainStatus = parentElement.closest('.quote-item').querySelector('.quote-item-status-value.custom-q-value');
+
+      mainStatus.innerHTML = "Quote Refresh Pending";
+      mainStatus.style.color = "#DF8600";
+      
+    } else {
+      console.log('Failed to refresh the quote:', data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error refreshing quote:', error);
+  });
+
+
+
+}
+
+
+// end handle refresh a quote
+  
+</script>
+
+<style>
+  #my-quotes.tab-content {
+        padding: 0px;
+        border: none;
+        box-shadow: unset;
+        max-width: 985px;
+    }
+  #my-quotes .quote-item{display:flex;flex-direction:column;}
+  #my-quotes .quote-item-main-info{display:flex;flex-direction:row;justify-content: space-between;align-items: center;align-self: stretch;padding: 20px;border-radius: 10px;border: 1px solid #E5E5E5;background: #F1F2F2;}
+  #my-quotes .quote-item-left-info{display:flex;flex-direction:row;gap:50px;align-items:center;align-items: flex-start;}
+  #my-quotes .custom-qflex-col{display:flex;flex-direction:column;align-items: flex-start;gap: 5px;}
+  #my-quotes .custom-qflex-row{display:flex;flex-direction:row;}
+  #my-quotes .quote-item-left-info .header-tab-cta{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+  }
+  #quote-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+  .quote-item .quote-buttons .pdf-download-btn{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  #my-quotes .custom-q-heading{
+    color: #616265;
+    font-family: "Encode Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;}
+  #my-quotes .custom-q-value{color: #404042;
+    font-family: "Encode Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;}
+    #my-quotes .quote-placed-value.custom-q-value{
+      min-width: 110px;
+    }
+  #my-quotes .quote-number{
+    color: #616265;
+    font-family: "Encode Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    align-self: end;
+  }
+  #my-quotes .quote-buttons{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 11px;
+    align-self: stretch;
+  }
+  #my-quotes .q-btn{
+    color: #005BD3;
+    font-family: "Encode Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  #my-quotes .quote-item-product-info {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0px 20px;
+}
+
+#my-quotes .quote-item-product-info.active{
+    max-height: unset;
+    padding: 20px;
+    border-radius: 0px 0px 10px 10px;
+    border-right: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    border-left: 1px solid #E5E5E5;
+    background: #FFF;
+}
+
+#my-quotes .quote-item-main-info.active .toggle-quote-btn svg{
+   transform: rotate(180deg);
+ } 
+
+ #my-quotes .quote-item-main-info.active{
+      border-radius: 10px 10px 0px 0px;
+}
+
+#my-quotes .quote-product-table th {
+    color:  #616265;
+    font-family: "Encode Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom:10px;
+}
+
+#my-quotes .quote-product-table thead tr {
+    border-bottom: 1px solid #F2F2F2;
+}
+
+#my-quotes .quote-product-table tbody tr {
+    border-bottom: 1px solid #F2F2F2;
+}
+
+#my-quotes .quote-product-table tbody tr:last-child {
+    border-bottom: none;
+}  
+  
+#my-quotes .quote-product-table th:first-child{
+  text-align:left;
+}
+#my-quotes .quote-product-table th:last-child{
+  text-align:right;
+}
+#my-quotes .product-info{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1 0 0;
+}  
+
+#my-quotes .product-info .product-image{
+  width:88px;
+  object-fit:cover;
+} 
+
+#my-quotes .product-details{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  align-self: stretch;
+}
+
+#my-quotes .quote-product-table tbody tr td {
+    padding: 20px 5px;
+    text-align:center;
+    color: #404042;
+    font-family: "Encode Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal; 
+    vertical-align: top;
+}
+  
+#my-quotes .product-title {
+    max-width: 590px;
+}
+  
+#my-quotes .product-details .product-title-info{
+   color: #404042;
+  font-family: "Encode Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: left;
+}
+
+#my-quotes .product-variant-meta-info{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  align-self: stretch;
+}  
+
+.product-variant-meta-info p{
+  margin:0px;
+  color: #616265;
+  font-family: "Encode Sans";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align:left;
+  max-width:590px;
+}  
+
+#my-quotes .product-variant-meta-info .custom-info-heading{
+  font-weight: 600;
+}  
+  
+#my-quotes .product-total p {
+    margin: 0;
+}
+
+#my-quotes .price-compare-price {
+    text-decoration: line-through;
+    color: #616265;
+    text-align: right;
+    font-family: "Encode Sans";
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+#my-quotes .price-variant-price {
+    color: #616265;
+    text-align: right;
+    font-family: "Encode Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+ #my-quotes .quote-item-payment-info {
+    display: flex;
+    align-items: flex-start;
+    border-top: 1px solid #F2F2F2;
+    padding-top: 20px;
+    justify-content: space-between;
+} 
+
+#my-quotes .quote-notes-container{
+  width: 50%;
+}
+
+
+  #my-quotes .payment-info-main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 360px;
+    width: 50%;
+    margin-left: auto;
+}
+
+#my-quotes .quote-notes-container h3 {
+    color: #404042;
+    font-family: "Encode Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+#my-quotes .quote-notes-container p {
+    color: #616265;
+    font-family: "Encode Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: left;
+    margin-bottom: 3px;
+}
+
+  .custom-payment-info-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+ .custom-payment-info-head{
+  color: #404042;
+  text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Encode Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+ }   
+
+  #my-quotes .custom-payment-info-data{
+   color: #616265;
+    text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: "Encode Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;  
+  }
+
+  .custom-payment-info-total{
+    padding:5px 0;
+    border-top: 1px solid #F2F2F2;
+    border-bottom: 1px solid #F2F2F2;
+  }
+
+   #my-quotes .custom-payment-info-total-head{
+    color: #404042;
+    text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: "Encode Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px;
+   }
+
+  #my-quotes .custom-payment-info-total-data{
+    color: #404042;
+    text-align: center;
+    font-family: "Encode Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px;
+  }
+
+  #my-quotes .custom-ach-pay-btn, .custom-credit-pay-btn{
+    display: flex;
+    gap: 5px;
+    height: 28px;
+    padding: 7px 15px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #FAD310;
+    background: #F8D62D;
+    color: #404042;
+    font-family: "Encode Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  
+ #my-quotes .pagination-wrapper {
+    display: flex;
+    justify-content: end;
+    padding: 20px 0;
+  }
+
+  #my-quotes .pagination-list {
+    display: flex;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  #my-quotes .pagination-item {
+    padding: 5px 10px;
+    border: 1px solid #E5E5E5;
+    color: #616265;
+    font-family: "Encode Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border-right: none;
+    cursor:pointer;
+  }
+
+  #my-quotes .pagination-item.active {
+    font-weight: 600;
+    background-color: #F0F0F0;
+  }
+
+  .pagination-item:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  #my-quotes .pagination-item:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-right: 1px solid #E5E5E5;
+  }
+
+  #my-quotes .pagination-item.disabled {
+    pointer-events: none;
+    color: #ccc;
+  }
+
+  #my-quotes .left-info-with-icon{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  #my-quotes .quote-item-main-info .drop-icon{
+    transform: rotate(180deg);
+  }
+  #my-quotes .quote-item-main-info.active .drop-icon{
+    transform: unset;
+  }
+
+  #my-quotes .pagination-item:hover:not(.active):not(.disabled) {
+    text-decoration: underline;
+  } 
+  .quote-appd-text{
+    color: #404042 !important;
+  }
+  .quote-expd-text{
+    color: #005BD3;
+  }
+
+  .no-quotes-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 20px;
+        border-radius: 10px;
+        border: 1px solid #E5E5E5;
+    }
+    .no-quotes-container .no-quotes{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+    .no-quotes-container .no-quotes svg{
+        width: 180px;
+        height: 75px;
+    }
+    .no-quotes-container .no-quotes h3{
+        font-size: 16px;
+        line-height: normal;
+        margin: 0px;
+        text-align: center;
+    }
+    .no-quotes-container .no-quotes h4{
+        font-size: 16px;
+        line-height: normal;
+        font-weight: 700;
+        margin: 0px;
+        text-align: center;
+    }
+    .no-quotes-container .no-quotes a{
+        color: #fcf7f7;
+        background: #06a0e3;
+        text-align: center;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        border-radius: 5px;
+        border: none;
+        padding: 8px 16px;
+        max-width: 128px;
+    }
+
+   
+
+  @media only screen and (max-width: 768px){
+    #my-quotes .quote-item-left-info{
+      flex-wrap: wrap;
+      row-gap: 12px;
+      column-gap: 5px;
+    }
+    #my-quotes .custom-q-heading{
+      font-size: 12px;
+    }
+    #my-quotes .custom-q-value{
+      font-size: 12px;
+    }
+    #my-quotes .quote-item-product-info.active{
+      padding: 10px;
+    }
+    #my-quotes .product-info .product-image{
+      width: 55px;
+    }
+    #my-quotes .product-details .product-title-info{
+      font-size: 12px;
+    }
+    .product-variant-meta-info p{
+      font-size: 12px;
+    }
+    #my-quotes .quote-product-table tbody tr td{
+      font-size: 12px;
+    }
+    #my-quotes .price-variant-price{
+      font-size: 12px;
+    }
+    #my-quotes .quote-item-main-info{
+      flex-direction: row;
+      gap: 0px;
+    }
+    #my-quotes .quote-item-right-info{
+      display: flex;
+      width: 35px;
+      justify-content: flex-end;
+    }
+    #my-quotes .drop-icon{
+      width: 10px;
+      height: 6px;
+    }
+    #my-quotes .quote-item-payment-info{
+      flex-direction: column;
+      gap: 15px;
+      padding-top: 10px;
+    }
+    #my-quotes .quote-notes-container{
+      width: 100%;
+      border-bottom: 1px solid #F2F2F2;
+      padding-bottom: 10px;
+    }
+    #my-quotes .payment-info-main{
+      width: 100%;
+      max-width: 100%;
+    }
+    #my-quotes .quote-notes-container h3{
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+    #my-quotes .quote-notes-container p{
+      font-size: 12px;
+      margin-bottom: 0px;
+    }
+  }
+
+</style>

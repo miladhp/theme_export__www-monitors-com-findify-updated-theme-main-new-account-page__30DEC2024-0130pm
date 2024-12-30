@@ -1,0 +1,62 @@
+{%- liquid
+
+  assign price_max = target.price_max | money
+  assign price_min = target.price_min | money
+
+  assign main_price = target.price 
+  assign price = target.price | money 
+  assign compare_at_price = target.compare_at_price | money
+  assign availableVariants = available_variants
+  assign lowest_price = availableVariants | map: 'price' | sort | first 
+-%}
+
+{% if price_max != price_min %}
+  {% assign price = 'From ' | append: '<b>' | append: price_min | append: '</b>' %}
+{% endif %}
+
+<div class="custom-featured-new-renewed custom-findify-price">
+  <div class="product-item__price-list price-list">
+ {% comment %} <span class="findify-product-price {{ price }} {%if has_discount %} findify-product-price-with-compare{% endif %}">
+    {{ price }}
+  </span> {% endcomment %}
+    
+{% comment %}  {% if cart.currency.iso_code == 'EUR' or cart.currency.iso_code == 'QAR' or cart.currency.iso_code == 'RON' or cart.currency.iso_code == 'PLN' or cart.currency.iso_code == 'HUF' or cart.currency.iso_code == 'DKK' or cart.currency.iso_code == 'CZK' or cart.currency.iso_code == 'BAM' %}
+    {% assign mod_price_first = main_price | money_without_currency | split: ',' | first %}
+    {% assign mod_price_last = main_price | money_without_currency %}
+    {% if mod_price_last contains ',' %}
+      {% assign mod_price_last = mod_price_last | split: ',' | last %}
+    {% else %}
+      {% assign mod_price_last = '' %}
+    {% endif %}
+  {% else %}
+    {% assign mod_price_first = main_price | money_without_currency | split: '.' | first %}
+    {% assign mod_price_last = main_price | money_without_currency %}
+    {% if mod_price_last contains '.' %}
+      {% assign mod_price_last = mod_price_last | split: '.' | last %}
+    {% else %}
+      {% assign mod_price_last = '' %}
+    {% endif %}
+  {% endif %}
+    
+    {% if mod_price_last == '00' %}
+      {% assign mod_price_last = '' %}
+    {% endif %}
+    
+    <span class="price price--highlight">
+      {% if price_max != price_min %}<span class="price-from-text">From</span> {% endif %}
+      <span class="price-symbol">{{ cart.currency.symbol }}</span>{{ mod_price_first }}
+      <span class="price-fraction">{{ mod_price_last }}</span>
+      {% if cart.currency.iso_code != 'USD' %}<span class="abr">{{ cart.currency.iso_code }}</span>{% endif %}
+    </span> {% endcomment %}
+
+    {% render 'new-currency-format', price : lowest_price, cart : cart, template : template, product: product %} 
+  
+  {% if has_discount %}
+    <span class="findify-product-price-compare-at">
+      <s>
+        {{ compare_at_price }}
+      </s>
+    </span>
+  {% endif %}
+  </div>
+</div>

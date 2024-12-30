@@ -1,0 +1,65 @@
+{% liquid
+  assign filter_toggle_sidepanel_element_id = 'filter-toggle-sidepanel'
+  assign filter_component_id = filter_component_id
+%}
+
+<div class="findify-search-header findify-mobile">
+  <div class="findify-toolbar-block">
+    {%
+      render 'findify-query' terms: terms, results_count: results_count, is_collection: is_collection,       , terms: terms
+      , corrected_q: corrected_q
+      , query_type: query_type
+    %}
+    {% if use_grid_toggler == 'true' %}
+      {% render 'findify-grid-toggler' is_mobile: true
+      , parent_selector: 'findify-mobile'
+      , products_per_view_alt: products_per_view_alt
+      , products_per_view: products_per_view
+      %}
+    {% endif %}
+  </div>
+  <div class="findify-search-header-toolbar">
+    <div class="findify-search-header-toolbar-actions">
+      <button
+        id="{{ filter_toggle_sidepanel_element_id }}"
+        class="findify-search-actions-toggle-btn"
+      >
+        {% render 'findify-icon-filter' %}
+        FILTER BY
+      </button>
+    </div>
+    <div>
+      {% render 'findify-sorting', options: sort_options, default: default_sort_by, selected: sort_by, is_modal: true %}
+    </div>
+  </div>
+</div>
+
+<script>
+  const filterSidePanel = () => {
+    const filter_toggle_sidepanel_element_id = '{{ filter_toggle_sidepanel_element_id }}';
+    const filter_component_id = '{{ filter_component_id }}';
+    const openClass = 'findify-open-left';
+    const containerElement = document.getElementById(filter_component_id);
+
+    const toggleFilterSection = () => {
+      containerElement.classList.toggle(openClass);
+      document.documentElement.classList.toggle('findify-no-scroll');
+    };
+
+    const filterToggleSidepanelElement = document.getElementById(filter_toggle_sidepanel_element_id);
+    filterToggleSidepanelElement?.addEventListener('click', toggleFilterSection);
+    document.addEventListener('keyup', (e) => {
+      if (e.code == 'Escape') {
+        containerElement.classList.remove(openClass);
+        document.documentElement.classList.remove('findify-no-scroll');
+      }
+    });
+    /*
+     * Add additional classes conditioned by media queries
+     */
+    const mobileContainerClasses = ['findify-modal', 'findify-animated-left', 'findify-left'];
+    const container = document.getElementById(filter_component_id);
+    mobileContainerClasses.forEach((c) => container?.classList.add(c));
+  };
+  filterSidePanel();
+</script>

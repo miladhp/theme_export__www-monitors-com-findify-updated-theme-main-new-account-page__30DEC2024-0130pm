@@ -1,0 +1,288 @@
+{%- capture grid_classes -%}1/3--tablet-and-up 1/4--desk{%- endcapture -%}
+<div class="buy-again-main product-list product-list--collection custom-featured-new-renewed
+  {% unless customer.orders.size > 0 %} empty-buyagain{% endunless %}">
+  {% if customer %}
+    
+      {% assign rendered_product_ids = "" %} 
+      {% if customer.orders.size > 0 %}
+        {% for order in customer.orders %}
+          {% for line_item in order.line_items %}
+            
+            {% if line_item.product_id and line_item.variant.available and line_item.product.vendor != "Bayland Technologies" %}
+              
+              {% assign product_id_str = line_item.product_id | append: "," %} 
+              
+              {% unless rendered_product_ids contains product_id_str %}
+                {% render 'product-item-buy-again', product: line_item.product, grid_classes: grid_classes, show_add_to_cart: true, var_title: line_item.variant.title %}
+                {% assign rendered_product_ids = rendered_product_ids | append: product_id_str %}
+              {% endunless %}
+              
+            {% endif %}
+            
+          {% endfor %}
+        {% endfor %}
+      {% else %}
+        <div class="no-buyagain-container">
+          <div class="no-buyagain">
+              {% render 'empty-buyagain-icon' %}
+              <h3>
+                Looks like you haven’t bought
+                any of our products yet.<br>
+                We have a vast collection of quality products.
+              </h3>
+              <h4>
+                So why wait? Check out our products.
+              </h4>
+              <a href="/collections/all">View Products</a>
+          </div>
+      </div>
+      {% endif %}
+   
+  {% endif %}
+  
+</div>
+
+
+<style>
+  #buy-again.tab-content {
+    padding: 0px;
+    border: 1px solid #E1E3E4;
+    box-shadow: unset;
+    max-width: 985px;
+}
+.buy-again-main{
+    border-radius:10px;
+}
+.buy-again-atc{
+  display:flex;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+.buy-again-quantity-selector{
+    display: flex;  
+    border-radius: 5px;
+    border: 1px solid #e1e3e4;
+    flex-wrap: inherit !important;
+    height:40px;
+    align-content: center;
+}
+
+.buy-again-qty:hover {
+    color: #06a0e3;
+}
+.buy-again-qty{
+    font-size: 25px;
+    padding: 0 5px;
+    display: inline-block;
+    cursor: pointer; 
+}
+.buy-again-qty, .buy-again-quantity-input{
+    color: #616265;
+    text-align: center;
+    font-family: Encode Sans;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.buy-again-quantity-input{  
+    font-size: 13px;
+    padding: 0 5px;
+    text-align: center;
+    outline: 0;
+    display: inline-block;
+    border-right: none;
+    border-left: none;
+    border-radius: 0;
+    height: auto;
+    border-top: 0;
+    border-bottom: 0;
+    line-height: normal;
+    box-shadow: none;
+    appearance: none;
+    max-width:25px;
+}
+.buy-again-add-to-cart{
+  width: 100%;
+  padding: 10px 15px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #FCD513;
+  background: #F8D62D;
+  color: rgba(71, 75, 77, 0.99);
+  text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Encode Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  max-width: calc(100% - 81px);
+}
+ .buy-again-add-to-cart:hover{ 
+   background: #ffde37 !important;
+ }
+
+ .no-buyagain-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+}
+.no-buyagain-container .no-buyagain{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.no-buyagain-container .no-buyagain svg{
+  width: 180px;
+  height: 75px;
+}
+.no-buyagain-container .no-buyagain h3{
+  font-size: 16px;
+  line-height: normal;
+  margin: 0px;
+  text-align: center;
+}
+.no-buyagain-container .no-buyagain h4{
+  font-size: 16px;
+  line-height: normal;
+  font-weight: 700;
+  margin: 0px;
+  text-align: center;
+}
+.no-buyagain-container .no-buyagain a{
+  color: #fcf7f7;
+  background: #06a0e3;
+  text-align: center;
+  font-family: "Encode Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 5px;
+  border: none;
+  padding: 8px 16px;
+  max-width: 128px;
+}
+.buy-again-main.empty-buyagain{
+  justify-content: center;
+}
+
+.buy-again-pagination .pagination ul{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10px;
+}
+.buy-again-pagination .pagination ul li{
+  padding: 5px 10px;
+  border: 1px solid #E5E5E5;
+  color: #616265;
+  font-family: "Encode Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-right: none;
+}
+.buy-again-pagination nav.pagination{
+  padding: 20px 0px;
+}
+.buy-again-pagination .pagination ul li:last-child{
+  border-right: 1px solid #E5E5E5;
+}
+.buy-again-pagination .pagination ul li.active{
+  background-color: #F0F0F0;
+}
+.buy-again-pagination .pagination ul li.next{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.buy-again-pagination .pagination ul li.next svg{
+  transform: rotate(270deg);
+  margin-bottom: 2px;
+}
+.buy-again-pagination .pagination ul li.prev{
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.buy-again-pagination .pagination ul li.prev svg{
+  transform: rotate(90deg);
+  margin-bottom: 2px;
+}
+
+.buy-again-main .variant-title{
+  color: #616265;
+  font-family: "Encode Sans";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 0px;
+  margin-left: 5px;
+}
+    
+@media only screen and (max-width: 1000px){
+  .buy-again-atc{
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+  .buy-again-add-to-cart{
+    max-width: 100%;
+  }
+}
+@media only screen and (max-width: 768px){
+  .buy-again-atc{
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+  .buy-again-add-to-cart{
+    max-width: 100%;
+  }
+  .buy-again-quantity-selector{
+    width: 100%;
+    justify-content: center;
+  }
+  .buy-again-qty, .buy-again-quantity-input{
+    width: 33.33%;
+    max-width: 100%;
+  }
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.buy-again-quantity-minus').forEach(span => {
+        span.addEventListener('click', function () {
+            const input = this.nextElementSibling;
+            let quantity = parseInt(input.value);
+            if (quantity > 1) {
+                quantity--;
+                input.value = quantity;
+            }
+            if (quantity === 1) {
+                this.classList.add('disabled');
+            }
+        });
+    });
+
+    document.querySelectorAll('.buy-again-quantity-plus').forEach(span => {
+        span.addEventListener('click', function () {
+            const input = this.previousElementSibling;
+            let quantity = parseInt(input.value);
+            quantity++;
+            input.value = quantity;
+            input.previousElementSibling.classList.remove('disabled');
+        });
+    });
+});
+</script>
+
+

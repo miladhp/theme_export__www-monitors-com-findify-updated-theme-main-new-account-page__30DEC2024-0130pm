@@ -1,0 +1,113 @@
+{% liquid
+  assign page_url = content_for_header | split: '"pageurl":"' | last | split: '"' | first | split: request.host | last | replace: '\/', '/' | replace: '\u0026', '&' | replace: '%7C', '|' | replace: '%20', ' '
+  assign query_parameters = page_url | split: 'sections=findify-filter-group&' | last
+
+  assign name = query_parameters | split: 'name=' | last | split: '&' | first
+  assign group_label = query_parameters | split: 'label=' | last | split: '&' | first | url_decode
+  assign type = query_parameters | split: 'type=' | last | split: '&' | first
+  assign filters = query_parameters | split: 'filters=' | last | split: '&' | first | split: ';'
+  assign min = query_parameters | split: 'min=' | last | split: '&' | first | split: ';'
+  assign max = query_parameters | split: 'max=' | last | split: '&' | first | split: ';'
+  assign from = query_parameters | split: 'from=' | last | split: '&' | first | split: ';'
+  assign to = query_parameters | split: 'to=' | last | split: '&' | first | split: ';'
+
+  assign color_filter_layout = query_parameters | split: 'color_filter=' | last | split: '&' | first
+  assign has_mapped_color = query_parameters | split: 'has_mapped_color=' | last | split: '&' | first
+  if has_mapped_color == 'true'
+    assign has_mapped_color = true
+  else
+    assign has_mapped_color = false
+  endif
+
+  assign component = type
+  if name == 'category'
+    assign component = 'text'
+  endif
+  if name contains 'reviews'
+    assign component = 'reviews'
+  endif
+  if name == 'color'
+    if color_filter_layout == 'label'
+      assign component = 'text'
+    else
+      assign component = 'color'
+    endif
+  endif
+  assign element_id = 'findify-filters-' | append: name
+
+  assign show = true
+  if name == 'color'
+    if color_filter_layout != 'label' and has_mapped_color == false
+      assign show = false
+    endif
+  endif
+%}
+
+{% if show %}
+  <div id="{{ element_id }}" class="findify-filter-group">
+    <div class="findify-filters-header" tabindex="0">
+      <span tabindex="-1">
+        {{ group_label }}
+      </span>
+      {% render 'findify-icon-arrow' %}
+    </div>
+    <div class="findify-filters-body" role='group'>
+      {% case component %}
+        {% when 'text' %}
+          {% render 'findify-filter-text', name: name, type: type, component: component, filters: filters %}
+        {% when 'color' %}
+          {% render 'findify-filter-color',
+            name: name,
+            type: type,
+            component: component,
+            filters: filters,
+            color_filter_layout: color_filter_layout
+          %}
+        {% when 'range', 'reviews' %}
+          {% render 'findify-filter-range',
+            name: name,
+            type: type,
+            component: component,
+            filters: filters,
+            min: min,
+            max: max,
+            sliderFrom: from,
+            sliderTo: to
+          %}
+      {% endcase %}
+    </div>
+  </div>
+
+  <script>
+      const collapseFilter = () => {
+        const element_id = "{{ element_id }}";
+        const filterGroupElement = document.getElementById(element_id);
+        const [header, body] = filterGroupElement.querySelectorAll('div');
+        const isOneFilterOpen = document.querySelector('.findify-one-filter-open');
+    
+        const headerClickHandler = (e) => {
+          e.preventDefault();
+
+          if(isOneFilterOpen){
+            const isExpanded = e.target
+              .parentNode
+              .parentNode
+              .querySelector('.findify-filters-body')?.getAttribute('aria-expanded');
+            if(isExpanded == 'false')
+              document.querySelector('#findify-filters [aria-expanded="true"]')?.setAttribute('aria-expanded', 'false'); 
+          }
+
+          const isOpen = body.getAttribute("aria-expanded") === "true";
+          body.setAttribute("aria-expanded", (!isOpen).toString());
+        };
+    
+        header.addEventListener("click", headerClickHandler);
+        header.addEventListener("keydown", (e) => {
+          if (e.key === 'Enter') headerClickHandler(e)
+        });
+      };
+    
+
+      collapseFilter();
+  </script>
+{% endif %}

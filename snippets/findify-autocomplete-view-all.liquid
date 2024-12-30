@@ -1,0 +1,28 @@
+{% assign view_all_element_id = 'view-all-element' | append: '-' | append: position %}
+
+<button
+  id="{{ view_all_element_id }}"
+  class="findify-view-all findify-view-all-{{position}}"
+>
+  {%- if query == '' -%}
+    <span>{{ 'findify.autocomplete.view_all' | t }}</span>
+  {%- else -%}
+    <span>
+      {{ 'findify.autocomplete.view_all_results_for' | t }}
+      <span class="findify-components-autocomplete--tip__highlight">{{ query | url_decode }}</span>
+    </span>
+  {%- endif -%}
+</button>
+
+<script>
+  const clickViewAll = () => {
+    const view_all_element_id = "{{ view_all_element_id }}";
+    const query = "{{ query }}";
+
+    document.getElementById(view_all_element_id).addEventListener('click', () => {
+      const root = window.Shopify.routes.root ? window.Shopify.routes.root : '';
+      window.location.href = query === 'none' ? `${root}search` : `${root}search?q=${query}`;
+    });
+  };
+  clickViewAll();
+</script>

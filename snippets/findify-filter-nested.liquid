@@ -1,0 +1,43 @@
+{% liquid
+  assign children_props = children_filter | split: '^'
+  assign children = children_props | first | split: '-'
+  assign children_with_separator = children_props | first | append: '^'
+  assign next_children = children_filter | replace: children_with_separator, ''
+
+  assign level_name = name | append: level
+%}
+
+<div class="findify-filters--body-wrapper findify-filters--nested-body-wrapper">
+  {%- for filter in children -%}
+    {% liquid
+      assign filter_props = filter | split: '~'
+      assign value = filter_props[0]
+      assign count = filter_props[1]
+      assign is_selected = filter_props[2]
+      assign has_children = filter_props[3]
+    %}
+
+    {% render 'findify-filter-checkbox'
+      , name: level_name
+      , type: type
+      , is_selected: is_selected
+      , value: value
+      , text: value
+      , count: count
+      , component: component
+      , has_children: has_children
+    %}
+
+    {% if next_children != blank %}
+      {% assign nest_level_number = nest_level | plus: 1 %}
+      {% render 'findify-filter-nested'
+        , children_filter: children_filter
+        , name: name
+        , type: type
+        , component: component
+        , nest_level_number: nest_level_number %}
+    {% endif %}
+
+  {%- endfor -%}
+
+</div>

@@ -1,0 +1,21 @@
+<div id="custom-findify-info" data-collection-id="{{ collection.id }}"></div>
+<script>
+    const collectionElement = document.getElementById('custom-findify-info');
+    const collectionId = collectionElement.getAttribute('data-collection-id');
+    sessionStorage.setItem('currentPageCollectionId', collectionId);
+    sessionStorage.setItem('isCollection', 'true');
+    sessionStorage.setItem('collectionType', 'main');
+</script>
+
+{% schema %}
+  {
+    "name": "Custom Info - Findify",
+    "settings": [],
+    "presets": [
+    {
+      "name": "Custom Info - Findify",
+      "settings": {}
+    }
+   ]
+  }
+{% endschema %}

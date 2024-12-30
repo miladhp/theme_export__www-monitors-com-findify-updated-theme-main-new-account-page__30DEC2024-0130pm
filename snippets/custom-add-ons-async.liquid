@@ -1,0 +1,642 @@
+{% assign product_total_no_of_variants = product.variants | size %}
+{% assign product_variants_total_recommended_addons = 0 %}
+{% assign selected_variant_total_recommended_addons = 0 %}
+{% assign product_variants_max_recommended_addons = 0 %}
+{%- assign product_add_on_section_async_unit_height = 43 -%}
+{%- assign product_add_on_section_async_defualt_units = 4 -%}
+
+{% assign selected_variant_id = product.selected_or_first_available_variant.id | strip %}
+
+{% for variant in product.variants %}
+  {% assign product_variant_total_recommended_addons = 0 %}
+
+  {% if variant.metafields.custom.add_on_1 != blank %}
+    {% assign product_variants_total_recommended_addons = product_variants_total_recommended_addons | plus: 1 %}
+
+    {% if variant.id == selected_variant_id %}
+      {% assign selected_variant_total_recommended_addons = selected_variant_total_recommended_addons | plus: 1 %}
+    {% endif %}
+
+    {% assign product_variant_total_recommended_addons = product_variant_total_recommended_addons | plus: 1 %}
+  {% endif %}
+
+  {% if variant.metafields.custom.add_on_2 != blank %}
+    {% assign product_variants_total_recommended_addons = product_variants_total_recommended_addons | plus: 1 %}
+
+    {% if variant.id == selected_variant_id %}
+      {% assign selected_variant_total_recommended_addons = selected_variant_total_recommended_addons | plus: 1 %}
+    {% endif %}
+
+    {% assign product_variant_total_recommended_addons = product_variant_total_recommended_addons | plus: 1 %}
+  {% endif %}
+
+  {% if variant.metafields.custom.add_on_3 != blank %}
+    {% assign product_variants_total_recommended_addons = product_variants_total_recommended_addons | plus: 1 %}
+
+    {% if variant.id == selected_variant_id %}
+      {% assign selected_variant_total_recommended_addons = selected_variant_total_recommended_addons | plus: 1 %}
+    {% endif %}
+
+    {% assign product_variant_total_recommended_addons = product_variant_total_recommended_addons | plus: 1 %}
+  {% endif %}
+
+  {% if variant.metafields.custom.add_on_4 != blank %}
+    {% assign product_variants_total_recommended_addons = product_variants_total_recommended_addons | plus: 1 %}
+
+    {% if variant.id == selected_variant_id %}
+      {% assign selected_variant_total_recommended_addons = selected_variant_total_recommended_addons | plus: 1 %}
+    {% endif %}
+
+    {% assign product_variant_total_recommended_addons = product_variant_total_recommended_addons | plus: 1 %}
+  {% endif %}
+
+  {% if product_variant_total_recommended_addons > product_variants_max_recommended_addons %}
+    {% assign product_variants_max_recommended_addons = product_variant_total_recommended_addons %}
+  {% endif %}
+{% endfor %}
+
+{%- capture 'product_add_on_section_async_first_style' -%}
+  {%- if product_total_no_of_variants == 1 and product.selected_or_first_available_variant.available == false -%}
+    {{- 'display: none;' -}}
+  {%- else -%}
+    {%- if product_variants_total_recommended_addons == 0 -%}
+      {{- 'display: none;' -}}
+    {%- else -%}
+      {%- if selected_variant_total_recommended_addons != 0 -%}
+        {%- assign product_add_on_section_async_defualt_units = selected_variant_total_recommended_addons -%}
+        {%- assign product_add_on_section_async_first_height = product_add_on_section_async_unit_height | times: selected_variant_total_recommended_addons -%}
+        {%- assign product_add_on_section_async_first_height = product_add_on_section_async_first_height | append: 'px' -%}
+        {{- 'display: block;' | append: 'min-height: ' | append: product_add_on_section_async_first_height -}}
+      {%- else -%}
+        {%- if product_variants_max_recommended_addons != 0 -%}
+          {%- assign product_add_on_section_async_defualt_units = product_variants_max_recommended_addons -%}
+          {%- assign product_add_on_section_async_first_height = product_add_on_section_async_unit_height | times: product_variants_max_recommended_addons -%}
+          {%- assign product_add_on_section_async_first_height = product_add_on_section_async_first_height | append: 'px' -%}
+          {{- 'display: block;' | append: 'min-height: ' | append: product_add_on_section_async_first_height -}}
+        {%- else -%}
+          {{- 'display: none;' -}}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- assign product_add_on_section_async_defualt_height = product_add_on_section_async_unit_height | times: product_add_on_section_async_defualt_units -%}
+
+<style>
+  #product-add-on-section-async > .add-on-drawer, #product-add-on-section-async > .add-on-drawer-push {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    transition: none !important;
+  }
+
+  .add-on-drawer-open-right:before {
+    width: calc(100% - 480px);
+    opacity: 1;
+  }
+
+  .add-on-drawer-right.add-on-drawer-open-right {
+    right: 0;
+  }
+
+  @media screen and (max-width: 1440px) {
+    .add-on-drawer-open-right:before {
+      width: calc(100% - 480px);
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .add-on-drawer-open-right:before {
+      width: calc(100% - 300px);
+    }
+  }
+
+  .skeleton-with-background-image {
+    background-image: url("https://cdn.shopify.com/s/files/1/2372/2681/files/Rolling-0.4s-201px_1.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    /* background-size: cover; */
+  }
+</style>
+
+<div class="product-add-on-section" id="product-add-on-section-async" style="{{product_add_on_section_async_first_style}}" data-style="{{ product_add_on_section_async_first_style }}"></div>
+
+<script>
+  {% if product.selected_or_first_available_variant.available %}
+    $(document).ready(function () {
+      renderProductRecommendedAddonsDynamically('{{ product.selected_or_first_available_variant.id | strip }}');
+    });
+  {% endif %}
+
+  function renderProductRecommendedAddonsDynamically(selectedVariantId = '')
+  {
+    console.log(`renderProductRecommendedAddonsDynamically called for variant @ ${selectedVariantId}`);
+    if (selectedVariantId != '') {
+      let shop = Shopify.shop;
+      let shopCurrency = Shopify.currency.active;
+      console.log(shopCurrency);
+      let containerSelector = `#product-add-on-section-async`;
+      let container = document.querySelector(containerSelector);
+
+      if (container) {
+        var currentHeight = $(containerSelector).height();
+        console.log(`currentHeight before chcking anything: ${currentHeight}`);
+
+        if (productRecommendedAddonsAlreadyExistsInUI(selectedVariantId, containerSelector)) {
+          adjustHeightWithContenShownInRecommendedAddonsSections(containerSelector);
+          hideAllRecommendedAddons();
+          showRecommendedAddonsForCurrentVariants(selectedVariantId);
+          return;
+        }
+
+        const data = {
+          shop: shop,
+          variant_id: selectedVariantId,
+          currency: shopCurrency
+        };
+
+        let payload = JSON.stringify(data);
+        let formData = new FormData();
+
+        formData.append('payload', payload);
+
+        {% if product_variants_total_recommended_addons > 0 %}
+            maintainHeightWithContentHiddenInRecommendedAddonsSections(containerSelector);
+            loaderEffectInRecommendedAddonsSections(containerSelector, 'show', 'skeleton-with-background-image');
+        {% else %}
+            $(containerSelector).css('display', 'none');
+        {% endif %}
+
+        fetch('https://developmentquote.monitors.com/shopify/product-variant-recommended-add-ons/add-ons-list', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(responseData => renderProductRecommendedAddonsListUI(selectedVariantId, responseData, containerSelector))
+        .catch(error => console.error(error));
+      }
+    }
+  }
+
+  function productRecommendedAddonsAlreadyExistsInUI(selectedVariantId, containerSelector)
+  {
+    if ($(containerSelector).find(`.product-add-on-single-item-${selectedVariantId}`).length) {
+      console.log(`Add-ons Already exists for variant : ${selectedVariantId}`);
+      return true;
+    }
+
+    console.log(`Add-ons NOT exists : ${selectedVariantId}`);
+    return false;
+  }
+
+  function hideAllRecommendedAddons()
+  {
+    $('.product-add-on-single-item').hide();
+  }
+
+  function showRecommendedAddonsForCurrentVariants(selectedVariantId)
+  {
+    $(`.product-add-on-single-item-${selectedVariantId}`).show();
+    $(`.product-add-on-single-item-${selectedVariantId}`).find('*').show();
+  }
+
+  function loaderEffectInRecommendedAddonsSections(containerSelector, action='show', loaderClass='skeleton')
+  {
+    let allowedActions = ['show', 'hide'];
+    action = allowedActions.indexOf(action) != -1 ? action : allowedActions[0];
+
+    if ($(containerSelector).length) {
+      if (action == 'show') {
+        if (!$(containerSelector).hasClass(loaderClass)) {
+          $(containerSelector).addClass(loaderClass);
+        }
+      } else {
+        if ($(containerSelector).hasClass(loaderClass)) {
+          $(containerSelector).removeClass(loaderClass);
+        }
+      }
+    }
+  }
+
+  function maintainHeightWithContentHiddenInRecommendedAddonsSections(containerSelector)
+  {
+    if ($(containerSelector).length) {
+      let currentHeight = $(containerSelector).height();
+      {% if product_variants_total_recommended_addons > 0 %}
+      if (parseInt(currentHeight) < {{product_add_on_section_async_defualt_height}}) {
+        currentHeight = {{product_add_on_section_async_defualt_height}};
+      }
+      {% endif %}
+      $(containerSelector).css('min-height', currentHeight+'px');
+      $(containerSelector).find('*').hide();
+    }
+  }
+
+  function adjustHeightWithContenShownInRecommendedAddonsSections(containerSelector)
+  {
+    if ($(containerSelector).length) {
+      if ($(containerSelector).children('h3:first').length) {
+        $(containerSelector).children('h3:first').show();
+      }
+
+      if ($(containerSelector).children('ul.addon-product-list:first').length) {
+        $(containerSelector).children('ul.addon-product-list:first').show();
+      }
+    }
+  }
+
+  function renderProductRecommendedAddonsListUI(selectedVariantId, responseData, containerSelector)
+  {
+    if (!productRecommendedAddonsAlreadyExistsInUI(selectedVariantId, containerSelector)) {
+      if (responseData.data && responseData.data.length) {
+        if ($(containerSelector).is(':empty')) {
+          $(containerSelector).append(`<h3>Recommended Add-ons</h3>`);
+          $(containerSelector).append(`<ul class="addon-product-list"></ul>`);
+        }
+
+        let addonsListUI = ``;
+
+        for (let addons of responseData.data) {
+          addonsListUI += `<li class="product product-add-on-single-item product-add-on-single-item-${selectedVariantId}" data-selected-variant-id="${selectedVariantId}" data-addon-product-id="${addons.id}" data-addon-variant-id="${addons.variantId}" style="display: flex;">`;
+
+          let addonsImageSection = ``;
+
+          if (addons.featuredImage && addons.featuredImage.url && addons.featuredImage.url.length) {
+            let addonsImageURL = addons.featuredImage.url;
+            addonsImageURL = getProductRecommendedAddonsResizedImageURL(addonsImageURL, 'small');
+            addonsImageSection = `<span class="product-add-on-async-single-item-image add-on-title" data-selected-variant-id="${selectedVariantId}" data-addon-product-id="${addons.id}" data-addon-variant-id="${addons.variantId}"><img src="${addonsImageURL}" alt="" class="add-on-title" loading="lazy" style="cursor: pointer;"></span>`;
+          }
+
+          let addonsCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+          let addonsFormattedPrice = CurrencyClass.formatMoney(addons.variantPresentmentPrices[0].price.amount, addonsCurrencyFormat);
+
+          addonsListUI += `<div class="add-on-sec-left">
+            <div id="add-on-checkbox">
+              <label class="add-on-checkbox-label">
+                <input type="checkbox" class="add-on-access-checkbox" name="add_on_productid" value="${addons.variantId}">
+              </label>
+            </div>
+            ${addonsImageSection}
+          </div>
+          <div class="add-on-sec-right">
+            <div class="add-on-btn add-on-title product-add-on-async-single-item" data-selected-variant-id="${selectedVariantId}" data-addon-product-id="${addons.id}" data-addon-variant-id="${addons.variantId}">${addons.title} <strong>&nbsp;${addonsFormattedPrice}</strong></div>
+          </div>`;
+
+          addonsListUI += `</li>`;
+        }
+
+        if ($(containerSelector).find('ul.addon-product-list').length) {
+          if (addonsListUI.length) {
+            $(containerSelector).find('ul.addon-product-list').append(addonsListUI);
+            hideAllRecommendedAddons();
+            showRecommendedAddonsForCurrentVariants(selectedVariantId);
+            loaderEffectInRecommendedAddonsSections(containerSelector, 'hide', 'skeleton-with-background-image');
+            adjustHeightWithContenShownInRecommendedAddonsSections(containerSelector);
+          }
+        }
+      } else {
+        {% if product_variants_total_recommended_addons > 0 %}
+        loaderEffectInRecommendedAddonsSections(containerSelector, 'hide', 'skeleton-with-background-image');
+        {% endif %}
+      }
+    }
+  }
+
+  function getProductRecommendedAddonsResizedImageURL(imageOriginalURL, imageSize = 'original')
+  {
+    let allowedImageSizes = ['pico', 'icon', 'thumb', 'small', 'compact', 'medium', 'large', 'grande', 'original', 'master'];
+
+    imageSize = imageSize.toLowerCase();
+
+    if (allowedImageSizes.indexOf(imageSize) == -1) {
+      return imageOriginalURL;
+    }
+
+    if (!imageOriginalURL.length) {
+      return imageOriginalURL;
+    }
+
+    let imageExtensionDotPos = imageOriginalURL.lastIndexOf('.');
+
+    if (imageExtensionDotPos == -1) {
+      return imageOriginalURL;
+    }
+
+    let urlBeforeExtensionDot = imageOriginalURL.substring(0, imageExtensionDotPos);
+    let urlAfterExtensionDot = imageOriginalURL.substring(imageExtensionDotPos + 1);
+
+    if (!urlBeforeExtensionDot.length || !urlAfterExtensionDot.length) {
+      return imageOriginalURL;
+    }
+
+    return urlBeforeExtensionDot + '_' + imageSize + '.' + urlAfterExtensionDot;
+  }
+
+  function renderProductRecommendedAddonsDetails(addonSelectedVariantId, addonProductId, addonVariantId)
+  {
+    let shop = Shopify.shop;
+    let shopCurrency = Shopify.currency.active;
+
+    const data = {
+      shop: shop,
+      product_id: addonProductId,
+      variant_id: addonVariantId,
+      currency: shopCurrency
+    };
+
+    let payload = JSON.stringify(data);
+    let formData = new FormData();
+
+    formData.append('payload', payload);
+
+    loadingEffectInProductRecommendedAddonsDetails(addonSelectedVariantId, addonProductId, addonVariantId);
+
+    fetch('https://developmentquote.monitors.com/shopify/product-variant-recommended-add-ons/add-ons-details', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(responseData => renderProductRecommendedAddonsDetailsUI(addonSelectedVariantId, addonProductId, addonVariantId, responseData))
+    .catch(error => console.error(error));
+  }
+
+  function loadingEffectInProductRecommendedAddonsDetails(addonSelectedVariantId, addonProductId, addonVariantId)
+  {
+    let addonSelector = `li[data-selected-variant-id='${addonSelectedVariantId}'][data-addon-product-id='${addonProductId}'][data-addon-variant-id='${addonVariantId}']`;
+    let addonsDetailsUILoading = `<div class="overlay open"></div><div class="add-on-drawer add-on-drawer-right add-on-drawer-open-right skeleton-with-background-image">`;
+
+    if (!$(addonSelector).find('.add-on-drawer').length) {
+      $(addonSelector).append(addonsDetailsUILoading);
+
+      if (!$('body.template-product').hasClass('add-on-drawerr')) {
+        $('body.template-product').addClass('add-on-drawerr');
+      }
+      if (!$('html').hasClass('fixed-add-on-drawerr')) {
+        $('html').addClass('fixed-add-on-drawerr');
+      }
+    }
+  }
+
+  function renderProductRecommendedAddonsDetailsUI(addonSelectedVariantId, addonProductId, addonVariantId, responseData)
+  {
+    let addonsDetailsUI = ``;
+    let warrantyIcon = `{{'warranty-icon.svg' | asset_url}}`,
+      coverageIcon = `{{'coverage-icon.svg' | asset_url}}`,
+      returnIcon = `{{'return-icon.svg' | asset_url}}`,
+      buybackIcon = `{{'buyback-icon-new.svg' | asset_url}}`,
+      techSupportIcon = `{{'tech-support-icon.svg' | asset_url}}`;
+
+    if (responseData.data && responseData.data.product_data && responseData.data.variant_data) {
+      let productVariantPrice = ``;
+
+      if (responseData.data.variant_data.presentment_prices && responseData.data.variant_data.presentment_prices.length) {
+        let addonsCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+        productVariantPrice = CurrencyClass.formatMoney(responseData.data.variant_data.presentment_prices[0].price.amount, addonsCurrencyFormat);
+      }
+
+      let productImageURL = ``;
+      let productImageSection = ``;
+
+      if (responseData.data.product_data.image_url && responseData.data.product_data.image_url.length) {
+        productImageURL = getProductRecommendedAddonsResizedImageURL(responseData.data.product_data.image_url, 'large');
+        //productImageSection = `<img data-src="${productImageURL}" alt="" class="lazyload" loading="lazy">`;
+        productImageSection = `<img src="${productImageURL}" alt="">`;
+      }
+
+      let hideHotswapcoverageDisplay = `display: block;`;
+
+      if (responseData.data.product_data.tags && responseData.data.product_data.tags.length) {
+        if (responseData.data.product_data.tags.indexOf('hide-hot-swap-coverage') != -1) {
+          hideHotswapcoverageDisplay = `display: none;`;
+        }
+      }
+
+      let buybackGuaranteeDisplay = `display: none`;
+
+      if (responseData.data.variant_data.metafield_specs_buyback_guarantee && responseData.data.variant_data.metafield_specs_buyback_guarantee.length) {
+        if (['Y', 'y'].indexOf(responseData.data.variant_data.metafield_specs_buyback_guarantee) != -1) {
+          buybackGuaranteeDisplay = `display: flex`;
+        }
+      }
+
+      addonsDetailsUI += `<div class="drawer-content-wrap">
+        <div class="add-onclose-btn"><span class="fa fa-times"></span></div>
+        <div class="pro-title">${responseData.data.product_data.title}</div>
+        <div class="pro-review">
+          <a target="_blank" href="${responseData.data.product_data.url}" class="product-meta__reviews-badge link" data-offset="30">
+            <span class="stamped-product-reviews-badge" data-product-sku="${responseData.data.product_data.handle}" data-id="${responseData.data.product_data.id}" data-product-type="${responseData.data.product_data.type}" data-product-title="${responseData.data.product_data.title}" style="display:block;">${responseData.data.product_data.metafield_stamped_badge}</span>
+          </a>
+          <div class="review-question">
+            <a target="_blank" href="${responseData.data.product_data.url}" class="">Write a Review</a>
+            <a target="_blank" href="${responseData.data.product_data.url}" class="askquestion">Ask a Question</a>
+          </div>
+        </div>
+        <div class="pro-price">
+          <span class="p-price">${productVariantPrice}</span>
+          <span class="select-btn"><a href="#">Select</a></span>
+        </div>
+        <div class="pro-img">${productImageSection}</div>
+        <div class="service-list">
+          <ul>
+            <li>
+              <span class="icons">
+                <img id="image1" src="${warrantyIcon}">
+              </span>
+              <div class="service-text">
+                <span id="Warranty">${responseData.data.variant_data.metafield_specs_Warranty}</span>-Year Premium Warranty
+                <a data-html="true" draggable="false" data-tooltip="- ${responseData.data.variant_data.metafield_specs_Warranty}-year warranty on parts & labor &#10;  - ${responseData.data.variant_data.metafield_specs_Warranty}-year loaner coverage &#10;  - ${responseData.data.variant_data.metafield_specs_Warranty}-year premium technical support" class="que" id="wtolp" data-tooltip-break>?</a>
+              </div>
+            </li>
+            <li style="${hideHotswapcoverageDisplay}">
+              <span class="icons">
+                <img id="image2" src="${coverageIcon}">
+              </span>
+              <div class="service-text">
+                <span id="Coverage">${responseData.data.variant_data.metafield_specs_Warranty}</span>-Year Hot-Swap Coverage
+                <a draggable="false" data-tooltip="If your equipment fails, we will send you a replacement product so you do not have to wait for a repair." class="que">?</a>
+              </div>
+            </li>
+            <li>
+              <span class="icons">
+                <img id="image3" src="${returnIcon}">
+              </span>
+              <div class="service-text">
+                30-Day Return Guarantee
+              </div>
+            </li>
+            <li style="${buybackGuaranteeDisplay}" class="buyback_guarantee">
+              <span class="icons">
+                <img id="image4" src="${buybackIcon}">
+              </span>
+              <div class="service-text">
+                Buyback Guarantee
+                <a draggable="false" data-tooltip="This item qualifies for Monitors.com's buyback guarantee program. We buyback this item at any time in any condition at a fair market value." class="que">?</a>
+              </div>
+            </li>
+            <li>
+              <span class="icons">
+                <img id="image5" src="${techSupportIcon}">
+              </span>
+              <div class="service-text">
+                Free Technical Support
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="pro-des-wrap">
+          ${responseData.data.product_data.description}
+        </div>
+      </div>
+      <div class="select-btn select-btn-bottom"><a href="#">Select</a></div>`;
+    }
+
+    if (addonsDetailsUI.length) {
+      let addonSelector = `li[data-selected-variant-id='${addonSelectedVariantId}'][data-addon-product-id='${addonProductId}'][data-addon-variant-id='${addonVariantId}']`;
+
+      if ($(addonSelector).find('.add-on-drawer').length) {
+        $(addonSelector).find('.add-on-drawer').append(addonsDetailsUI);
+
+        let addonSelectorMainImage = $(addonSelector).find('.pro-img img');
+
+        if (addonSelectorMainImage.length) {
+          console.log('addonSelectorMainImage found');
+          addonSelectorMainImage.one('load', function() {
+            console.log('addonSelectorMainImage loaded');
+            if ($(addonSelector).find('.add-on-drawer').hasClass('skeleton-with-background-image')) {
+              $(addonSelector).find('.add-on-drawer').removeClass('skeleton-with-background-image');
+            }
+          });
+        } else {
+          console.log('addonSelectorMainImage NOT found');
+          if ($(addonSelector).find('.add-on-drawer').hasClass('skeleton-with-background-image')) {
+            $(addonSelector).find('.add-on-drawer').removeClass('skeleton-with-background-image');
+          }
+        }
+      }
+    }
+  }
+
+  $(document).on('click', '.product-add-on-async-single-item', function () {
+    let addonProductId = $(this).attr('data-addon-product-id'),
+      addonVariantId = $(this).attr('data-addon-variant-id'),
+      addonSelectedVariantId = $(this).attr('data-selected-variant-id');
+    console.log({addonProductId, addonVariantId, addonSelectedVariantId});
+
+    let addonSelector = `li[data-selected-variant-id='${addonSelectedVariantId}'][data-addon-product-id='${addonProductId}'][data-addon-variant-id='${addonVariantId}']`;
+
+    if (!$(addonSelector).length) {
+      console.log('addonSelector not found');
+    } else {
+      console.log('addonSelector found');
+    }
+
+    if (!$(addonSelector).find('.add-on-drawer').length) {
+      renderProductRecommendedAddonsDetails(addonSelectedVariantId, addonProductId, addonVariantId);
+    } else {
+      console.log('add-on-drawer not found');
+    }
+  });
+
+  $(document).on('click', '.add-on-drawer-right .select-btn a', function (e) {
+    e.preventDefault();
+    $(this).closest('.product').find(".add-on-checkbox-label input[type='checkbox']").prop("checked", true);
+    $(this).closest('.product').find(".add-onclose-btn").trigger("click");
+  });
+
+  $(document).on('click', '.add-on-btn', function () {
+    if (!$('body.template-product').hasClass('add-on-drawerr')) {
+      $('body.template-product').addClass('add-on-drawerr');
+    }
+
+    if (!$('html').hasClass('fixed-add-on-drawerr')) {
+      $('html').addClass('fixed-add-on-drawerr');
+    }
+
+    if (!$(this).hasClass('active')) {
+      $(this).addClass('active');
+    }
+
+    if (!$(this).closest('.product').find('.add-on-drawer-right').hasClass('add-on-drawer-open-right')) {
+      $(this).closest('.product').find('.add-on-drawer-right').addClass('add-on-drawer-open-right');
+    }
+
+    if (!$(this).closest('.product').find('.overlay').hasClass('open')) {
+      $(this).closest('.product').find('.overlay').addClass('open')
+    }
+    console.log('clicked add-on-btn in custom-add-ons-async');
+  });
+
+  $(document).on('click', '.add-onclose-btn', function () {
+    if ($(this).hasClass('active')) {
+      $(this).removeClass('active');
+    }
+
+    if ($(this).closest('.product').find('.add-on-drawer-right').hasClass('add-on-drawer-open-right')) {
+      $(this).closest('.product').find('.add-on-drawer-right').removeClass('add-on-drawer-open-right');
+    }
+
+    if ($(this).closest('.product').find('.overlay').hasClass('open')) {
+      $(this).closest('.product').find('.overlay').removeClass('open')
+    }
+
+    if(!$('.add-on-drawer').hasClass('add-on-drawer-open-right')) {
+      console.log('add-on-drawer has NO add-on-drawer-open-right');
+      if ($('body.template-product').hasClass('add-on-drawerr')) {
+        $('body.template-product').removeClass('add-on-drawerr');
+      }
+
+      if ($('html').hasClass('fixed-add-on-drawerr')) {
+        $('html').removeClass('fixed-add-on-drawerr');
+      }
+    } else {
+      console.log('add-on-drawer has add-on-drawer-open-right');
+    }
+    console.log('clicked add-onclose-btn in custom-add-ons-async');
+  });
+
+  $(document).on('click', '.product-add-on-async-single-item-image', function (e) {
+    e.preventDefault();
+    console.log('clicked on product-add-on-async-single-item-image');
+    let addonProductId = $(this).attr('data-addon-product-id'),
+      addonVariantId = $(this).attr('data-addon-variant-id'),
+      addonSelectedVariantId = $(this).attr('data-selected-variant-id');
+
+    let addonSelector = `li[data-selected-variant-id='${addonSelectedVariantId}'][data-addon-product-id='${addonProductId}'][data-addon-variant-id='${addonVariantId}']`;
+
+    if (!$(addonSelector).find('.add-on-drawer').length) {
+      renderProductRecommendedAddonsDetails(addonSelectedVariantId, addonProductId, addonVariantId);
+    } else {
+      if (!$('body.template-product').hasClass('add-on-drawerr')) {
+        $('body.template-product').addClass('add-on-drawerr');
+      }
+
+      if (!$('html').hasClass('fixed-add-on-drawerr')) {
+        $('html').addClass('fixed-add-on-drawerr');
+      }
+
+      if (!$(addonSelector).find('.add-on-btn').hasClass('active')) {
+        $(addonSelector).find('.add-on-btn').addClass('active');
+      }
+
+      if (!$(addonSelector).find('.add-on-drawer-right').hasClass('add-on-drawer-open-right')) {
+        $(addonSelector).find('.add-on-drawer-right').addClass('add-on-drawer-open-right');
+      }
+
+      if (!$(addonSelector).find('.overlay').hasClass('open')) {
+        $(addonSelector).find('.overlay').addClass('open');
+      }
+    }
+  });
+
+  $(document).click(function(e) {
+    if ($('.add-on-drawer').hasClass('add-on-drawer-open-right')) {
+      if ($(e.target).attr('class').indexOf('add-on-drawer') == -1 && !$('.add-on-drawer').find(e.target).length && $(e.target).attr('class').indexOf('add-on-title')== -1) {
+        $('body.template-product').removeClass('add-on-drawerr');
+        $('html').removeClass('fixed-add-on-drawerr');
+        $('.add-on-drawer[class*=add-on-drawer-open-right]').removeClass('add-on-drawer-open-right');
+        $('.overlay').removeClass('open');
+        console.log('closing on custom-add-ons-async');
+      }
+    }
+  });
+</script>

@@ -1,0 +1,124 @@
+{%- assign page_url = content_for_header
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+
+{%- assign query_parameters = page_url | split: 'sections=findify-pagination&' | last -%}
+
+{%- assign current_offset = query_parameters | split: 'current_offset=' | last | split: '&' | first -%}
+{%- assign current_page = query_parameters | split: 'current_page=' | last | split: '&' | first -%}
+{%- assign items = query_parameters | split: 'items=' | last | split: '&' | first -%}
+{%- assign next = query_parameters | split: 'next=' | last | split: '&' | first -%}
+{%- assign page_param = query_parameters | split: 'page_param=' | last | split: '&' | first -%}
+{%- assign page_size = query_parameters | split: 'page_size=' | last | split: '&' | first -%}
+{%- assign pages = query_parameters | split: 'pages=' | last | split: '&' | first -%}
+{%- assign partsString = query_parameters | split: 'parts=' | last | split: '&' | first -%}
+{%- assign previous = query_parameters | split: 'previous=' | last | split: '&' | first -%}
+{%- assign parts = partsString | split: ';' -%}
+
+{%- assign nextPieces = next | split: '~' -%}
+{%- assign next_is_link = nextPieces[0] -%}
+{%- assign next_title = nextPieces[1] -%}
+{%- assign next_url = nextPieces[2] | replace: '$', '&' -%}
+
+{% if next_is_link contains 'false' %}
+  {% assign next = false %}
+{% endif %}
+
+{%- assign prevPieces = previous | split: '~' -%}
+{%- assign previous_is_link = prevPieces[0] -%}
+{%- assign previous_title = prevPieces[1] -%}
+{%- assign previous_url = prevPieces[2] | replace: '$', '&' -%}
+
+{% if previous_is_link contains 'false' %}
+  {% assign previous = false %}
+{% endif %}
+
+{%- if parts.size > 0 -%}
+  <div id="findify-pagination" class="findify-pagination-wrapper">
+    <nav
+      class="pagination"
+      role="navigation"
+      aria-label="{{ 'general.pagination.label' | t }}"
+    >
+      <ul class="findify-pagination__list list-unstyled" role="list">
+        {%- if previous -%}
+          <li>
+            <a
+              data-value="{{ previous_title }}"
+              href="{{ previous_url }}{{ anchor }}"
+              class="findify-pagination__item findify-pagination__item--next findify-pagination__item-arrow link motion-reduce"
+              aria-label="{{ 'general.pagination.previous' | t }}"
+            >
+              {% render 'findify-icon-arrow' %}
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- for part in parts -%}
+          {%- assign partPieces = part | split: '~' -%}
+          {%- assign is_link = partPieces[0] -%}
+          {%- assign title = partPieces[1] -%}
+          {%- assign url = partPieces[2] | replace: '$', '&' -%}
+          {% if is_link contains 'false' %}
+            {% assign is_link = false %}
+          {% endif %}
+
+          <li>
+            {%- if is_link -%}
+              <a
+                href="{{ url }}{{ anchor }}"
+                data-value="{{ title }}"
+                class="findify-pagination__item link"
+                aria-label="{{ 'general.pagination.page' | t: number: title }}"
+              >
+                {{- title -}}
+              </a>
+            {%- else -%}
+              {%- if title == current_page -%}
+                <a
+                  role="link"
+                  aria-disabled="true"
+                  class="findify-pagination__item findify-pagination__item--current light"
+                  aria-current="page"
+                  aria-label="{{ 'general.pagination.page' | t: number: title }}"
+                >
+                  {{- title -}}
+                </a>
+              {%- else -%}
+                <span class="findify-pagination__item">{{ title }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+
+        {%- if next -%}
+          <li>
+            <a
+              data-value="{{ next_title }}"
+              href="{{ next_url }}{{ anchor }}"
+              class="findify-pagination__item findify-pagination__item--prev findify-pagination__item-arrow link motion-reduce"
+              aria-label="{{ 'general.pagination.next' | t }}"
+            >
+              {%- render 'findify-icon-arrow' -%}
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </nav>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Findify pagination",
+  "settings": []
+}
+{% endschema %}

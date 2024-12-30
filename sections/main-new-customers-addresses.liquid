@@ -1,0 +1,1893 @@
+<style type="text/css">
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .log-temp {
+    display: flex;
+    background-color: #ffffff;
+    background-image: -webkit-linear-gradient(0deg, #ffffff 50%, #fafafa 50%);
+  }
+  .log-temp-cell {
+    width: calc(100% / 2);
+    min-height: 100vh;
+  }
+  .log-temp-cell.right .log-dec {
+    text-align: center;
+  }
+  .log-temp-cell.right {
+    display: flex;
+    justify-content: center;
+  }
+  .log-dec {
+    padding: 30px;
+  }
+  .log-temp-menu-part {
+    margin: 0 0 30px 0;
+  }
+  .log-temp-from-box {
+    padding: 20px;
+  }
+  
+  @media (max-width: 1023px) {
+    .log-temp {
+      flex-direction: column;
+      background-color: transparent;
+    }
+    .log-temp-cell {
+      width: calc(100% / 1);
+      min-height: 50vh;
+    }
+    .log-temp-cell.left {
+      background-color: #ffffff;
+    }
+    .log-temp-cell.right {
+      background-color: #efefef;
+    }
+  }
+  
+  .log-temp-blank-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .log-temp-blank-row .colx {
+    width: calc(100% / 2 - 20px);
+  }
+  .log-temp-blank-row .colx.frm-btn {
+    text-align: right;
+  }
+  .log-temp-from-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 0px 0;
+  }
+  .log-temp-from-row.two .log-temp-field {
+    width: calc(100% / 2 - 10px);
+  }
+  .log-temp-from-row.three .log-temp-field {
+    width: calc(100% / 3 - 10px);
+  }
+  
+  @media (max-width: 479px) {
+    .log-temp-blank-row {
+      flex-direction: column;
+    }
+    .log-temp-blank-row .colx {
+      width: calc(100% / 1);
+      margin-bottom: 20px;
+    }
+    .log-temp-from-row {
+      flex-direction: column;
+    }
+    .log-temp-from-row.two .log-temp-field {
+      width: calc(100% / 1);
+      margin: 0 0 10px 0;
+    }
+    .log-temp-from-row.three .log-temp-field {
+      width: calc(100% / 1);
+      margin: 0 0 10px 0;
+    }
+  }
+  
+  .form-custom {
+    margin-left: 60px;
+    margin-right: 60px;
+  }
+  .btn1 {
+    margin-top: -14px;
+  }
+  .side-text {
+    margin: 0px 0 0px 71px;
+    font-size: 11px;
+    text-align: center;
+  }
+  .log-temp-cell.right p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .log-dec .order-summary__sections {
+    width: 100%;
+    min-width: 450px;
+  }
+  .log-dec .order-summary__section {
+    width: 100%;
+  }
+  .log-dec .order-summary__section .order-summary__section__content {
+    width: 100%;
+  }
+  .log-dec .order-summary__section .order-summary__section__content table.product-table {
+    width: 100%;
+    font-size: 12px;
+    color: #323232;
+  }
+  .log-dec .order-summary__section .product-thumbnail {
+    width: 4.6em;
+    height: 4.6em;
+    border-radius: 8px;
+    background: #fff;
+    position: relative;
+  }
+  .log-dec .order-summary__section .product-thumbnail .product-thumbnail__wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    z-index: 1;
+    border: #ccc 1px solid;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+  }
+  .log-dec .order-summary__section .product-thumbnail .product-thumbnail__quantity {
+    font-size: 0.8571428571em;
+    font-weight: 500;
+    line-height: 1.75em;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 1.75em;
+    background-color: rgba(114, 114, 114, 0.9);
+    color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 1.75em;
+    height: 1.75em;
+    padding: 0 0.5833333333em;
+    position: absolute;
+    right: -0.75em;
+    top: -0.75em;
+    z-index: 3;
+  }
+  .log-dec .order-summary__section td:last-child, th:last-child {
+    text-align: right;
+  }
+  .log-dec .order-summary__section table.total-line-table {
+    width: 100%;
+    font-size: 13px;
+  }
+  .log-dec .order-summary__section table.total-line-table th {
+    text-align: left;
+    font-weight: normal !important;
+  }
+  .log-dec .order-summary__section .sidebar .order-summary__small-text {
+    color: #717171;
+  }
+  .log-dec .order-summary__section .sidebar .payment-due__currency {
+    color: #717171;
+  }
+  .log-dec .order-summary__section td:last-child {
+    font-weight: bold;
+  }
+  .log-dec .order-summary__section .payment-due__currency {
+    font-size: 0.8571428571em;
+    vertical-align: 0.2em;
+    margin-right: 0.5em;
+  }
+  .log-dec .order-summary__section .sidebar .payment-due__price {
+    color: #323232;
+  }
+  .log-dec .order-summary__section .payment-due__price {
+    font-size: 1.7142857143em;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1em;
+  }
+  .log-dec .order-summary__section .sidebar .payment-due-label__total {
+    color: #323232;
+    font-size: 14px;
+  }
+  .log-dec .order-summary__section .total-line-table {
+    border-top: #ccc 1px solid;
+    padding-top: 10px;
+  }
+  .log-dec .order-summary__section .total-line-table__footer tr.total-line {
+    border-top: #ccc 1px solid;
+    margin-top: 20px;
+    padding-bottom: 10px;
+  }
+  .log-dec .order-summary__section .product__description__variant {
+    width: 100%;
+    clear: both;
+    display: inline-block;
+  }
+  .cf-form-inner .cf-form-actions .cf-step-invalid, .cf-fields-wrapper .cf-form-actions .cf-step-invalid {
+    display: none;
+  }
+  .log-before-dec {
+    width: 100%;
+    padding-top: 100px;
+    max-width: 550px;
+  }
+  .log-before-dec img {
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 1023px) {
+    .log-before-dec {
+      padding-top: 30px;
+    }
+  }
+  
+  @media (max-width: 479px) {
+    .log-dec .order-summary__sections {
+      min-width: 320px;
+    }
+    .log-condition-msg {
+      width: 100% !important;
+      padding-bottom: 20px;
+    }
+  }
+  
+  .custom-address-list__item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9e9e9;
+    padding-bottom: 5px;
+  }
+  
+  .custom-contact-information {
+    padding: 20px;
+    border: 1px solid #e9e9e9;
+  }
+  
+  .custom-left {
+    text-align: left;
+  }
+  
+  .custom-margin-form__subtitle {
+    margin-top: 20px;
+    margin-bottom: 16px !important;
+  }
+  
+  .custom-address-checkbox .checkbox {
+    border-radius: 50%;
+    box-shadow: none;
+  }
+  
+  .custom-address-checkbox .checkbox::after {
+    content: "";
+    background: #fff;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 100%;
+    left: 5px;
+    top: 5px;
+  }
+  
+  @media (max-width: 767px) {
+    .mob-hide {
+      display: none !important;
+    }
+  }
+  
+  .custom-address-form span.err {
+    font-size: 14px;
+    background: #ffffff;
+    color: red;
+    padding: 1px 5px 2px;
+    text-align: center;
+    margin: 6px auto 0;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+    display: flex;
+    border: 1px dashed #ff0000;
+  }
+  
+  @media (min-width: 641px) {
+    .custom-address-form .form__input-row {
+      align-items: unset;
+    }
+  }
+  
+  .custom-data-requirements {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+  }
+  
+  .custom-button--half {
+    float: right;
+  }
+  
+  .breadcrumbs {
+    font-size: 0.85em;
+    margin: 0 0 2em;
+  }
+  
+  .breadcrumbs ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .breadcrumbs li {
+    color: black;
+    display: inline-block;
+  }
+  
+  .breadcrumbs li.active {
+    color: #06a0e3 !important;
+  }
+  
+  .breadcrumbs li:not(:last-child):after {
+    content: "›\00a0";
+    display: inline-block;
+    padding-left: 0.75ch;
+    speak: none;
+  }
+  
+  .breadcrumbs [aria-current="page"] {
+    font-weight: normal;
+    text-decoration: none;
+  }
+  
+  .log-temp.custom-log-temp .log-temp-cell.right {
+    padding-right: 60px;
+    padding-left: 80px;
+  }
+  .log-temp.custom-log-temp button {
+    border-radius: 6px;
+  }
+  .log-temp.custom-log-temp .checkbox-wrapper input[type="radio"]:checked {
+    border-color: #666 !important;
+    background: #fff;
+  }
+  .log-temp.custom-log-temp .checkbox-wrapper input[type="radio"]:checked:after {
+    background: #666 !important;
+    border: 2px solid #666 !important;
+  }
+  
+  .custom-address-checkbox .checkbox input[type="radio"]:checked:after {
+    background: #666 !important;
+  }
+  
+  .subtotal {
+    font-weight: bold;
+    font-size: 15px;
+  }
+  
+  .sub-total {
+    font-weight: bold;
+  }
+  .payment-due-label__total.total {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .log-temp.custom-log-temp .checkbox-wrapper {
+    margin: 8px 0;
+  }
+  
+  @media (max-width: 1400px) {
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-left: 30px;
+    }
+    .log-temp.custom-log-temp .log-temp-cell.right {
+      padding-right: 30px;
+    }
+  }
+  @media (max-width: 768px) {
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-left: 0;
+    }
+    .log-temp.custom-log-temp .log-temp-cell.right {
+      padding-right: 0;
+    }
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-bottom: 20px;
+    }
+  }
+  
+  .custom-save-add {
+    color: #737373;
+    left: 12px;
+    position: absolute;
+    font-size: 11px;
+  }
+  
+  .cart-currency {
+    font-weight: normal;
+    color: #717171;
+    font-size: small;
+    vertical-align: 0.2em;
+    margin-right: 0.5em;
+    padding-left: 1.5em;
+    text-align: right;
+    white-space: nowrap;
+  }
+  
+  .order-summary__sections.quate {
+    min-width: 420px !important;
+    max-width: 100% !important;
+  }
+  .order-summary__sections.quate .quantity-selector {
+    width: 60.5px !important;
+    background: #ffffff;
+    border: #e1e3e4 1px solid !important;
+    border-radius: 10.66px !important;
+    height: 22px !important;
+    position: relative;
+    z-index: 9;
+    margin-top: -14px;
+  }
+  .order-summary__sections.quate .raq-line-item-remove-button{color: #616265;text-align: center;font-family: "Encode Sans";font-size: 13.033px!important;font-style: normal;font-weight: 400!important;line-height: normal!important;margin:0;padding-left:0px !important;padding-right:0px !important;position:relative;left: 40%;padding-top: 10px;}
+  .order-summary__sections.quate .quantity-selector button {
+    padding: 0 5px !important;
+    line-height: inherit;
+    color: #4d4d4f !important;
+  }
+  .order-summary__sections.quate .quantity-selector button svg {
+    fill: #4d4d4f;
+  }
+  .order-summary__sections.quate .quantity-selector button#raq-line-item-quantity-decrease-btn-2 {
+    padding-right: 2px !important;
+  }
+  .order-summary__sections.quate .quantity-selector .icon--plus {
+    width: 9px;
+    height: auto;
+    margin-top: -1px;
+  }
+  .order-summary__sections.quate .quantity-selector .icon--minus {
+    width: 9px;
+  }
+  .order-summary__sections.quate .quantity-selector .quantity-selector__value {
+    min-width: 15px !important;
+    width: 17px;
+    text-align: center;
+    font-size: 12px !important;
+    margin: 0;
+    padding: 1px 0 0 0;
+  }
+  .order-summary__sections.quate .order-summary__section .product-thumbnail {
+    width: 60px !important;
+    height: 60px !important;
+    position: relative;
+  }
+  .order-summary__sections.quate .line-item__price--compare {
+    text-decoration: line-through;
+    color: #4d4d4f !important;
+    font-size: 12px !important;
+  }
+  .order-summary__sections.quate .line-item__price--compare::before {
+    display: none;
+  }
+  .order-summary__sections.quate .order-summary__section {
+    margin-bottom: 20px;
+  }
+  .order-summary__sections.quate .order-summary__section .order-summary__emphasis.skeleton-while-loading {
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .quate-new-form {
+    padding: 40px 0;
+  }
+  .quate-new-form .form.form--main {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  .quate-new-form .form.form--main p {
+    text-align: left;
+  }
+  
+  .quate-new-form .qt-botton-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .quate-new-form .qt-botton-row-lost button {
+    padding: 0 !important;
+    margin: 0;
+    color: #06a0e3 !important;
+  }
+  
+  .snak-bar {
+    display: flex;
+    background: #f7f7f7;
+    color: #616265;
+    font-size: 14px;
+    min-height: 50px;
+    padding: 10px 20px;
+    margin-top: 40px;
+    align-items: center;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .snak-bar span {
+    margin-right: 8px;
+    font-size: 30px;
+    color: #000;
+    line-height: 1;
+  }
+  
+  .quote-summary-action {
+    display: none;
+  }
+  
+  .order-summary__sections.quate .payment-due-label__total.total {
+    color: #666666;
+  }
+  .order-summary__sections.quate .total-line__price payment-due total_final {
+    color: #666666;
+  }
+  .order-summary__sections.quate .order-summary__section td.total-line__price {
+    color: #666666;
+  }
+  
+  @media (max-width: 1023px) {
+    .order-summary__sections.quate {
+      min-width: 100px !important;
+      max-width: 100% !important;
+    }
+  
+    .log-temp.custom-log-temp.custon-quate {
+      flex-direction: column-reverse;
+    }
+    .quote-action-row {
+      flex-direction: column;
+      justify-content: flex-start !important;
+      min-height: 55px;
+    }
+    .quote-summary-action {
+      display: block;
+      width: 100%;
+      padding: 0 20px;
+      border-bottom: #e1e3e4 1px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 55px;
+      color: #06a0e3;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .quote-summary-action .price {
+      font-size: 14px;
+      color: #616265;
+    }
+    .quote-summary-action .action-cart {
+      display: flex;
+      align-items: center;
+    }
+    .quote-summary-action .action-cart span {
+      margin-right: 8px;
+    }
+    .quote-summary-action .action-cart span#request-quote-summary-icon {
+      margin-top: 3px;
+    }
+    .quote-summary-action .action-cart-icon {
+      font-size: 24px;
+      margin-top: -5px;
+    }
+    .action-cart .action-cart-arrow {
+      transform: rotate(180deg);
+      margin-top: 6px !important;
+    }
+    .log-temp-cell.custom-log-temp-cell.left .container {
+      padding: 0 20px !important;
+    }
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-left: 0;
+    }
+    .log-temp.custom-log-temp .log-temp-cell.right {
+      padding-left: 0;
+      padding-right: 0;
+      border: none;
+    }
+  
+    .quote-summary-action-details .log-dec {
+      padding-bottom: 0 !important;
+    }
+    .order-summary__sections.quate .order-summary__section {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .order-summary__sections.quate {
+      min-width: 100px !important;
+    }
+    .quate-new-form .qt-botton-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .quate-new-form .qt-botton-row-lost p {
+      display: flex;
+      align-items: center;
+    }
+    .quate-new-form .qt-botton-row-lost button {
+      max-width: 131px;
+    }
+  }
+  @media (max-width: 479px) {
+    .quate-new-form .cf-field-container.this-is {
+      width: 100% !important;
+    }
+    .order-summary__sections.quate .order-summary__section .product__description {
+      font-size: 12px;
+    }
+  }
+  
+  .quote-summary-action-details .log-dec {
+    padding-right: 0;
+  }
+  .req-qt-all {
+    background-image: -webkit-linear-gradient(0deg, #ffffff 50%, #fafafa 50%);
+  }
+  .quote-action-row {
+    border-left: #e1e3e4 1px solid;
+  }
+  .req-qt-all .reql {
+    padding-right: 40px;
+  }
+  
+  @media (max-width: 1023px) {
+    .quote-action-row {
+      background-color: #fafafa;
+      border: none !important;
+    }
+    .req-qt-all {
+      background-image: none !important;
+      padding-bottom: 40px;
+    }
+    .log-temp {
+      background: none !important;
+    }
+    .req-qt-all .reql {
+      padding-right: 0px !important;
+    }
+    .quote-summary-action-details .log-dec {
+      padding-right: 30px;
+    }
+  }
+  @media (max-width: 639px) {
+    .quote-action-row .log-dec {
+      padding: 10px 5px;
+    }
+    .quote-summary-action {
+      padding: 0 10px;
+    }
+    .quote-summary-action .price {
+      font-size: 13px;
+    }
+    .quote-summary-action .action-cart span {
+      line-height: 1;
+    }
+    .log-dec .order-summary__section .order-summary__section__content {
+      padding-bottom: 15px;
+    }
+    .quote-summary-action-details .log-dec {
+      padding-right: 5px;
+    }
+  }
+  
+  @media (max-width: 359px) {
+    .quote-summary-action .action-cart {
+      max-width: 135px;
+    }
+  }
+
+  /* new layout changes 13-06-2024 */
+.order-summary__sections.quate .order-summary__section .product-thumbnail{width: 192px!important;height: 163px!important;}
+.order-summary__sections.quate .quantity-selector{border-radius: 5px!important;border: 1px solid #E1E3E4!important;background: #FFF!important;margin-left: 25%;width: 103.66px!important;height: 31.43px!important;margin-top:-13px!important;display:flex;justify-content:space-around;}
+span.product__description__name.order-summary__emphasis{color: #404042!important;font-size: 16px!important;font-style: normal;font-weight: 500!important;line-height: normal;}
+.log-dec .custom_cart_div{gap:10px;}
+.log-dec th.product__description {display: flex;flex-direction: column;}
+.log-dec .line-item__price--highlight {vertical-align:top;color: #616265;text-align: right;font-family: "Encode Sans";font-size: 14px;font-style: normal;font-weight: 500;line-height: normal;}
+.log-dec td{vertical-align:top;}
+.log-dec .order-summary__section .product__description{padding-left:30px!important;}
+.log-dec .order-summary__section .order-summary__section__content table.product-table td.product__price{padding-left: 10px !important;}
+.total-line-table .total-line.total-line--subtotal th, .total-line-table .total-line.total-line--subtotal td{padding: 15px 0;}
+.log-dec .order-summary__section .product__description__name {padding-bottom:5px!important;}
+@media screen and (max-width: 768px) {
+.log-dec .order-summary__section .order-summary__section__content table.product-table td{ padding:0px !important;}
+.order-summary__sections.quate .order-summary__section .product-thumbnail {width: 113px !important;height: 101px !important;}
+.order-summary__sections.quate .quantity-selector {width: 85px !important;height: 25px !important;margin-left: 12.5%;}
+.log-dec .order-summary__section .product__description {padding-left: 12px !important;}
+.order-summary__sections.quate .raq-line-item-remove-button{left:0%!important;}
+}
+</style>
+
+<section class="site-i-cart req-qt-all" data-section-id="{{ section.id }}" data-section-type="address">
+  <!--Contener Page Wrap Start-->
+  <div class="container">
+    <span id="user-login" data-user="{% if customer %}true{% else %}false{% endif %}"></span> 
+  
+    <!--Login Section Template Start-->
+    <div class="log-temp custom-log-temp custon-quate" id="custom-log-temp" style="margin-bottom: 50px;">
+      {%- if shop.customer_accounts_enabled -%}
+        {%- if customer -%} 
+          <div class="log-temp-cell custom-log-temp-cell with-custom-bradcrumb reql">
+            <div class="">
+              {% unless customer %}
+                <div class="snak-bar">
+                  <span>
+                    <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/atention-icon-1.png?v=1678445130" alt="" loading="lazy" />
+                  </span>
+                  In order to submit your quote request you will need to have an account.
+                </div> 
+              {% endunless %}
+              
+              <div style="float: left; width:100%">
+                <div class="quate-new-form">
+                  <div class="form__header">
+                    <span class="header__action-item-title custom-left" style="font-size:20px;font-weight: 600;color: #4d4d4f; line-height:30px;">Hi {{ customer.first_name | truncate: 20 }}</span>
+                  </div>
+                  <div class="custom-contact-information custom-data-requirements">
+                    <div class="custom-address-list__item">
+                      <div class="custom-address-list__item-top">
+                        <p class="heading h5">Contact Information</p>
+                        <a href="/account#profile">
+                          <button type="button" class="link link--accented btn-edit edit-icon">
+                            {%- render 'icon', icon: 'edit-icon' -%}
+                          </button>
+                        </a>
+                      </div>
+                      <div class="address-list__item-info" style="text-align:left;">
+                        <strong><span>{{ customer.first_name }} {{ customer.last_name }}</span></strong><br/>
+                        <span>{{ customer.email }}</span><br/>
+                        <span>{{ customer.phone }} </span>
+                        <span>{{ customer_address.company }}</span><br/>
+                      </div>
+                    </div>
+                  </div>
+                  <form class="custom-form" method="post" action="{{ routes.cart_url }}" novalidate="novalidate" data-item-count="{{ cart.item_count }}">
+                    <div class="custom-data-requirements">
+                      <div class="form-group" id="contact-data">
+                        <div class="form__input-row">
+                          <div class="form__input-wrapper">
+                            <input type="text" id="first_name" class="form__field form__field--text" name="first_name" value="{{ customer.first_name }}" placeholder="First Name" autofocus="">
+                          </div>
+                          <div class="form__input-wrapper">
+                            <input type="text" id="last_name" class="form__field form__field--text" name="last_name" value="{{ customer.last_name }}" placeholder="Last Name">
+                          </div>
+                          <div class="form__input-wrapper">
+                            <input type="text" id="phone_number" class="form__field form__field--text" name="phone_number" value="{{ customer.phone }}" placeholder="Phone Number">
+                          </div>
+                          <div class="form__input-wrapper">
+                            <input type="text" id="first_company" class="form__field form__field--text" name="first_company" value="" placeholder="Company Name">
+                          </div>    
+                          <div class="form__input-wrapper">
+                            <input type="email" id="first_email" class="form__field form__field--text is-filled" name="first_email" value="{{ customer.email }}" placeholder="E-mail">
+                          </div>
+                          <div class="form__input-wrapper">
+                            <input type="password" id="first_password" class="form__field form__field--text is-filled" name="first_password" value="" placeholder="Password">
+                          </div>                  
+                        </div>
+                      </div>
+                  
+                      <div class="cart-recap__price-line text--pull">
+                        <span class="cart-recap__price-line-label">{{ 'cart.general.total' | t }}</span>
+                        <span class="cart-recap__price-line-price cart-sub-total-price" data-subtotal="{{ cart.items_subtotal_price | money }}">
+                          <span class="bcpo-cart-original-total total_final">{{ cart.total_price | money_with_currency }}</span>
+                        </span>
+                      </div>
+
+                      {%- for line_item in cart.items -%}
+                        <table>
+                          <tr class="line-item line-item--stack" data-pro-id="{{ line_item.product_id }}" data-var-id="{{ line_item.variant_id }}">
+                            <td class="line-item__product-info">
+                              <div class="line-item__product-info-wrapper">
+                                <div class="line-item__image-wrapper">
+                                  {%- comment -%}For vertical images we force to contain them on a square ratio to avoid growing too large{%- endcomment -%}
+
+                                  {%- if line_item.image.aspect_ratio < 1 -%}
+                                    <div class="aspect-ratio aspect-ratio--square">
+                                      <img src="{{ line_item.image | img_url: '180x' }}" alt="{{ line_item.image.alt | escape }}">
+                                    </div>
+                                  {%- else -%}
+                                    <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: line_item.image.aspect_ratio }}%">
+                                      <img src="{{ line_item.image | img_url: '180x' }}" alt="{{ line_item.image.alt | escape }}">
+                                    </div>
+                                  {%- endif -%}
+                                </div>
+
+                                <div class="line-item__meta">
+                                  {%- if settings.show_vendor and gift_wrap_product.handle != line_item.product.handle -%}
+                                    {%- assign vendor_handle = line_item.product.vendor | handle -%}
+                                    {%- assign collection_for_vendor = collections[vendor_handle] -%}
+
+                                    {%- unless collection_for_vendor.empty? -%}
+                                      <a class="line-item__vendor link" href="{{ collection_for_vendor.url }}">{{ line_item.product.vendor }}</a>
+                                    {%- else -%}
+                                      <a class="line-item__vendor link" href="{{ line_item.product.vendor | url_for_vendor }}">{{ line_item.product.vendor }}</a>
+                                    {%- endunless -%}
+                                  {%- endif -%}
+
+                                  {%- if gift_wrap_product.handle == line_item.product.handle -%}
+                                    <span class="line-item__title text--strong" data-var-title="{{ line_item.variant.title }}">{{ line_item.title }}</span>
+                                  {%- else -%}
+                                    <a href="{{ line_item.url }}" class="line-item__title link text--strong" data-var-title="{{ line_item.variant.title }}">{{ line_item.title }}</a>
+                                  {%- endif -%}
+
+                                  {%- if line_item.selling_plan_allocation -%}
+                                    <p class="line-item__plan-allocation">{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
+                                  {%- endif -%}
+
+                                  {%- unless line_item.properties == blank -%}
+                                    <ul class="line-item__property-list" role="list">
+                                      {%- for property in line_item.properties -%}
+                                        {%- assign first_character_in_key = property.first | truncate: 1, '' -%}
+
+                                        {%- if property.last == blank or first_character_in_key == '_' -%}
+                                          {%- continue -%}
+                                        {%- endif -%}
+
+                                        <li class="line-item__property">{{ property.first }}: {{ property.last }}</li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endunless -%}
+
+                                  <div class="line-item__price-list">
+                                    {%- if line_item.original_price > line_item.final_price -%}
+                                      {%- if line_item.final_price == 0 -%}
+                                        <span class="line-item__price line-item__price--highlight">{{ 'cart.general.free' | t }}</span>
+                                      {%- else -%}
+                                        <span class="line-item__price line-item__price--highlight" data-price="{{ line_item.final_price | money_without_currency }}" data-key="{{line_item.key}}">{{ line_item.final_price | money }}</span>
+                                      {%- endif -%}
+
+                                      <span class="line-item__price line-item__price--compare">
+                                        <span class="bcpo-cart-item-original-price" data-key="{{line_item.key}}">{{ line_item.original_price | money }}</span>
+                                      </span>
+                                    {%- elsif line_item.variant.compare_at_price > line_item.variant.price -%}
+                                      {%- if line_item.final_price == 0 -%}
+                                        <span class="line-item__price line-item__price--highlight">{{ 'cart.general.free' | t }}</span>
+                                      {%- else -%}
+                                        <span class="line-item__price line-item__price--highlight" data-price="{{ line_item.final_price | money_without_currency }}" data-key="{{line_item.key}}">{{ line_item.final_price | money }}</span>
+                                      {%- endif -%}
+
+                                      <span class="line-item__price line-item__price--compare">{{ line_item.variant.compare_at_price | money_without_currency }}</span>
+                                    {%- else -%}
+                                      {%- if line_item.final_price == 0 -%}
+                                        <span class="line-item__price">{{ 'cart.general.free' | t }}</span>
+                                      {%- else -%}
+                                        <span class="line-item__price" data-price="{{ line_item.final_price | money_without_currency }}" data-key="{{line_item.key}}">{{ line_item.final_price | money }}</span>
+                                      {%- endif -%}
+                                    {%- endif -%}
+                                  </div>
+
+                                  {%- if line_item.unit_price_measurement -%}
+                                    <div class="line-item__price-info">
+                                      <div class="unit-price-measurement">
+                                        <span class="unit-price-measurement__price">{{ line_item.unit_price | money_without_trailing_zeros }}</span>
+                                        <span class="unit-price-measurement__separator">/ </span>
+
+                                        {%- if line_item.unit_price_measurement.reference_value != 1 -%}
+                                          <span class="unit-price-measurement__reference-value">{{ line_item.unit_price_measurement.reference_value }}</span>
+                                        {%- endif -%}
+
+                                        <span class="unit-price-measurement__reference-unit">{{ line_item.unit_price_measurement.reference_unit }}</span>
+                                      </div>
+                                    </div>
+                                  {%- endif -%}
+
+                                  {%- if line_item.line_level_discount_allocations != blank -%}
+                                    <ul class="line-item__discount-list" role="list">
+                                      {%- for discount_allocation in line_item.line_level_discount_allocations -%}
+                                        <li class="line-item__discount">
+                                          {%- render 'icon', icon: 'sale' -%}{{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endif -%}
+
+                                  <div class="line-item__quantity hidden-tablet-and-up">
+                                    {%- comment -%}If the product has the tag "__gift", we remove the price{%- endcomment -%}
+
+                                    {%- unless line_item.product.tags contains '__gift' -%}
+                                      <div class="quantity-selector">
+                                        {%- assign allow_to_add_more = true -%}
+
+                                        {%- if line_item.variant.inventory_management and line_item.variant.inventory_policy == 'deny' and line_item.quantity == line_item.variant.inventory_quantity -%}
+                                          {%- assign allow_to_add_more = false -%}
+                                        {%- endif -%}
+
+                                        <button type="button" class="quantity-selector__button" data-action="decrease-quantity" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" data-quantity="{{ line_item.quantity | minus: 1 }}" data-line="{{ forloop.index }}" aria-label="{{ 'cart.items.decrease_quantity' | t }}" title="{{ 'cart.items.decrease_quantity' | t }}">{% render 'icon', icon: 'minus' %}</button>
+                                        <input aria-label="{{ 'product.form.quantity' | t }}" class="quantity-selector__value" inputmode="numeric" data-current-value="{{ line_item.quantity }}" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" size="{{ line_item.quantity | append: '' | size | at_least: 2 }}">
+                                        <button type="button" class="quantity-selector__button" data-action="increase-quantity" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: 1 }}&line={{ forloop.index }}" data-quantity="{{ line_item.quantity | plus: 1 }}" data-line="{{ forloop.index }}" {% if allow_to_add_more %}aria-label="{{ 'cart.items.increase_quantity' | t }}" title="{{ 'cart.items.increase_quantity' | t }}"{% else %}disabled="disabled" aria-label="{{ 'cart.items.no_more_stock' | t }}" data-tooltip="{{ 'cart.items.no_more_stock' | t }}" data-tooltip-position="bottom-left"{% endif %}>{% render 'icon', icon: 'plus' %}</button>
+                                      </div>
+                                    {%- else -%}
+                                      <span>{{ line_item.quantity }}</span>
+                                    {% endunless -%}
+
+                                    <a href="{{ routes.cart_change_url }}?quantity=0&line={{ forloop.index }}" data-action="decrease-quantity" data-quantity="0" data-line="{{ forloop.index }}" class="line-item__quantity-remove link">{{ 'cart.items.remove' | t }}</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      {% endfor %}
+                    </div>
+          
+                    <div class="custom-address-form custom_cart_create_in">
+                  
+                      <strong>
+                        <p class="form__subtitle custom-left custom-margin-form__subtitle">Shipping Address</p>
+                      </strong> 
+
+                      {% if customer.default_address.city %}
+                        <div class="form__input-wrapper">
+                          <div class="select-wrapper select-wrapper--primary is-filled">
+                            <label class="custom-save-add" for="Select0">
+                              <span class="">Saved addresses</span>
+                            </label>
+                            <svg focusable="false" class="icon icon--arrow-bottom " viewBox="0 0 12 8" role="presentation">
+                              <path stroke="currentColor" stroke-width="2" d="M10 2L6 6 2 2" fill="none" stroke-linecap="square"></path>
+                            </svg>
+                            <select class=""  id="Select0" aria-invalid="false">
+                              {% for address in customer.addresses %}
+                                <option class="select__item" value="{{ forloop.index0 }}" data-address_id="{{ address.id }}" data-address_first_name="{{ address.first_name }}" data-address_last_name="{{ address.last_name }}" data-address_company="{{ address.company}}"  data-address_phone="{{ address.phone}}" data-address_address1="{{ address.address1}}" data-address_address2="{{ address.address2}}" data-address_city="{{ address.city}}" data-address_province="{{ address.province}}" data-address_country="{{ address.country}}" data-address_zip="{{ address.zip}}">{{ address.address1 }}, {{ address.city}} {{ address.province_code }}, {{ address.country}} ({{ address.first_name }} {{ address.last_name }}, {{ address.company }})</option>
+                              {% endfor %}  
+                              <option value="last">Use a new address</option>
+                            </select>
+                          </div>
+                        </div>
+                      {% endif %}
+
+                      <div class="form-group" id="shipping-add-data">
+                        <div class="form__input-wrapper test2">
+                          <div class="select-wrapper select-wrapper--primary is-filled">
+                            {%- render 'icon', icon: 'arrow-bottom' -%}
+ {% comment %} 
+ <select  class="form__field" id="ship_add_country" name="ship_add_country" data-default="Country" 
+                     
+                    >
+                      {{ country_option_tags }}
+                    </select>{% endcomment %}
+
+   <select class="form__field" id="ship_add_country" name="ship_add_country" data-default="Country" >
+                              <option class="select__item" value="0">Country/region</option>     
+                              {%- for country in localization.available_countries -%}
+                                <option class="select__item" value="{{ country.name }}" data-value="{{ country.iso_code }}">{{ country.name }}</option>
+                              {%- endfor -%}
+                            </select>
+                          </div>
+                        </div>
+                    
+                        <div class="form__input-row">
+                          <div class="form__input-wrapper">
+                            <input type="text" id="ship_add_first_name"  class="form__field form__field--text" name="ship_add_first_name" value="" placeholder="First Name*" autofocus>
+                          </div>
+                          <div class="form__input-wrapper">
+                            <input type="text" id="ship_add_last_name" class="form__field form__field--text" name="ship_add_last_name" value="" placeholder="Last Name*">
+                          </div>
+                        </div>
+
+                        {% for tag in customer.tags %}
+                          {% if tag == "Business Account" %}
+                            <div class="form__input-wrapper">
+                              <input type="text" id="ship_add_company" class="form__field form__field--text" name="ship_add_company" value="" placeholder="Company Name">
+                            </div>   
+                          {% endif %}
+                        {% endfor %}
+
+                        <div class="form__input-wrapper">
+                          <input type="text" id="ship_add_address1"  class="form__field form__field--text" name="ship_add_address1" value="" placeholder="Address*">
+                        </div>
+
+                        <div class="form__input-wrapper">
+                          <input type="text" id="ship_add_address2" class="form__field form__field--text" name="ship_add_address2" value="" placeholder="Apartment, suite, etc. (optional)">
+                        </div>
+
+                        <div class="form__input-row">
+                          <div class="form__input-wrapper">
+                            <input id="ship_add_city" type="text" class="form__field form__field--text" name="ship_add_city" value="" placeholder="City">
+                          </div>
+
+                          <div class="form__input-wrapper" id="state-list">
+                             <div class="select-wrapper select-wrapper--primary is-filled">
+                              {%- render 'icon', icon: 'arrow-bottom' -%}
+                              <select class="form__field state_list" id="ship_add_state" name="ship_add_state" data-default="State" >
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form__input-wrapper">
+                            <input id="ship_add_zipcode" type="text" class="form__field form__field--text" name="ship_add_zipcode" value="" placeholder="Zip Code">
+                          </div>
+                        </div>
+
+                        <div class="form__input-wrapper">
+                          <input type="text" id="ship_add_phone_number" class="form__field form__field--text" name="ship_add_phone_number" value="" placeholder="Phone Number*">
+                        </div>
+                      </div> 
+
+                      <strong>
+                        <p class="form__subtitle custom-left custom-margin-form__subtitle">Billing Address</p>
+                      </strong> 
+
+                      <div class="form-group custom-left custom-address-checkbox">
+                        <div class="form__input-wrapper form_input_margin customform_input_margin" style="padding-bottom:0;">
+                          <div class="checkbox-wrapper">
+                            <input type="radio" class="checkbox custom-radio form__field" id="shipping_address" name="address" checked>
+                          </div>
+                          <label for="shipping_address">Same as shipping address</label>
+                        </div>
+                        <div class="form__input-wrapper form_input_margin customform_input_margin newBilling_address">
+                          <div class="checkbox-wrapper">
+                            <input type="radio" class="checkbox custom-radio form__field" id="billing_address" name="address">
+                          </div>
+                          <label for="billing_address">Enter new billing address</label>
+                        </div>
+                      </div>
+
+                      <div class="form-group" id="billing-add-data">
+                        <div class="billing_add">
+                          <div class="form__input-wrapper">
+                            <div class="select-wrapper select-wrapper--primary is-filled">
+                              {%- render 'icon', icon: 'arrow-bottom' -%}
+                              <select class="form__field" id="bill_add_country" name="bill_add_country" data-default="Country" >
+                                <option class="select__item" value="0">Country/region</option>
+                                {% for country in localization.available_countries -%}
+                                  <option class="select__item" value="{{ country.name }}" data-value="{{ country.iso_code }}">{{ country.name }}</option>
+                                {%- endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div class="form__input-row">
+                            <div class="form__input-wrapper">
+                              <input type="text" id="bill_add_first_name"  class="form__field form__field--text" name="bill_add_first_name" value="" placeholder="First Name*" autofocus>
+                            </div>
+                            <div class="form__input-wrapper">
+                              <input type="text" id="bill_add_last_name" class="form__field form__field--text" name="bill_add_last_name" value="" placeholder="Last Name*">
+                            </div>
+                          </div>
+
+                          {% for tag in customer.tags %}
+                            {% if tag == "Business Account" %}                      
+                              <div class="form__input-wrapper">
+                                <input type="text" id="bill_add_company" class="form__field form__field--text" name="bill_add_company" value="" placeholder="Company Name">
+                              </div>    
+                            {% endif %}
+                          {% endfor %}
+
+                          <div class="form__input-wrapper">
+                            <input type="text" id="bill_add_address1"  class="form__field form__field--text" name="bill_add_address1" value="" placeholder="Address">
+                          </div>
+
+                          <div class="form__input-wrapper">
+                            <input type="text" id="bill_add_address2" class="form__field form__field--text" name="bill_add_address2" value="" placeholder="Apartment, suite, etc. (optional)">
+                          </div>
+
+                          <div class="form__input-row">
+                            <div class="form__input-wrapper">
+                              <input id="bill_add_city" type="text" class="form__field form__field--text" name="bill_add_city" value="" placeholder="City">
+                            </div>
+                            <div class="form__input-wrapper" id="bill-state-list">
+                              <div class="select-wrapper select-wrapper--primary is-filled">
+                                {%- render 'icon', icon: 'arrow-bottom' -%}
+                                <select class="form__field state_list" id="bill_add_state" name="bill_add_state" data-default="State" >
+                                  <option class="select__item" value="0">State</option>
+                                </select>
+                              </div>
+                            </div>
+                              <div class="form__input-wrapper">
+                              <input id="bill_add_zipcode" type="text" class="form__field form__field--text" name="bill_add_zipcode" value="" placeholder="Zip Code">
+                            </div>
+                          </div>
+
+                          <div class="form__input-wrapper">
+                            <input type="text" id="bill_add_phone_number" class="form__field form__field--text" name="bill_add_phone_number" value="" placeholder="Phone Number">
+                          </div>
+                        </div>
+                      </div>
+
+                      <button id="submit_new_address" type="submit" style="margin-top:3% !important; font-size: small;" class="button button--primary custom-button--half submit_address_new" data-user="{% if customer %}true{% else %}false{% endif %}" data-customer-id="{{ customer.id }}" data-current-currency="{{ cart.currency.iso_code }}" data-redirect-url="{{ pages['edit-quote-information'].url }}">Continue</button>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="custom_cart_create_in custom-data-requirements">
+                <div class="form__header">
+                  <h2 class="form__title heading h1"></h2>
+                  <p class="form__legend">We will generate a quote based on the information below. Please make any necessaries changes prior to submitting your quote request.</p>
+                </div>
+
+                <div class="address-list">
+                  <div class="address-list__item">
+                    <div class="address-list__item-top">
+                      <p class="heading h5">Contact Information</p>
+                      <button type="button" class="link link--accented btn-edit edit-icon" data-id="contact-data">
+                        {%- render 'icon', icon: 'edit-icon' -%}
+                      </button>
+                    </div>
+                    <div class="address-list__item-info"></div>
+                    <div class="form-group edit_form contact_edit">
+                      <div class="form__input-row">
+                        <div class="form__input-wrapper">
+                          <input type="text" id="contact_firstName" class="form__field form__field--text" name="firstName" value="" placeholder="First Name" autofocus="">
+                        </div>
+                        <div class="form__input-wrapper">
+                          <input type="text" id="contact_lastName" class="form__field form__field--text" name="lastName" value="" placeholder="Last Name">
+                        </div>
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="contact_phoneNumber" class="form__field form__field--text" name="phoneNumber" value="" placeholder="Phone Number">
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="contact_company" class="form__field form__field--text" name="company" value="" placeholder="Company Name">
+                      </div>    
+                      <div class="form__input-wrapper">
+                        <input type="email" id="contact_email" class="form__field form__field--text" name="email" value="" placeholder="E-mail" readonly>
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="password" id="contact_password" class="form__field form__field--text" name="password" value="" placeholder="Password" readonly>
+                      </div>    
+                      <button type="button" class="form__submit button button--primary button--full button--dark save-data">Save</button>
+                    </div>
+                  </div>
+                  <div class="address-list__item">
+                    <div class="address-list__item-top">
+                      <p class="heading h5">Shipping Address</p>
+                      <button type="button" class="link link--accented btn-edit" data-id="shipping-add-data">
+                        {%- render 'icon', icon: 'edit-icon' -%}
+                      </button>
+                    </div>
+                    <div class="address-list__item-info"></div>
+                    <div class="form-group edit_form billing_address_edit">
+                      <div class="form__input-row">
+                        <div class="form__input-wrapper">
+                          <input type="text" id="ship_firstName" class="form__field form__field--text" name="firstName" value="" placeholder="First Name" autofocus>
+                        </div>
+                        <div class="form__input-wrapper">
+                          <input type="text" id="ship_lastName" class="form__field form__field--text" name="lastName" value="" placeholder="Last Name">
+                        </div>
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="ship_phoneNumber" class="form__field form__field--text" name="phoneNumber" value="" placeholder="Phone Number">
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="ship_company" class="form__field form__field--text" name="company" value="" placeholder="Company Name">
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="ship_address1" class="form__field form__field--text" name="address1" value="" placeholder="Address Line 1">
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="ship_address2" class="form__field form__field--text" name="address2" value="" placeholder="Address Line 2">
+                      </div>
+                      <div class="form__input-row">
+                        <div class="form__input-wrapper">
+                          <input id="ship_city" type="text" class="form__field form__field--text" name="city" value="" placeholder="City">
+                        </div>
+                        <div class="form__input-wrapper">
+                          <div class="select-wrapper select-wrapper--primary is-filled">
+                            {%- render 'icon', icon: 'arrow-bottom' -%}
+                            <select id="ship_state" class="form__field state_list" name="state" data-default="State" >
+                              <option class="select__item" value="0">State</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form__input-row">
+                        <div class="form__input-wrapper">
+                          <input id="ship_zipcode" type="text" class="form__field form__field--text" name="zipcode" value="" placeholder="Zip Code">
+                        </div>
+                        <div class="form__input-wrapper">
+                          <div class="select-wrapper select-wrapper--primary is-filled">
+                            {%- render 'icon', icon: 'arrow-bottom' -%}
+                            <select id="ship_save_country" class="form__field" name="country" data-default="Country" >
+                              <option class="select__item" value="0">Country</option>
+                              <option class="select__item" value="United States" data-value="US">United States</option>
+                              <option class="select__item" value="Canada" data-value="CA">Canada</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <button type="button" class="form__submit button button--primary button--full button--dark save-data">Save</button>
+                    </div>
+                  </div>
+                  <div class="address-list__item billing-add-content">
+                    <div class="address-list__item-top">
+                      <p class="heading h5">Billing Address</p>
+                      <button type="button" class="link link--accented btn-edit" data-id="billing-add-data">
+                        {%- render 'icon', icon: 'edit-icon' -%}
+                      </button>
+                    </div>
+                    <div class="address-list__item-info"></div>
+                    <div class="form-group edit_form">
+                      <div class="form__input-row">
+                        <div class="form__input-wrapper">
+                          <input type="text" id="bill_firstName" class="form__field form__field--text" name="firstName" value="" placeholder="First Name" autofocus>
+                        </div>
+                        <div class="form__input-wrapper">
+                          <input type="text" id="bill_lastName" class="form__field form__field--text" name="lastName" value="" placeholder="Last Name">
+                        </div>
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="bill_phoneNumber" class="form__field form__field--text" name="phoneNumber" value="" placeholder="Phone Number">
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="bill_company" class="form__field form__field--text" name="company" value="" placeholder="Company Name">
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="bill_address1"  class="form__field form__field--text" name="address1" value="" placeholder="Address Line 1">
+                      </div>
+                      <div class="form__input-wrapper">
+                        <input type="text" id="bill_address2" class="form__field form__field--text" name="address2" value="" placeholder="Address Line 2">
+                      </div>
+                      <div class="form__input-row">
+                        <div class="form__input-wrapper">
+                          <input id="bill_city" type="text" class="form__field form__field--text" name="city" value="" placeholder="City">
+                        </div>
+                        <div class="form__input-wrapper">
+                          <div class="select-wrapper select-wrapper--primary is-filled">
+                            {%- render 'icon', icon: 'arrow-bottom' -%}
+                            <select id="bill_state" class="form__field state_list" name="state" data-default="State" >
+                              <option class="select__item" value="0">State</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form__input-row">
+                        <div class="form__input-wrapper">
+                          <input id="bill_zipcode" type="text" class="form__field form__field--text" name="zipcode" value="" placeholder="Zip Code">
+                        </div>
+                        <div class="form__input-wrapper">
+                          <div class="select-wrapper select-wrapper--primary is-filled">
+                            {%- render 'icon', icon: 'arrow-bottom' -%}
+                            <select id="bill_save_country" class="form__field" name="country" data-default="Country" >
+                              <option class="select__item" value="0">Country</option>
+                              <option class="select__item" value="United States" data-value="US">United States</option>
+                              <option class="select__item" value="Canada" data-value="CA">Canada</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <button type="button" class="form__submit button button--primary button--full button--dark save-data">Save</button>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="button" class="form__submit button button--primary button--full button--dark thank_you1">Submit Quote Request</button>
+              </div>
+
+              <div class="cart_create thankyou_cart cube-face-right">
+                <div class="cart_create_in">
+                  <div class="form__header">
+                    <h2 class="form__title heading h1">Thank you!</h2>
+                    <p class="form__legend">We have recieved your quote request. Once reviewed and approved, You will recieve an email notification. A copy of the quote will be uploaded to "My Quotes section" in your account.</p>
+                    <span class="thnks_close">{%- render 'icon', icon: 'close' -%}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <script>
+            window.location.href = "{{ routes.root_url }}";
+          </script>
+        {% endif %}
+      {% endif %}
+  
+      <div class="log-temp-cell custom-log-temp-cell quote-action-row" style="margin-top:0px!important; margin-bottom:0px!important">
+
+      <!-- RAQ right side product management section HTML start -->
+      <div class="quote-summary-action" id="request-quote-summary-button">
+        <div class="action-cart">
+          <span class="action-cart-icon">
+            <svg focusable="false" class="icon icon--cart " viewBox="0 0 27 24" role="presentation">
+              <g transform="translate(0 1)" stroke-width="2" stroke="currentColor" fill="none" fill-rule="evenodd">
+                <circle stroke-linecap="square" cx="11" cy="20" r="2"></circle>
+                <circle stroke-linecap="square" cx="22" cy="20" r="2"></circle>
+                <path d="M7.31 5h18.27l-1.44 10H9.78L6.22 0H0"></path>
+              </g>
+            </svg>
+          </span>
+          <span id="request-quote-summary-button-txt">Show quote summary</span>
+          <span id="request-quote-summary-icon">
+            <svg focusable="false" class="icon icon--arrow-bottom " viewBox="0 0 12 8" role="presentation">
+              <path stroke="currentColor" stroke-width="2" d="M10 2L6 6 2 2" fill="none" stroke-linecap="square"></path>
+            </svg>
+          </span>
+        </div>
+        <div class="price">
+          <span id="request-quote-summary-button-total-amount" style="display:none;">
+            {{ cart.currency.iso_code }} {{ cart.total_price | money }}
+          </span>
+        </div>
+      </div>
+
+      <div class="quote-summary-action-details" id="request-quote-details">      
+        {%- if cart.item_count == 0 -%}
+          <div class="log-dec">
+            <div class="order-summary__sections quate">
+              <div class="order-summary__section order-summary__section--product-list">
+                <div class="order-summary__section__content">
+                  <table class="product-table">
+                    <caption class="visually-hidden">Shopping cart</caption>
+                    <thead class="product-table__header">
+                      <tr>
+                        <th scope="col"><span class="visually-hidden">Product image</span></th>
+                        <th scope="col"><span class="visually-hidden">Description</span></th>
+                        <th scope="col"><span class="visually-hidden">Quantity</span></th>
+                        <th scope="col"><span class="visually-hidden">Price</span></th>
+                      </tr>
+                    </thead>
+                    <tbody data-order-summary-section="line-items">
+                      <tr class="product">
+                        <td class="product__price" colspan="4">
+                          <a href="{{ routes.root_url }}" style="color: #06A0E3;">+ Add more items</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="order-summary__section order-summary__section--total-lines" data-order-summary-section="payment-lines">
+                <table class="total-line-table" style="display:none;">
+                  <tbody class="total-line-table__tbody">
+                    <tr class="total-line total-line--subtotal">
+                      <th class="total-line__name custom" scope="row">Subtotal</th>
+                      <td class="total-line__price">
+                        <span class="order-summary__emphasis skeleton-while-loading" id="raq-line-item-subtotal">
+                          $0.0
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="total-line-table__footer">
+                    <tr class="total-line">
+                      <th class="total-line__name payment-due-label" scope="row">
+                        <span class="payment-due-label__total total">Total</span>
+                      </th>
+                      <td class="total-line__price payment-due total_final">
+                        <span class="cart-recap__price-line-price cart-sub-total-price">
+                          <span class="bcpo-cart-original-total total_final" id="raq-line-item-total">
+                            $0.0
+                          </span>
+                        </span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        {%- else -%}
+           <div class="log-dec">
+            <div class="order-summary__sections quate">
+              {%- for line_item in cart.items -%}
+                <div class="order-summary__section order-summary__section--product-list" id="raq-line-item-div-{{forloop.index}}">
+                  <div class="order-summary__section__content">
+                    <table class="product-table">
+                      <caption class="visually-hidden">Shopping cart</caption>
+                      <thead class="product-table__header">
+                        <tr>
+                          <th scope="col"><span class="visually-hidden">Product image</span></th>
+                          <th scope="col"><span class="visually-hidden">Description</span></th>
+                          <th scope="col"><span class="visually-hidden">Quantity</span></th>
+                          <th scope="col"><span class="visually-hidden">Price</span></th>
+                        </tr>
+                      </thead>
+                      <tbody data-order-summary-section="line-items">
+                        <tr class="product" data-product-id="{{ line_item.product_id }}" data-variant-id="{{ line_item.variant_id }}">
+                          <td class="product__image">
+                            <div class="product-thumbnail ">
+                              <div class="product-thumbnail__wrapper">
+                                <img alt="{{ line_item.title }}" class="product-thumbnail__image lazyload skeleton" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ line_item.image | img_url: '180x' }}">
+                              </div>
+                              <span class="product-thumbnail__quantity" id="raq-line-item-thumbnail-quantity-{{forloop.index}}" aria-hidden="true" style="display: none;">{{ line_item.quantity}}</span>
+                            </div>
+                            <div class="quantity-selector">
+                              <button type="button" class="raq-line-item-quantity-selector__button" data-action="decrease-quantity-quote" data-line="{{ forloop.index }}" id="raq-line-item-quantity-decrease-btn-{{forloop.index}}">
+                                  {% render 'icon', icon: 'minus' %}
+                              </button>
+                              <input class="quantity-selector__value" id="raq-line-item-quantity-{{forloop.index}}" inputmode="numeric" data-current-value="{{ line_item.quantity }}" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" disabled="disabled">
+                              <button type="button" class="raq-line-item-quantity-selector__button" data-action="increase-quantity-quote" data-line="{{ forloop.index }}">{% render 'icon', icon: 'plus' %}</button>
+                              </div>
+                              <button type="button" class="raq-line-item-remove-button" data-action="remove-quote" data-line="{{ forloop.index }}">Remove</button>
+                          </td>
+                          <th class="product__description" scope="row">
+                            <span class="product__description__name order-summary__emphasis">{{ line_item.product.title }}</span>
+                            <span class="product__description__variant order-summary__small-text" style="display:none;">{{ line_item.variant.title }}</span>
+                            <div class="custom_cart_div">
+                                {% if line_item.variant.metafields.custom.Configuration != blank  %}
+                                  <span class="cart_custom_heading line-item-property__field">Configuration: <span class="cart_custom_text">{{ line_item.variant.metafields.custom.Configuration }}</span><input type="hidden" id="configuration" name="properties[Configuration]" value="{{ line_item.variant.metafields.custom.Configuration }}"></span>
+                                {% endif %}
+                                <span class="cart_img_span"><img src="https://cdn.shopify.com/s/files/1/2372/2681/files/cart_free_delivery.png?v=1706177573" width="27px" height="14px"> <span class="cart_custom_text">FREE Shipping</span></span>
+                               {% if line_item.variant.option1 != blank  %} <span class="cart_custom_heading">Condition: <span class="cart_custom_text">{{ line_item.variant.option1 }}</span></span> {% endif %}
+                                {% if line_item.variant.option2 != blank or line_item.variant.option3 != blank %} <span class="cart_custom_heading">Option: <span class="cart_custom_text">{{ line_item.variant.option2 }} {{ line_item.variant.option3 }}</span></span>{% endif %}
+                                <span class="cart_custom_heading">Availability: <span class="cart_custom_text">
+                                  {%- if line_item.inventory_quantity <= 3 -%}
+                                    <span class="product-form__inventory inventory inventory--low cart_inventory_low">Low stock</span>
+                                  {%- else -%}
+                                    <span class="product-form__inventory inventory inventory--high cart_inventory_high">{{ 'product.form.in_stock' | t }}</span>
+                                  {%- endif -%}
+                                </span></span>
+                              </div>
+                          </th>
+                          <td class="product__quantity">
+                            <span class="visually-hidden" id="raq-line-item-hidden-quantity-{{forloop.index}}">{{ line_item.quantity}}</span>
+                          </td>
+                           <td class="product__price">
+                              <span class="order-summary__emphasis skeleton-while-loading">
+                                <span class="line-item__price--highlight" id="raq-line-item-price-{{forloop.index}}" data-unit-price="{{ line_item.final_price  }}">
+                                  {{ line_item.final_price | times: line_item.quantity | money }}
+                                </span>
+                              </span>
+                            </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              {%- endfor -%}
+              <div class="order-summary__section order-summary__section--product-list">
+                <div class="order-summary__section__content">
+                  <table class="product-table">
+                    <caption class="visually-hidden">Shopping cart</caption>
+                    <thead class="product-table__header">
+                      <tr>
+                        <th scope="col"><span class="visually-hidden">Product image</span></th>
+                        <th scope="col"><span class="visually-hidden">Description</span></th>
+                        <th scope="col"><span class="visually-hidden">Quantity</span></th>
+                        <th scope="col"><span class="visually-hidden">Price</span></th>
+                      </tr>
+                    </thead>
+                    <tbody data-order-summary-section="line-items">
+                      <tr class="product">
+                        <td class="product__price" colspan="4">
+                          <a href="{{ routes.root_url }}" style="color: #06A0E3;">+ Add more items</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="order-summary__section order-summary__section--total-lines" data-order-summary-section="payment-lines">
+                <table class="total-line-table" style="display:none;">
+                  <tbody class="total-line-table__tbody">
+                    <tr class="total-line total-line--subtotal">
+                      <th class="total-line__name custom" scope="row">Subtotal</th>
+                      <td class="total-line__price">
+                        <span class="order-summary__emphasis skeleton-while-loading" id="raq-line-item-subtotal">
+                          {{ cart.items_subtotal_price | money }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="total-line-table__footer">
+                    <tr class="total-line">
+                      <th class="total-line__name payment-due-label" scope="row">
+                        <span class="payment-due-label__total total">Total</span>
+                      </th>
+                      <td class="total-line__price payment-due total_final">
+                        <span class="cart-recap__price-line-price cart-sub-total-price">
+                          <span class="bcpo-cart-original-total total_final" id="raq-line-item-total">
+                            {{ cart.currency.iso_code }} {{ cart.total_price | money }}
+                          </span>
+                        </span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+      <!-- RAQ right side product management section HTML end -->
+    </div>
+    <!--Login Section Template End-->
+
+    <div class="thanku_page_wrap" style="display: none;">
+      <div class="submit_cart">
+        <h1 class="page__title heading h1">Thank you for your Request!</h1>
+        <p>We have recieved your quote request. Once reviewed and approved, You will recieve a notification. A copy of
+          the quote will be uploaded "My Quotes" section in your account.</p>
+        <span>Having Question? <a href="{{ pages['contact-us'].url }}">Contact us</a></span>
+        <div class="button-group button-group--loose">
+          <a href="/account#my-quotes" class="button button--primary">View Quotes</a>
+          <a href="/" class="button button--ternary">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </div>
+          </div>
+            
+  <!--Contener Page Wrap End-->
+</section>         
+
+<script>
+  $(document).on('click','.form__input-wrapper',function(){
+    $('.err').remove();
+  }); 
+
+     // $(document).on("click", ".submit_address_new", function (e) {
+     //            e.preventDefault();
+     //            var submit_redirect_url = $(this).attr("data-redirect-url");
+     //             window.location.href = submit_redirect_url;
+     // });
+
+  $( document ).ready(function() {
+    var shipAddFirstName = $(this).find(':selected').attr('data-address_first_name');
+    var shipAddLastName =  $(this).find(':selected').attr('data-address_last_name');
+    var shipAddPhoneNumber =  $(this).find(':selected').attr('data-address_phone');
+    var shipAddCompany =  $(this).find(':selected').attr('data-address_company');
+    var shipAddAddress1 =  $(this).find(':selected').attr('data-address_address1');
+    var shipAddAddress2 =  $(this).find(':selected').attr('data-address_address2');
+    var shipAddCity = $(this).find(':selected').attr('data-address_city');
+    var shipAddZipcode =  $(this).find(':selected').attr('data-address_zip');
+    var shipAddCountry =  $(this).find(':selected').attr('data-address_country');
+
+    $("#ship_add_first_name").val(shipAddFirstName);
+    $("#ship_add_last_name").val(shipAddLastName);
+    $("#ship_add_company").val(shipAddCompany);
+    $("#ship_add_phone_number").val(shipAddPhoneNumber);
+    $("#ship_add_address1").val(shipAddAddress1);
+    $("#ship_add_address2").val(shipAddAddress2);
+    $("#ship_add_city").val(shipAddCity);
+    $("#ship_add_zipcode").val(shipAddZipcode);
+
+    if (shipAddCountry) {
+      $("#ship_add_country").val(shipAddCountry).trigger('change');
+    } else {
+      $("#ship_add_country").val("United States").trigger('change');
+    }
+  });
+
+  $(document).on('change','#Select0', function(){
+    var shipAddFirstName = $(this).find(':selected').attr('data-address_first_name');
+    var shipAddLastName =  $(this).find(':selected').attr('data-address_last_name');
+    var shipAddPhoneNumber =  $(this).find(':selected').attr('data-address_phone');
+    var shipAddCompany =  $(this).find(':selected').attr('data-address_company');
+    var shipAddAddress1 =  $(this).find(':selected').attr('data-address_address1');
+    var shipAddAddress2 =  $(this).find(':selected').attr('data-address_address2');
+    var shipAddCity = $(this).find(':selected').attr('data-address_city');
+    var shipAddZipcode =  $(this).find(':selected').attr('data-address_zip');
+    var shipAddCountry =  $(this).find(':selected').attr('data-address_country');
+
+    if (shipAddCountry != undefined) {
+      if (shipAddCountry.length == 0) {
+        var shipAddCountry =  'United States';
+        var shipAddState =  0;
+      } 
+    } 
+
+    $("#ship_add_first_name").val(shipAddFirstName);
+    $("#ship_add_last_name").val(shipAddLastName);
+    $("#ship_add_company").val(shipAddCompany);
+    $("#ship_add_phone_number").val(shipAddPhoneNumber);
+    $("#ship_add_address1").val(shipAddAddress1);
+    $("#ship_add_address2").val(shipAddAddress2);
+    $("#ship_add_city").val(shipAddCity);
+    $("#ship_add_zipcode").val(shipAddZipcode);
+    $("#ship_add_country").val(shipAddCountry).trigger('change');
+    $("#ship_add_state").val(shipAddState); 
+
+    if (shipAddCountry) {
+      $("#ship_add_country").val(shipAddCountry).trigger('change');
+    } else {
+      $("#ship_add_country").val("United States").trigger('change');
+    }         
+  });
+
+  /* RAQ right side product management section JS start */
+  $(document).on('click', '#request-quote-summary-button', function(){
+    $('#request-quote-details').toggle();
+    if ($('#request-quote-summary-icon').hasClass('action-cart-arrow')) {
+      $('#request-quote-summary-icon').removeClass('action-cart-arrow');
+    } else {
+      $('#request-quote-summary-icon').addClass('action-cart-arrow');
+    }
+    let requestQuoteSummaryButtonTxt = $.trim($('#request-quote-summary-button-txt').text());
+
+    if (requestQuoteSummaryButtonTxt == 'Show quote summary') {
+      $('#request-quote-summary-button-txt').text('Hide quote summary');
+    } else {
+      $('#request-quote-summary-button-txt').text('Show quote summary');
+    }
+  });
+
+  $(document).on('click', '.raq-line-item-quantity-selector__button, .raq-line-item-remove-button', function(){
+    let raqItemLine = parseInt($(this).attr('data-line'));
+    let raqItemDataAction = $(this).attr('data-action');
+    let targetRaqItemQuantity = parseInt($(`#raq-line-item-quantity-${raqItemLine}`).val());
+
+    let itemQuantity = 1;
+
+    if (raqItemDataAction.toLowerCase() === 'decrease-quantity-quote') {
+        itemQuantity = targetRaqItemQuantity - 1;
+    } else if (raqItemDataAction.toLowerCase() === 'increase-quantity-quote') {
+        itemQuantity = targetRaqItemQuantity + 1;
+    } else if (raqItemDataAction.toLowerCase() === 'remove-quote') {
+        itemQuantity = 0;
+    }
+
+    raqLineItemQuanityUpdation(raqItemLine, itemQuantity);
+  });
+
+  function raqLineItemQuanityUpdation(raqItemLine, itemQuantity)
+  {
+    document.dispatchEvent(new CustomEvent('theme:loading:start'));
+    fetch("".concat(window.routes.cartChangeUrl, ".js"), {
+      body: JSON.stringify({
+        line: raqItemLine,
+        quantity: itemQuantity
+      }),
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    }).then(function (cart) {
+      cart.json().then(function (content) {
+        if (!parseInt(content.item_count)) {
+          document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+             bubbles: true
+          }));
+          window.location.reload();
+        } else if (!parseInt(itemQuantity)) {
+          window.location.reload();
+        }
+
+        if (parseInt(itemQuantity)) {
+          $(`#raq-line-item-thumbnail-quantity-${raqItemLine}`).html(itemQuantity);
+          $(`#raq-line-item-quantity-${raqItemLine}`).val(itemQuantity);
+          $(`#raq-line-item-hidden-quantity-${raqItemLine}`).html(itemQuantity);
+
+          // Highlight: Fetch Unit Price and Calculate Total Price
+          let unitPrice = parseFloat($(`#raq-line-item-price-${raqItemLine}`).data('unit-price')) / 100; // Divide by 100 to convert from cents to dollars
+          let totalPrice = unitPrice * itemQuantity;
+          let raqCurrency = content.currency || 'USD';
+          let raqCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+  
+          // Highlight: Format Total Price
+          let formattedTotalPrice = CurrencyClass.formatMoney(totalPrice * 100, raqCurrencyFormat); // Multiply by 100 to convert back to cents for formatting
+  
+          // Highlight: Update HTML with Formatted Total Price
+          $(`#raq-line-item-price-${raqItemLine}`).html(formattedTotalPrice);
+        } else {
+          $(`#raq-line-item-div-${raqItemLine}`).remove();
+        }
+
+        let raqCurrency = 'USD';
+        if (content.currency) {
+          raqCurrency = content.currency;
+        }
+
+        if (!parseInt(content.item_count)) {
+          let raqCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+          let default_price = '0.00';
+          let default_formatted_price = CurrencyClass.formatMoney(default_price, raqCurrencyFormat);
+
+          $(`#raq-line-item-subtotal`).html(default_formatted_price);
+          $(`#raq-line-item-total`).html(`${raqCurrency} ${default_formatted_price}`);
+          $(`#request-quote-summary-button-total-amount`).html(`${raqCurrency} ${default_formatted_price}`);
+        }
+
+        if (content.items_subtotal_price) {
+          let subtotal_price = parseFloat(parseFloat(content.items_subtotal_price) / 100).toFixed(2);
+          let raqCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+          let formatted_subtotal_price = CurrencyClass.formatMoney(subtotal_price, raqCurrencyFormat);
+
+          $(`#raq-line-item-subtotal`).html(formatted_subtotal_price);
+          $(`#raq-line-item-total`).html(`${raqCurrency} ${formatted_subtotal_price}`);
+          $(`#request-quote-summary-button-total-amount`).html(`${raqCurrency} ${formatted_subtotal_price}`);
+        }
+
+        //updateRaqLineItemUI(raqItemLine, itemQuantity);
+
+        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+          bubbles: true
+        }));
+
+        document.dispatchEvent(new CustomEvent('theme:loading:end'));
+      });
+    }).catch(function (error) {
+      resetRaqLineItemQuantityToOld(raqItemLine);
+      console.log(error);
+      document.dispatchEvent(new CustomEvent('theme:loading:end'));
+    });
+  }
+
+  function updateRaqLineItemUI(raqItemLine, itemQuantity)
+  {
+    if ($(`#raq-line-item-quantity-decrease-btn-${raqItemLine}`).length) {
+      if (parseInt(itemQuantity) == 1) {
+        $(`#raq-line-item-quantity-decrease-btn-${raqItemLine}`).html(getRaqLineItemDeleteIcon());
+      } else {
+        $(`#raq-line-item-quantity-decrease-btn-${raqItemLine}`).html(getRaqLineItemDecreaseIcon());
+      }
+    }
+  }
+
+  function getRaqLineItemDeleteIcon()
+  {
+    return `<svg focusable="false" class="icon" viewBox="0 0 20 20" role="presentation">
+      <path d="M8 3.994C8 2.893 8.895 2 10 2s2 .893 2 1.994h4c.552 0 1 .446 1 .997 0 .55-.448.997-1 .997H4c-.552 0-1-.447-1-.997s.448-.997 1-.997h4zM5 14.508V8h2v6.508a.5.5 0 00.5.498H9V8h2v7.006h1.5a.5.5 0 00.5-.498V8h2v6.508A2.496 2.496 0 0112.5 17h-5C6.12 17 5 15.884 5 14.508z" fill="#5C5F62"/>
+    </svg>`;
+  }
+
+  function getRaqLineItemDecreaseIcon()
+  {
+    return `<svg focusable="false" class="icon icon--minus" viewBox="0 0 10 2" role="presentation">
+      <path d="M10 0v2H0V0z" fill="currentColor"></path>
+    </svg>`;
+  }
+
+  function resetRaqLineItemQuantityToOld(raqItemLine)
+  {
+    let raqItemOldQuantity = parseInt($(`#raq-line-item-quantity-${raqItemLine}`).attr('data-current-value'));
+    $(`#raq-line-item-quantity-${raqItemLine}`).val(raqItemOldQuantity);
+  }
+
+  function number_format(number, decimals, decPoint, thousandsSep)
+  {
+    number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+    const n = !isFinite(+number) ? 0 : +number;
+    const prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
+    const sep = (typeof thousandsSep === 'undefined') ? ',' : thousandsSep;
+    const dec = (typeof decPoint === 'undefined') ? '.' : decPoint;
+    let s = '';
+
+    const toFixedFix = function (n, prec) {
+      if (('' + n).indexOf('e') === -1) {
+        return +(Math.round(n + 'e+' + prec) + 'e-' + prec);
+      } else {
+        const arr = ('' + n).split('e');
+        let sig = '';
+
+        if (+arr[1] + prec > 0) {
+          sig = '+';
+        }
+
+        return (+(Math.round(+arr[0] + 'e' + sig + (+arr[1] + prec)) + 'e-' + prec)).toFixed(prec);
+      }
+    }
+    // @todo: for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec).toString() : '' + Math.round(n)).split('.');
+
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+
+    if ((s[1] || '').length < prec) {
+      s[1] = s[1] || '';
+      s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+
+    return s.join(dec);
+  }
+  /* RAQ right side product management section JS end */
+
+
+  // Get the country and state select dropdowns
+  var $countrySelect = $('#ship_add_country');
+        
+  // Define the URL for the API endpoint
+  var apiUrl = 'https://developmentquote.monitors.com/shopify/countries';
+
+  $(document).on("change", "#ship_add_country", function () {
+    $('#Select0').attr('disabled', true);
+    var selectedCountry = $(this).val();
+    // $('#state-list').prepend('<div class="bg_loader_address"></div>').fadeIn();
+    // Check if state data is available
+    var shipAddState = $('#Select0').find(':selected').attr('data-address_province');
+    if (selectedCountry) {
+    } else {
+        selectedCountry = 'United States';
+    }
+
+    var selectedProvinces = (country_state_json_arr[selectedCountry]) ? country_state_json_arr[selectedCountry] : [];
+    var $stateSelect = $('#ship_add_state');
+    $stateSelect.empty();
+
+    if (selectedProvinces && selectedProvinces.length > 0) {
+
+        // Populate the state select dropdown with the province data (if any)
+        $stateSelect.append('<option class="select__item" value="0">State</option>');
+        selectedProvinces.forEach(function (province) {
+            $stateSelect.append('<option class="select__item" value="' + province.name + '" data-code="' + province.code + '">' + province.name + '</option>');
+        });
+
+        // If state data is available, show it as the selected option in the dropdown list
+        // if (shipAddState) {}
+        $stateSelect.find('option[value="' + shipAddState + '"]').prop('selected', true);
+        // Show the state select dropdown
+        $('#state-list').show();
+
+
+
+        $stateSelect.show();
+
+
+        // $('.bg_loader_address').fadeOut();
+    }
+    else {
+        if (shipAddState === 'undefined') {
+            $('#state-list').show();
+            $stateSelect.show();
+            $stateSelect.val('0');
+        } else {
+
+            // Hide the state select dropdown and remove any selected value
+            $('#state-list').hide();
+            $stateSelect.hide();
+            $stateSelect.val('0');
+        }
+    }
+
+    // $('.bg_loader_address').fadeOut();
+    $('#Select0').attr('disabled', false);
+});
+
+  $(document).on("change", "#bill_add_country", function() {
+    var selectedbillCountry = $(this).val();
+
+    // $('#bill-state-list').prepend('<div class="bg_loader_address"></div>').fadeIn();
+
+
+         var selectedProvinces = (country_state_json_arr[selectedbillCountry]) ? country_state_json_arr[selectedbillCountry] : [];
+
+        var $billstateSelect = $('#bill_add_state');
+
+        // Clear the state select dropdown
+        $billstateSelect.empty();
+
+        if (selectedProvinces.length > 0) {
+          // Populate the state select dropdown with the province data (if any)
+          $billstateSelect.append('<option class="select__item" value="0">State</option>');
+          selectedProvinces.forEach(function(province) {
+            $billstateSelect.append('<option class="select__item" value="' + province.name + '" data-code="' + province.code + '">' + province.name + '</option>');
+          });
+          $('#bill-state-list').show();
+            $billstateSelect.show();
+          // $('.bg_loader_address').fadeOut();  
+        }
+        else {
+          // Hide the state select dropdown and remove any selected value
+          $('#bill-state-list').hide();
+          $billstateSelect.hide();
+          $billstateSelect.val('0');
+        }
+
+        // $('.bg_loader_address').fadeOut();
+
+    
+    
+  
+  });  
+</script>  
+
+{% schema %}
+  {
+    "name": "New Addresses",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

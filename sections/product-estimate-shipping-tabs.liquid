@@ -1,0 +1,110 @@
+{%- capture section_settings -%}
+{
+  "showShippingEstimator": true
+}
+{%- endcapture -%}
+
+{% unless product.tags contains 'custom_pagefly_content' %}
+
+  <section data-section-id="{{ section.id }}" data-section-type="product" data-section-settings='{{ section_settings }}'>
+    <div class="container pd_tabs_wrap ">
+      <div  class="product_des_wrap" id="review">
+        <div class="review_wrap">
+          <h2 class="custom-review-heading" {% if product.metafields.stamped.reviews_count == blank %} style="display: none;"{% endif %}>Reviews</h2>
+          <!--Start Stamped.io Auto Installation-->
+          <div
+            id="stamped-main-widget"
+            class="stamped-main-widget custom-review-main-widget"
+            data-widget-style="standard"
+            data-product-id="{{ product.id }}"
+            data-name="{{ product.title | escape }}"
+            data-url="{{ shop.url }}{{ product.url }}"
+            data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}"
+            data-description="{{ product.description | escape }}"
+            data-product-sku="{{product.handle}}"
+            data-product-type="{{product.type}}"
+            data-offset="250"
+            data-animation="false"
+            >
+          </div>
+          <!--End Stamped.io Auto Installation-->
+        </div>
+      </div>
+
+      <div class="card product_des_wrap" id="estimate">
+        {%- if product.available -%}
+          <div class="product-block-list__item product-block-list__item--shipping"  >
+            <div class="card">
+              <div class="card__header" style="padding-top: 10px;">
+                <h2 class="card__title heading h3">{{ 'product.general.estimate_shipping' | t }}</h2>
+              </div>
+
+              <div class="card__section">
+                <div class="shipping-estimator form">
+                  <div class="form__input-row">
+                    <div class="form__input-wrapper">
+                      <label for="shipping-estimator-country" class="form__label">{{ 'cart.shipping_estimator.country' | t }}</label>
+
+                      <div class="select-wrapper select-wrapper--primary">
+                        {%- render 'icon', icon: 'arrow-bottom' -%}
+
+                        <select name="country" id="shipping-estimator-country" data-default="{{ customer.default_address.country | default: section.settings.shipping_estimator_default_country }}" required>
+                          {{- country_option_tags -}}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form__input-wrapper" style="display: none">
+                      <label for="shipping-estimator-province" class="form__label">State/Province</label>
+
+                      <div class="select-wrapper select-wrapper--primary">
+                        {%- render 'icon', icon: 'arrow-bottom' -%}
+
+                        <select name="province" id="shipping-estimator-province" data-default="{{ customer.default_address.province }}"></select>
+                      </div>
+                    </div>
+
+                    <div class="form__input-wrapper" style="max-width: 155px">
+                      <label for="shipping-estimator-zip" class="form__label">{{ 'cart.shipping_estimator.zip_code' | t }}</label>
+                      <input type="text" name="zip" id="shipping-estimator-zip" class="form__field form__field--text" value="{{ customer.default.address.zip }}" required>
+                    </div>
+                  </div>
+
+                  <button type="button" class="form__submit button button--primary" data-action="estimate-shipping">{{ 'cart.shipping_estimator.estimate' | t }}</button>
+
+                  <div class="shipping-estimator__results rte" style="display: none;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const stampedElement = document.querySelector('#stamped-main-widget .stamped-container[data-count="0"]');
+    if (stampedElement) {
+       document.querySelector('.custom-review-heading').style.display = 'none';
+    }
+  </script>
+
+{% endunless %}
+
+{% schema %}
+  {
+    "name": "Product Shipping Tabs",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Product Shipping Tabs"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

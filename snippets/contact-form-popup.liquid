@@ -1,0 +1,238 @@
+
+<style>
+    body.show-contact-popup  .contact-form-popup{
+        opacity: 1;
+        visibility: visible;
+        z-index: 99;
+    }
+    .contact-form-popup{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgb(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        transition: opacity 0.5s;
+    }
+    .contact-form-popup .contact-popup-container{
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        background: #ffffff;
+        height: auto;
+        max-width: 640px;
+        border-radius: 10px;
+        margin: 20px;
+        padding: 20px;
+        min-height: 200px;
+        position: relative;
+    }
+    .contact-form-popup .contact-popup-container h3{
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+    .contact-form-popup .contact-popup-container .close-btn{
+        display: flex;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+        z-index: 10;
+    }
+    .contact-form-popup .contact-popup-container h3{
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 20px;
+        color: #000000;
+    }
+    .contact-form-popup .popup-form-content form{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow: hidden;
+    }
+    .contact-form-popup .popup-form-content .form-row.full-width{
+        width: 100%;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .contact-form-popup .popup-form-content .form-column{
+        width: calc(50% - 10px);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .contact-form-popup .popup-form-content input, .contact-form-popup .popup-form-content textarea{
+        width: 100%;
+        border-radius: 8px;
+        border: 0.66px solid #E1E3E4;
+        background: #FDFDFD;
+        padding: 6px 12px;
+    }
+    .contact-form-popup .popup-form-content textarea{
+        min-height: 109px;
+    }
+    .contact-form-popup .popup-form-content label{
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        color: #303030;
+    }
+    .contact-form-popup .submit-btn-container{
+        align-items: flex-end;
+    }
+    .contact-form-popup .contact-form-submit{
+        background-color: #06A0E3;
+        color: #FFFFFF;
+        border-radius: 5px;
+        padding: 7px 15px;
+        font-family: "Encode Sans";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        max-width: 114px;
+    }
+    .contact-form-popup .popup-form-content .contact-phone-flex{
+        display: flex;
+        align-items: center;
+    }
+    .contact-form-popup .popup-form-content .contact-select-dropdown-flex{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        background-color: #f2f2f2;
+        padding: 8px 10px;
+        height: 32px;
+        border-radius: 8px;
+        margin-right: 5px;
+    }
+    .contact-form-popup .popup-form-content .contact-select-dropdown-flex .contact-bg-flag{
+        width: 24px;
+        height: 16px;
+        background-image: url("https://cdn.shopify.com/static/images/flags/us.svg");
+        background-repeat: round;
+        margin-right: 10px;
+    }
+    .contact-form-popup .popup-form-content .contact-select-dropdown-flex select{
+        opacity: 0;
+        width: 100%;
+        height: 32px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+    .contact-form-popup .popup-form-content #contact_phone_code{
+        border: 0.66px solid #E1E3E4;
+        border-right: unset;
+        border-radius: 8px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        white-space: nowrap;
+        padding: 1.5px 0px 1px 12px;
+        pointer-events: none;
+        background: #FDFDFD;
+    }
+    .contact-form-popup .popup-form-content #contact_phone{
+        border-left: unset;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    #textMirror {
+        visibility: hidden;
+        white-space: pre;
+        position: absolute;
+        font-family: inherit;
+        font-size: inherit;
+      }
+    @media only screen and (max-width: 768px) {
+        .contact-form-popup .form-row.row-email-phone{
+            flex-direction: column;
+
+        }
+        .contact-form-popup .form-row.row-email-phone .form-column{
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="contact-form-popup" id="contactFormPopup">
+    <div class="contact-popup-container">
+        <div class="close-btn" id="contactPopupCloseBtn">
+            {% render 'icon', icon: 'close' %}
+        </div>
+        <h3>Contact Us</h3>
+        <div class="popup-form-content">
+            <form method="post" action="/" accept-charset="UTF-8" class="ContactForm">
+
+                <input type="hidden" name="order_id" id="order_id" value="">
+                <input type="hidden" name="product_name" id="product_name" value="">
+                <input type="hidden" name="order_name" id="order_name" value="">
+                <input type="hidden" name="customer_id" id="customer_id" value="">
+
+                <div class="form-row">
+                    <div class="form-column">
+                        <label class="field__label" for="ContactForm-firstname">First Name</label>
+                        <input class="field__input" type="text" id="ContactForm-firstname" name="first_name" value="{{ customer.first_name }}" required>
+                    </div>
+                    <div class="form-column">
+                        <label class="field__label" for="ContactForm-lastname">Last Name</label>
+                        <input class="field__input" type="text" id="ContactForm-lastname" name="last_name" value="{{ customer.last_name }}" required>
+                    </div>
+                </div>
+                {% comment %}  <div class="form-row full-width">
+                    <label class="field__label" for="ContactForm-company">Company</label>
+                    <input class="field__input" type="text" id="ContactForm-company" name="company_name" value="">
+                </div> {% endcomment %}
+                <div class="form-row row-email-phone">
+                    <div class="form-column">
+                        <label class="field__label" for="ContactForm-email">Email</label>
+                        <input class="field__input" type="email" id="ContactForm-email" name="email" value="{{ customer.email }}" required>
+                    </div>
+                    <div class="form-column">
+                        <label class="field__label" for="contact_phone">Phone Number</label>
+                        <div class="contact-phone-flex">
+                            <div class="contact-select-dropdown-flex">
+                              <span class="contact-bg-flag"></span>
+                              <select id="conatctPhoneCodesSelect">
+                              </select>
+                              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision">
+                                <path d="M6 9l6 6 6-6"></path>
+                              </svg>
+                            </div>
+                            <div id="contact_phone_code" class=""></div>
+                            <input class="field__input" id="contact_phone" type="tel" name="phone" value="" data-phone="{{ customer.phone }}" required>
+                          </div>
+                    </div>
+                </div>
+                <div class="form-row full-width">
+                    <label class="field__label" for="ContactForm-message">Inquiry</label>
+                    <textarea class="field__input toggle-placeholder" id="ContactForm-message" name="message" value="" required data-placeholder="Please include a brief note describing the context of your inquiry." 
+                        placeholder="Please include a brief note describing the context of your inquiry."></textarea>
+                </div>
+                <div class="form-row full-width submit-btn-container">
+                    <button type="submit" class="contact-form-submit">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

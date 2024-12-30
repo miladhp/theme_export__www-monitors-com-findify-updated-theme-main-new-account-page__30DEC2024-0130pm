@@ -1,0 +1,260 @@
+<style type="text/css">
+  html{padding-bottom:0 !important;}
+        body{margin: 0; padding: 0;}
+        .log-temp{ display: flex; background-color: #ffffff; background-image: -webkit-linear-gradient(0deg, #ffffff 50%, #FAFAFA 50%);}
+        .log-temp-cell{ width: calc(100%/2); min-height: 100vh; }
+        .log-temp-cell.left{ }
+        .log-temp-cell.right .log-dec {text-align: center;}
+        .log-temp-cell.right{ display: flex; justify-content: center;  }
+        .log-dec{ padding: 30px; }
+        .log-temp-menu-part{ margin: 0 0 30px 0; }
+        .log-temp-from-box{ padding: 20px; }
+    
+       @media(min-width: 1024px){
+        .log-temp.custom-log-temp {margin: 0 -15px;}
+        .log-temp.custom-log-temp .left, .log-temp.custom-log-temp .right {padding: 0 15px;}
+        .log-temp.custom-log-temp .left { padding-right: 50px;}
+       }
+        @media(max-width: 1023px){
+         .log-temp{ flex-direction: column; background-color: transparent; }
+         .log-temp-cell{ width: calc(100%/1); min-height: 50vh; }
+         .log-temp-cell.left{ background-color: #ffffff; }
+         .log-temp-cell.right{ background-color: #efefef; }
+        }
+
+        .log-temp-blank-row{ display: flex; justify-content: space-between; }
+        .log-temp-blank-row .colx{ width: calc(100%/2 - 20px);  }
+        .log-temp-blank-row .colx.frm-btn{ text-align: right;}
+
+        .log-temp-from-row{ display: flex; justify-content: space-between; margin:0 0 0px 0; }
+        .log-temp-from-row.two .log-temp-field{ width: calc(100%/2 - 10px); }
+        .log-temp-from-row.three .log-temp-field{ width: calc(100%/3 - 10px); }
+        .log-temp-from-row .log-temp-field{  }
+
+        @media(max-width: 479px){
+        .log-temp-blank-row{ flex-direction: column;  }
+        .log-temp-blank-row .colx{ width: calc(100%/1); margin-bottom: 20px;  }
+        .log-temp-from-row{ flex-direction: column; }
+        .log-temp-from-row.two .log-temp-field{ width: calc(100%/1); margin: 0 0 10px 0; }
+        .log-temp-from-row.three .log-temp-field{ width: calc(100%/1); margin: 0 0 10px 0; }
+        }
+
+        .form-custom{ margin-left: 60px; margin-right: 60px; }
+        .btn1{ margin-top: -14px; }
+        .side-text{margin: 0px 0 0px 71px;font-size: 11px;text-align: center;}
+        .log-temp-cell.right p{font-size: 14px;line-height: 20px;padding: 0 10%;}
+
+
+      /*******31.10.22******/
+    .log-dec .order-summary__sections{ width:100%; min-width:450px;}
+    .log-dec .order-summary__section{width:100%;}
+    .log-dec .order-summary__section .order-summary__section__content{width:100%;}
+    .log-dec .order-summary__section .order-summary__section__content table.product-table{width:100%; font-size:12px; color:#323232;}
+    .log-dec .order-summary__section .order-summary__section__content table.product-table td{ padding:10px; color:#323232;}
+    .log-dec .order-summary__section .product-thumbnail {
+        width: 4.6em;
+        height: 4.6em;
+        border-radius: 8px;
+        background: #fff;
+        position: relative;
+    }
+    .log-dec .order-summary__section .product-thumbnail .product-thumbnail__wrapper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        z-index: 1;
+    }
+    .log-dec .order-summary__section .product-thumbnail .product-thumbnail__quantity {
+        font-size: 0.8571428571em;
+        font-weight: 500;
+        line-height: 1.75em;
+        white-space: nowrap;
+        text-align: center;
+        border-radius: 1.75em;
+        background-color: rgba(114,114,114,0.9);
+        color: #fff;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        min-width: 1.75em;
+        height: 1.75em;
+        padding: 0 0.5833333333em;
+        position: absolute;
+        right: -0.75em;
+        top: -0.75em;
+        z-index: 3;
+    }
+
+    .log-dec .order-summary__section .product__description {text-align: left;width: 100%;}
+    .log-dec .order-summary__section .order-summary__small-text {color: #717171;}
+    .log-dec .order-summary__section td:last-child, th:last-child {text-align: right;}
+    .log-dec .order-summary__section table.total-line-table{ width:100%; font-size:13px;}
+    .log-dec .order-summary__section table.total-line-table th, td{ padding: 10px; color:#323232;}
+    .log-dec .order-summary__section table.total-line-table th{ text-align:left; font-weight:normal !important;}
+    .log-dec .order-summary__section .sidebar .order-summary__small-text {color: #717171;}
+    .log-dec .order-summary__section .sidebar .payment-due__currency {color: #717171;}
+
+    .log-dec .order-summary__section .payment-due__currency {
+        font-size: 0.8571428571em;
+        vertical-align: 0.2em;
+        margin-right: 0.5em;
+    }
+
+    .log-dec .order-summary__section .sidebar .payment-due__price {
+        color: #323232;
+    }
+    .log-dec .order-summary__section .payment-due__price {
+        font-size: 1.7142857143em;
+        font-weight: 500;
+        letter-spacing: -0.04em;
+        line-height: 1em;
+    }
+    .log-dec .order-summary__section .sidebar .payment-due-label__total {
+        color: #323232; font-size:14px;
+    }
+    .log-dec .order-summary__section .total-line-table{border-top:#ccc 1px solid; padding-top:10px;}
+    .log-dec .order-summary__section .total-line-table__footer tr.total-line{ border-top:#ccc 1px solid; margin-top:20px; padding-bottom:10px;}
+    .log-dec .order-summary__section .product__description__name{ width:100%; display:block; padding-bottom:5px;}
+    .log-dec .order-summary__section .product__description__variant{ width:100%; clear:both; diaplay:inline-block;}
+    /* .cf-form-inner .cf-form-actions .cf-step-invalid, .cf-fields-wrapper .cf-form-actions .cf-step-invalid {display: none;} */
+
+    /* .log-before-dec{ width:100%; padding-top:100px; max-width:550px;}
+    .log-before-dec img{ max-width:100%; margin-bottom:10px;} */
+    .log-before-dec img{ max-width:400px; margin-bottom:10px;}
+    @media(max-width: 1023px){
+    .log-before-dec{ padding-top:30px;}
+    }
+
+    @media(max-width: 479px){
+    .log-dec .order-summary__sections{ min-width:320px; }
+    .log-condition-msg{ width:100% !important; padding-bottom:20px;}
+    }
+
+    .cf-button{
+     border-radius: 6px;
+    }
+
+     /*     icons with text */
+    .custom-flex
+    {
+     font-size: small;
+     display: flex;
+     margin-bottom: 2%;
+    }
+
+    .custom-right
+    {
+      margin-left: 2%;
+    }
+
+    .custom-form_sub {
+      margin-top: 30px;
+    }
+
+    .custom-login-icon
+    {
+      width: 23px;
+      height: 23px;
+    }
+
+    /* hide for mobile devices */
+
+     @media (max-width: 767px)
+    {
+       .mob-hide
+      {
+        display: none !important;
+      }
+
+    }
+[data-theme-name=Warehouse] .cf-field input[type=text], [data-theme-name=Warehouse] .cf-field input[type=email], [data-theme-name=Warehouse] .cf-field input[type=number], [data-theme-name=Warehouse] .cf-field input[type=tel], [data-theme-name=Warehouse] .cf-field input[type=password], [data-theme-name=Warehouse] .cf-field select, [data-theme-name=Warehouse] .cf-field textarea {color: #616265!important;} 
+[data-theme-name=Warehouse] .cf-form-inner .cf-form-actions button{background:#06A0E3;}  
+</style>
+
+<section data-section-id="{{ section.id }}" data-section-type="register">
+  <!-- Login Section Template Start -->
+  <div class="container">
+    <div class="log-temp custom-log-temp">
+      <div class="log-temp-cell custom-log-temp-cell left">
+        <div class="cf-form">
+          <h2 class="custom-inr-page-heading">Create Your Account</h2>
+          <form data-cf-form="xPtqVG"></form>
+        </div>
+      </div>
+      <div class="log-temp-cell custom-log-temp-cell right mob-hide">
+        <div class="log-dec">
+          <div class="log-before-dec">
+            <img
+              src="https://cdn.shopify.com/s/files/1/2372/2681/files/artworks-new_2.png?v=1671104924"
+              alt=""
+              loading="lazy"
+              width="100%"
+              height="100%"
+            >
+            <h2 class="custom-inner-heading">Welcome to Monitors.com</h2>
+            <p>
+              We can provide solutions to our clients that are unique in solving the most complex issues facing
+              enterprises. We believe that we provide the best value radiology technology and are eseential partners to
+              the most trusted names in Healthcare.
+            </p>
+          </div>
+          <div class="custom-form_sub">
+            <h1 class="form__title heading h2">Advantages of creating an account:</h1>
+            <ul style="list-style: none; margin-left: 30%;">
+              <li class="custom-flex">
+                <div class="custom-left">
+                  <img
+                    src="{{ 'file-login-before-checkout.png' | asset_url }}"
+                    alt="file"
+                    class="custom-login-icon"
+                    loading="lazy"
+                    width="100%"
+                    height="100%"
+                  >
+                </div>
+                <div class="custom-right">Download and manage your invoices.</div>
+              </li>
+              <li class="custom-flex">
+                <div class="custom-left">
+                  <img
+                    src="{{ 'form-login-before-checkout.png' | asset_url }}"
+                    alt="form"
+                    class="custom-login-icon"
+                    loading="lazy"
+                    width="100%"
+                    height="100%"
+                  >
+                </div>
+                <div class="custom-right">Request quotes</div>
+              </li>
+              
+              <li class="custom-flex">
+                <div class="custom-left">
+                  <img
+                    src="{{ 'support-login-before-checkout.png' | asset_url }}"
+                    alt="support"
+                    class="custom-login-icon"
+                    loading="lazy"
+                    width="100%"
+                    height="100%"
+                  >
+                  
+                </div>
+                <div class="custom-right">Open service and support ticktes.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Login Section Template Start -->
+</section>
+  
+
+{% schema %}
+{
+  "name": "Register"
+}
+{% endschema %}

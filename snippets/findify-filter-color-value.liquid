@@ -1,0 +1,28 @@
+{% liquid
+  if is_selected
+    assign class = 'findify-filters-checkbox-item-value-selected'
+  endif
+  assign color_name = color_name | url_decode
+  assign background_color_class = 'color-mapping-background-' | append: old_color | url_decode | downcase
+  assign border_color_class = 'border-' | append: border_color
+%}
+
+<span class="findify-filters-checkbox-item-value findify-filters--color-item {{ class }}">
+  {% case color_filter_layout %}
+    {% when 'color', 'color_with_label' %}
+      <span class="findify-filters--color-item-value {{ background_color_class }} {{ border_color_class }} findify-solid-circle">
+        {% if is_selected %}
+          {% render 'findify-icon-checkmark', color: color_name %}
+        {% endif %}
+      </span>
+      {% if color_filter_layout == 'color_with_label' %}
+        {{ color_name }}
+      {% endif %}
+    {% else %}
+      <span
+        class="findify-filters--color-item-value {{ background_color_class }} {{ border_color_class }} findify-circle-with-label"
+      ></span>
+      {{ color_name }}
+      </span>
+  {% endcase -%}
+</span>

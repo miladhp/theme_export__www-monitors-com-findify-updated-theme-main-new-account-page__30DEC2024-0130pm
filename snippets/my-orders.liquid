@@ -1,0 +1,1020 @@
+<style>
+    #order.tab-content {
+        padding: 0px;
+        border: none;
+        box-shadow: unset;
+        max-width: 985px;
+    }
+
+    .order-container {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .order-content {
+        max-height: 0;
+        overflow: hidden;
+        padding: 0px 20px;
+    }
+
+    .order-item.active .order-content {
+        max-height: unset;
+        padding: 20px;
+        border-radius: 0px 0px 10px 10px;
+        border-right: 1px solid #E5E5E5;
+        border-bottom: 1px solid #E5E5E5;
+        border-left: 1px solid #E5E5E5;
+        background: #FFF;
+    }
+    .order-container .order-header {
+        padding: 20px;
+        border-radius: 10px 10px 10px 10px;
+        border: 1px solid #E5E5E5;
+        background: #F0F0F0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .order-container .order-item .order-details {
+        display: flex;
+        gap: 50px;
+    }
+
+    .order-container .order-item .order-details .header-tab-cta{
+        gap: 15px;
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+    }
+
+    .order-container .order-item .order-number {
+        display: flex;
+        text-align: right;
+        justify-content: flex-end;
+        margin-top: 5px;
+    }
+
+    .order-container .order-item .order-header .order-number{
+        flex-grow: 1;
+    }
+
+    .order-container .order-item .order-details p {
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-bottom: 0px;
+    }
+
+    .order-container .order-item .order-details p.details, .order-container .order-item .order-details a.details {
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        margin-top: 3px;
+    }
+    .order-container .order-item .order-details p.details.name{
+        min-width: 80px;
+    }
+    .order-container .order-item .order-details p.details.po-box{
+        min-width: 70px;
+    }
+
+    .order-container .order-item .order-number p.heading {
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-bottom: 3px;
+    }
+    .order-container .order-item .order-number a{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .order-container .order-item .order-number a,
+    .order-container .order-item .order-number button,
+    .order-container .order-item .details a {
+        color: #005BD3;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+    .order-container .order-item .details a, .order-container .order-item .order-number a span{
+        text-decoration: underline;
+    }
+    .order-container .order-item .order-number button{
+        margin-left: 11px;
+    }
+    .order-container .order-item .order-number button span{
+        margin-right: 5px;
+    }
+    .order-container .order-item .actions{
+        display: flex;
+    }
+    .order-container .order-item .actions li{
+        list-style: none;
+        display: inline-flex;
+    }
+
+    .order-item.active .order-header{
+        border-radius: 10px 10px 0px 0px;
+    }
+
+    .order-content .products-table .product-image{
+        width: 88px;
+    }
+    .order-content .products-table .product-image img{
+        width: 100%;
+    }
+    .order-content .products-table thead tr{
+        border-bottom: 1px solid #F2F2F2;
+    }
+    .order-content .products-table th{
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        padding-bottom: 10px;
+        text-align: right;
+    }
+    .order-content .products-table thead th.table-product-header{
+        text-align: left;
+        padding-left: 15px;
+    }
+    .order-content .products-table tbody tr td.table-product-item{
+        width: 100%;
+    }
+    .order-content .products-table tbody tr td.price{
+        min-width: 80px;
+        text-align: right;
+    }
+    
+    .order-content .products-table tbody tr td{
+        padding: 20px 5px;
+        text-align: center;
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        vertical-align: top;
+    }
+    .order-content .products-table .product-details{
+        display: flex;
+        gap: 10px;
+    }
+    .order-content .products-table .product-details .product-content{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 590px;
+    }
+    .order-content .products-table .product-details h3{
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-align: left;
+        margin-bottom: 0px;
+    }
+    .order-content .products-table .product-details p{
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-align: left;
+        margin-bottom: 3px;
+    }
+    .order-content .products-table .product-details p span.heading{
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+    .order-content .products-table tbody td.price span.compare-price{
+        color: #616265;
+        text-align: right;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-decoration: line-through;
+        margin-bottom: 3px;
+        display: inline-flex;
+    }
+    .order-content .products-table tbody td.price span {
+        color: #616265;
+        text-align: right;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+    .order-content .products-table .product-details .product-buttons button, .order-content .products-table .product-details .product-buttons a{
+        border-radius: 5px;
+        background-color: #0000000D;
+        color: #303030;
+        text-align: center;
+        font-family: "Encode Sans";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 450;
+        line-height: 16px; /* 133.333% */
+        padding: 6px 14px;
+    }
+    .order-content .products-table .product-details .product-buttons button.buy-new{
+        border-radius: 5px;
+        border: 1px solid #FAD310;
+        background: #F8D62D;
+    }
+    .order-content .products-table .product-details .product-buttons{
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .order-content .products-table tbody tr{
+        border-bottom: 1px solid #F2F2F2;
+    }
+    
+    .pagination .pagination-list li{
+        list-style: none;
+    }
+    .order-container .pagination ul{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-right: 10px;
+    }
+    .order-container .pagination ul li{
+        padding: 5px 10px;
+        border: 1px solid #E5E5E5;
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        border-right: none;
+    }
+    .order-container nav.pagination{
+        padding: 20px 0px;
+    }
+    .order-container .pagination ul li:last-child{
+        border-right: 1px solid #E5E5E5;
+    }
+    .order-container .pagination ul li.active{
+        background-color: #F0F0F0;
+    }
+    .order-container .pagination ul li.next{
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    .order-container .pagination ul li.next svg{
+        transform: rotate(270deg);
+        margin-bottom: 2px;
+    }
+    .order-container .pagination ul li.prev{
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+    .order-container .pagination ul li.prev svg{
+        transform: rotate(90deg);
+        margin-bottom: 2px;
+    }
+    .order-container .order-content .reorder-checkbox-container {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .order-container .order-content .reorder-checkbox-container input{
+        width: 18px;
+        height: 18px;
+    }
+    .order-container .order-content{
+        position: relative;
+    }
+    .order-container .order-content .reorder-button{
+        border-radius: 5px;
+        border: 1px solid #FAD310;
+        background: #F8D62D;
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        padding: 6px 20px;
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        display: none;
+    }
+    .order-container .order-content.reorder-btn-show .reorder-button{
+        display: block;
+    }
+
+    .order-container .order-content.reorder-btn-show .products-table th{
+        visibility: hidden;
+    }
+    .order-container .no-orders-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 20px;
+        border-radius: 10px;
+        border: 1px solid #E5E5E5;
+    }
+    .order-container .no-orders-container .no-orders{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+    .order-container .no-orders-container .no-orders svg{
+        width: 180px;
+        height: 75px;
+    }
+    .order-container .no-orders-container .no-orders h3{
+        font-size: 16px;
+        line-height: normal;
+        margin: 0px;
+        max-width: 288px;
+        text-align: center;
+    }
+    .order-container .no-orders-container .no-orders h4{
+        font-size: 16px;
+        line-height: normal;
+        font-weight: 700;
+        margin: 0px;
+        text-align: center;
+    }
+    .order-container .no-orders-container .no-orders a{
+        color: #fcf7f7;
+        background: #06a0e3;
+        text-align: center;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        border-radius: 5px;
+        border: none;
+        padding: 8px 16px;
+        max-width: 128px;
+    }
+
+    .order-container .total-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 360px;
+        margin-left: auto;
+        gap: 7px;
+        width: 50%;
+    }
+    .order-container .order-item .bottom-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 15px;
+    }
+    .order-container .order-item .bottom-container .order-notes-container{
+        width: 50%;
+    }
+    .order-container .order-item .bottom-container .order-notes-container h3{
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+    .order-container .order-item .bottom-container .order-notes-container p{
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-align: left;
+        margin-bottom: 3px;
+    }
+    .order-container .total-container .total-item{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .order-container .total-container .total-item p{
+        margin-bottom: 0px;
+        color: #404042;
+        text-align: left;
+        font-family: "Encode Sans";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 16px; /* 133.333% */
+    }
+    .order-container .total-container .total-item p.total-price{
+        color: #616265;
+    }
+    .order-container .total-container .total-item.grand-total p.total-price{
+        color: #404042;
+    }
+    .order-container .total-container .total-item.grand-total{
+        border-top: 1px solid #F2F2F2;
+        border-bottom: 1px solid #F2F2F2;
+        padding: 5px 0px;
+    }
+    .order-container .total-container .total-item.grand-total p{
+        margin-bottom: 0px;
+        color: #404042;
+        text-align: center;
+        font-family: "Encode Sans";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 16px;
+    }
+    .order-container .total-container .total-item p.shipping{
+        max-width: 182px;
+    }
+    .order-container .order-header .drop-icon{
+        transform: rotate(180deg);
+    }
+    .order-container .order-item.active .order-header .drop-icon{
+        transform: unset;
+    }
+    .order-container .order-item .order-details p.details.canceled{
+        color: #EE0000;
+    }
+    .order-container .order-item .order-details p.details.paid-shipment-pending{
+        color: #287153;
+    }
+  .order-container .order-item .order-details p.details.paid{
+        color: #287153;
+    }
+
+    @media only screen and (max-width: 1150px) {
+        .order-container .order-item .order-details{
+            gap: 30px;
+        }
+        .order-container .order-item .order-details .header-tab-cta{
+            gap: 15px;
+        }
+    }
+    @media only screen and (max-width: 768px) {
+        .order-container .order-item .order-details{
+            row-gap: 12px;
+            flex-wrap: wrap;
+            column-gap: 16px
+        }
+        .order-container .order-item .order-details .header-tab-cta{
+            gap: 10px;
+        }
+        .order-container .order-header{
+            flex-direction: row;
+            gap: 12px;
+        }
+        .order-container .order-item .order-details p.details.po-box{
+            min-width: unset;
+        }
+        .order-container .order-item .order-details p.details.name{
+            min-width: unset;
+        }
+        .order-container .order-header .drop-icon{
+            width: 10px;
+            height: 6px;
+        }
+        .order-content .products-table tbody tr td.price{
+            min-width: 60px;
+        }
+        .order-container .order-item .order-number{
+            width: 100%;
+            justify-content: flex-end;
+        }
+        .order-container .order-item .order-number a, .order-container .order-item .order-number button, .order-container .order-item .details a{
+            font-size: 12px;
+        }
+        .order-container .order-item .order-details p{
+            font-size: 12px;
+        }
+        .order-container .order-item .order-details p.details, .order-container .order-item .order-details a.details{
+            font-size: 12px;
+        }
+        .order-container .order-item .actions img{
+            width: 20px;
+        }
+        .order-item.active .order-content{
+            padding: 10px;
+        }
+        .order-content .products-table th{
+            padding-bottom: 7px;
+            font-size: 12px;
+        }
+        .order-content .products-table tbody tr td{
+            padding: 10px 2px;
+            font-size: 12px;
+        }
+        .order-content .products-table .product-details h3{
+            font-size: 12px;
+        }
+        .order-content .products-table .product-details p span.heading{
+            font-size: 12px;
+        }
+        .order-content .products-table .product-details p{
+            font-size: 12px;
+        }
+        .order-content .products-table .product-details .product-content{
+            gap: 10px;
+            max-width: 195px;
+            width: calc(100% - 45px);
+        }
+        .order-content .products-table .product-details .product-buttons{
+            flex-wrap: wrap;
+        }
+        .order-content .products-table .product-image{
+            width: 45px;
+        }
+        .order-content .products-table .product-details .product-buttons button, .order-content .products-table .product-details .product-buttons a{
+            font-size: 11px;
+            padding: 4px 14px;
+        }
+        .order-content .products-table tbody td.price span.compare-price{
+            font-size: 11px;
+        }
+        .order-content .products-table tbody td.price span{
+            font-size: 13px;
+        }
+        .order-container .order-content .reorder-checkbox-container input{
+            width: 14px;
+            height: 14px;
+        }
+        .order-container .order-content .reorder-button{
+            left: 10px;
+            top: 3px;
+            font-size: 11px;
+            padding: 5px 15px;
+        }
+        .order-container .order-item .order-header .order-number{
+            width: 30px;
+        }
+    }
+    
+
+</style>
+
+
+<div class="order-container">
+    {% paginate customer.orders by 10 %}
+        {% if customer.orders.size > 0 %}
+            {%- for order in customer.orders -%}
+
+            {% comment %} code to extract tracking numbers and tracking urls from line items  {% endcomment %}
+            {%- assign unique_tracking_pairs = '' -%}
+            {% assign order_status = "" %}
+
+            {%- for line_item in order.line_items -%}
+            {%- if line_item.fulfillment.tracking_number and line_item.fulfillment.tracking_url -%}
+                {%- assign tracking_number = line_item.fulfillment.tracking_number -%}
+                {%- assign tracking_url = line_item.fulfillment.tracking_url -%}
+                
+                {%- assign tracking_pair = tracking_number | append: '~' | append: tracking_url -%}
+
+                {%- unless unique_tracking_pairs contains tracking_pair -%}
+                {%- assign unique_tracking_pairs = unique_tracking_pairs | append: tracking_pair | append: ',' -%}
+                {%- endunless -%}
+            {%- endif -%}
+            {%- endfor -%}
+
+            {%- assign unique_tracking_pairs_array = unique_tracking_pairs | split: ',' -%}
+
+                {%- capture tracking_links -%}
+                    {%- for pair in unique_tracking_pairs_array -%}
+                    {%- if pair != '' -%}
+                        {%- assign parts = pair | split: '~' -%}
+                        <a href="{{ parts[1] }}" target="_blank">{{ parts[0] }}</a>
+                        {%- if forloop.last == false -%},
+                        {%- endif -%}
+                    {%- endif -%}
+                    {%- endfor -%}
+                {%- endcapture -%}
+
+            {% comment %} end tracking code {% endcomment %}
+            
+            {% comment %} code for order status {% endcomment %}
+
+            {% if order.cancelled_at %}
+                {% assign order_status = "Canceled" %}
+    
+            {% else %}
+            {% case order.financial_status %}
+                {% when 'paid' %}
+                    {% assign order_status = "Paid" %}
+                {% when 'pending' %}
+                    {% assign order_status = "Payment Pending" %}
+                {% when 'authorized' %}
+                    {% assign order_status = "Authorized but not captured" %}
+                {% when 'partially_paid' %}
+                    {% assign order_status = "Partially Paid" %}
+                {% when 'refunded' %}
+                    {% assign order_status = "Refunded" %}
+                {% when 'partially_refunded' %}
+                    {% assign order_status = "Partially Refunded" %}
+                {% else %}
+                    {% assign order_status = order.financial_status %}
+                {% endcase %}
+            {% endif %}
+
+            {% case order.fulfillment_status %}
+                {% when 'fulfilled' %}
+                    {% assign order_status = "Shipped" %}
+                {% when 'unfulfilled' %}
+                    {% if order_status == "Paid" %}
+                        {% assign order_status = "Paid (Shipment pending)" %}
+                    {% endif %}
+            {% endcase %}
+
+            {% comment %} end status code {% endcomment %}
+
+            <div class="order-item">
+                <div class="order-header">
+                        <div class="order-details">
+                            <div class="header-tab-cta">
+                                <div>
+                                    <svg class="drop-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="9" viewBox="0 0 16 9" fill="none">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.35946 8.64054C0.83874 9.11982 1.61581 9.11982 2.09509 8.64054L7.77273 2.9629L13.4504 8.64054C13.9296 9.11982 14.7067 9.11982 15.186 8.64054C15.6653 8.16126 15.6653 7.38419 15.186 6.90491L8.64054 0.35946C8.16126 -0.11982 7.38419 -0.11982 6.90491 0.35946L0.35946 6.90491C-0.11982 7.38419 -0.11982 8.16126 0.35946 8.64054Z" fill="#4A4A4A"/>
+                                        </svg>
+                                </div>
+                                
+                                <div class="details-item">
+                                    <p>Order Number:</p>
+                                    <p class="details">
+                                        {{ order.name }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="details-item">
+                                <p>PO#:</p>
+                                {% if order.metafields.checkoutblocks.order_po_number != blank %}
+                                    <p class="details po-box">
+                                        {{ order.metafields.checkoutblocks.order_po_number }}
+                                    </p>
+                                {% else %}
+                                    <p class="details po-box">
+                                        N/A
+                                    </p>
+                                {% endif %}
+                            </div>
+                        <div class="details-item">
+                            <p>Order Placed:</p>
+                            <p class="details">
+                                {{ order.created_at | date: "%b %d, %Y" }}
+                            </p>
+                        </div>
+                        <div class="details-item address-on-hover">
+                            <p>Ship to:</p>
+                            <p class="details name">
+                                {% if order.shipping_address.first_name != blank %}
+                                    {{ order.shipping_address.first_name }} 
+                                {% else %}
+                                    {{ customer.first_name }}
+                                {% endif %}
+                                
+                                <svg style="margin: 0px 0px 1px 2px;" xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.21967 0.46967C0.512563 0.176777 0.987437 0.176777 1.28033 0.46967L4.75 3.93934L8.21967 0.46967C8.51256 0.176777 8.98744 0.176777 9.28033 0.46967C9.57322 0.762563 9.57322 1.23744 9.28033 1.53033L5.28033 5.53033C4.98744 5.82322 4.51256 5.82322 4.21967 5.53033L0.21967 1.53033C-0.0732233 1.23744 -0.0732233 0.762563 0.21967 0.46967Z" fill="#4A4A4A"/>
+                                </svg>
+                            </p>
+                            <div class="address-hover-container">
+                                <div class="arrow-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="13" viewBox="0 0 21 13" fill="none">
+                                        <path d="M1.5 11L10.5 2L19.4999 11" stroke="#E5E5E5" stroke-width="2"/>
+                                        <path d="M10.5 2L0 12.5L20.5 12L10.5 2Z" fill="white"/>
+                                      </svg>
+                                </div>
+                                <div class="hover-address">
+                                   <p class="name">
+                                        {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}
+                                   </p>
+                                    <p>{{ order.shipping_address.address1 }}</p>
+                                    <p>{{ order.shipping_address.address2 }}</p>
+                                    <p>{{ order.shipping_address.city }} {{ order.shipping_address.province }} {{ order.shipping_address.zip }}</p>
+                                    <p>{{ order.shipping_address.country }}</p>    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details-item">
+                            <p>Grand Total:</p>
+                            <p class="details">
+                                {{ order.total_price | money }}
+                            </p>
+                        </div>
+                        <div class="details-item">
+                            <p>Status:</p>
+                            <p class="details {{ order_status | handleize }}">
+                                {{ order_status }}{% if unique_tracking_pairs_array %} <span>{{ tracking_links }}</span> {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="order-number">
+                        <div class="item">
+                            <ul class="actions">
+                                {% assign hash = "13111853145" | append: order.id | default: id | append: "2816"| append: order.id | default: id | md5 | append: "_2816_" | append: order.id | default: id %} 
+                                {% assign easy_invoice_download_url = "https://bayland.myshopify.com/apps/doc/invoice/" | append: hash | append: "/invoice_" | append: order_name | default: order.name | replace: "#","" | append: ".pdf" %}
+                                <li>
+                                    <a target="_blank" href="{{ easy_invoice_download_url }}" title="Download PDF">
+                                        <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/download-pdf-icon.png?v=1729500011" loading="lazy" width="24px" height="25px" />
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+
+                <div class="order-content">
+                    <button class="reorder-button">
+                        Order selected products
+                    </button>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Reorder</th>
+                            <th class="table-product-header">Product</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line_item in order.line_items %}
+                            <tr>
+                                <td>
+                                    <div class="reorder-checkbox-container">
+                                        <input type="checkbox" value="" data-variant-id="{{ line_item.variant_id }}" data-quantity="{{ line_item.quantity }}"
+                                            {% unless line_item.product_id and line_item.variant.available %} disabled {% endunless %}>
+                                    </div>
+                                </td>
+                                <td class="table-product-item">
+                                    <div class="product-details">
+                                        <div class="product-image">
+                                            {% if line_item.image != blank %}
+                                                <img src="{{ line_item.image | image_url}}" alt="{{ line_item.title }}" loading="lazy">
+                                            {% else %}
+                                                <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/custom_item_logo_1_1.jpg?v=1732700839" alt="{{ line_item.title }}" loading="lazy">
+                                            {% endif %}
+                                        </div>
+                                        <div class="product-content">
+                                            {% if line_item.product.title != blank %}
+                                                <h3>
+                                                    {{ line_item.product.title | link_to: line_item.product.url }}
+                                                </h3>
+                                            {% else %}
+                                                <h3>
+                                                    {{ line_item.title }}
+                                                </h3>
+                                            {% endif %}
+                                            <div>
+                                                {% if line_item.variant.option1 != blank  %}
+                                                    <p>
+                                                        <span class="heading">Condition: </span>
+                                                        {{ line_item.variant.option1 }}
+                                                    </p>
+                                                {% endif %}
+                                                {% if line_item.variant.option2 != blank or line_item.variant.option3 != blank %}
+                                                    <p>
+                                                        <span class="heading">
+                                                            Options:  
+                                                        </span>
+                                                        {{ line_item.variant.option2 }} {{ line_item.variant.option3 }}
+                                                    </p>
+                                                {% endif %}
+                                                {% for p in line_item.properties %}
+                                                    {% if p.first == 'Configuration' %}
+                                                        <p>
+                                                            <span class="heading">
+                                                                {{ p.first }}: 
+                                                            </span>
+                                                            {{ p.last }}
+                                                        </p>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="product-buttons">
+                                                {% if line_item.product_id and line_item.variant.available %}
+                                                    <button type="submit" class="buy-new buy-it-now-btn" data-items='[{"id": "{{ line_item.variant_id }}", "quantity": "{{ line_item.quantity }}"}]'>
+                                                        Buy it again
+                                                    </button>
+                                                {% endif %}
+                                                <button class="contact-us" data-order-name="#{{ order.name }}" 
+                                                    {% if line_item.product.title != blank %} 
+                                                        data-product-name="{{ line_item.product.title }}"
+                                                    {% else %}
+                                                        data-product-name="{{ line_item.title }}"
+                                                    {% endif %}
+                                                    data-order-id="{{ order.id }}"
+                                                    data-customer-id="{{ customer.id }}"
+                                                >
+                                                    Contact Us
+                                                </button>
+                                                {% if line_item.product_id %}
+                                                    <button class="write-review-btn" 
+                                                    data-product-id="{{ line_item.product_id }}"
+                                                    data-product-name="{{ line_item.product.title }}"
+                                                    data-product-sku="{{ line_item.variant.sku }}"
+                                                    data-product-type="{{ line_item.product.type }}"
+                                                    data-product-image-url="{{ line_item.product.featured_image | image_url }}"
+                                                    data-product-url="{{ shop.url }}{{ line_item.product.url }}">
+                                                        Write a Product Review
+                                                    </button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    {{ line_item.quantity }}
+                                </td>
+
+                                <td class="price">
+                                    {% comment %} <span class="compare-price">
+                                        {{ line_item.final_line_price | money | replace: "Rs. ", "₹" }}
+                                    </span>
+                                    <br> {% endcomment %}
+                                    <span>
+                                        {{ line_item.final_price | money | replace: "Rs. ", "₹" }}
+                                    </span>
+                                </td>
+                                
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                    <div class="bottom-container">
+                        {% if order.note %}
+                            <div class="order-notes-container">
+                                <div class="order-notes">
+                                    <h3>Order Note:</h3>
+                                    <p>{{ order.note }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="total-container">
+                            <div class="total-item">
+                                <p>Subtotal</p>
+                                <p class="total-price">
+                                    {{ order.subtotal_price | money | replace: "Rs. ", "₹" }}
+                                </p>
+                            </div>
+                            <div class="total-item">
+                                <p class="shipping">Shipping: {{ order.shipping_methods[0].title }}</p>
+                                <p class="total-price">
+                                    {{ order.shipping_price | money | replace: "Rs. ", "₹" }}
+                                </p>
+                            </div>
+                            <div class="total-item">
+                                <p>Tax</p>
+                                <p class="total-price">
+                                    {{ order.tax_price | money | replace: "Rs. ", "₹" }}
+                                </p>
+                            </div>
+                            <div class="total-item grand-total">
+                                <p>Total USD</p>
+                                <p class="total-price">
+                                    {{ order.total_price | money | replace: "Rs. ", "₹" }}
+                                </p>
+                            </div>
+                            <div class="order-number">
+                                <div class="item">
+                                    <ul class="actions">
+                                        {% assign hash = "13111853145" | append: order.id | default: id | append: "2816"| append: order.id | default: id | md5 | append: "_2816_" | append: order.id | default: id %} 
+                                        {% assign easy_invoice_download_url = "https://bayland.myshopify.com/apps/doc/invoice/" | append: hash | append: "/invoice_" | append: order_name | default: order.name | replace: "#","" | append: ".pdf" %}
+                                        <li>
+                                            <a target="_blank" href="{{ easy_invoice_download_url }}">
+                                                <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/download-pdf-icon.png?v=1729500011" loading="lazy" width="24px" height="25px" />
+                                                <span>Download Invoice</span>
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% endfor %}
+        {% else %}
+            <div class="no-orders-container">
+                <div class="no-orders">
+                    {% render 'empty-order-box-icon.liquid' %}
+                    <h3>
+                        You haven't placed any orders yet.
+                        We can't wait to have you as a customer.
+                    </h3>
+                    <h4>
+                        Take a look at our products here
+                    </h4>
+                    <a href="/collections/all">View Products</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endpaginate %}
+
+    {% paginate customer.orders by 10 %}
+        {%- if paginate.pages > 1 -%}
+            {%- if paginate.parts.size > 0 -%}
+            <nav class="pagination" role="navigation">
+                <ul class="pagination-list" role="list">
+                    {%- if paginate.previous -%}
+                    <li class="prev">
+                        <a href="javascript:void(0)" data-href="{{ paginate.previous.url }}#order" class="pagination-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.21967 0.46967C0.512563 0.176777 0.987437 0.176777 1.28033 0.46967L4.75 3.93934L8.21967 0.46967C8.51256 0.176777 8.98744 0.176777 9.28033 0.46967C9.57322 0.762563 9.57322 1.23744 9.28033 1.53033L5.28033 5.53033C4.98744 5.82322 4.51256 5.82322 4.21967 5.53033L0.21967 1.53033C-0.0732233 1.23744 -0.0732233 0.762563 0.21967 0.46967Z" fill="currentColor"/>
+                            </svg>
+                            Prev
+                        </a>
+                    </li>
+                    {% else %}
+                        <li class="disabled prev">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.21967 0.46967C0.512563 0.176777 0.987437 0.176777 1.28033 0.46967L4.75 3.93934L8.21967 0.46967C8.51256 0.176777 8.98744 0.176777 9.28033 0.46967C9.57322 0.762563 9.57322 1.23744 9.28033 1.53033L5.28033 5.53033C4.98744 5.82322 4.51256 5.82322 4.21967 5.53033L0.21967 1.53033C-0.0732233 1.23744 -0.0732233 0.762563 0.21967 0.46967Z" fill="currentColor"/>
+                                </svg>
+                                Prev
+                            </span>
+                        </li>
+                    {%- endif -%}
+
+                    {%- for part in paginate.parts -%}
+                        <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                    {%- if part.is_link -%}
+                        <a href="javascript:void(0)" data-href="{{ part.url }}#order" class="pagination-action">{{ part.title }}</a>
+                    {%- else -%}
+                    {%- if part.title == paginate.current_page -%}
+                        <span aria-current="page" >{{ part.title }}</span>
+                    {%- else -%}
+                        <span>{{ part.title }}</span>
+                    {%- endif -%}
+                    {%- endif -%}
+                    </li>
+                    {%- endfor -%}
+
+                    {%- if paginate.next -%}
+                    <li class="next">
+                    <a href="javascript:void(0)" data-href="{{ paginate.next.url }}#order" class="pagination-action">
+                        Next
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.21967 0.46967C0.512563 0.176777 0.987437 0.176777 1.28033 0.46967L4.75 3.93934L8.21967 0.46967C8.51256 0.176777 8.98744 0.176777 9.28033 0.46967C9.57322 0.762563 9.57322 1.23744 9.28033 1.53033L5.28033 5.53033C4.98744 5.82322 4.51256 5.82322 4.21967 5.53033L0.21967 1.53033C-0.0732233 1.23744 -0.0732233 0.762563 0.21967 0.46967Z" fill="currentColor"/>
+                        </svg>
+                        </a>
+                        </li>
+                        {% else %}
+                        <li class="disabled next">
+                        Next
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.21967 0.46967C0.512563 0.176777 0.987437 0.176777 1.28033 0.46967L4.75 3.93934L8.21967 0.46967C8.51256 0.176777 8.98744 0.176777 9.28033 0.46967C9.57322 0.762563 9.57322 1.23744 9.28033 1.53033L5.28033 5.53033C4.98744 5.82322 4.51256 5.82322 4.21967 5.53033L0.21967 1.53033C-0.0732233 1.23744 -0.0732233 0.762563 0.21967 0.46967Z" fill="currentColor"/>
+                        </svg>
+                        </li>
+                    {%- endif -%}
+                </ul>
+            </nav>
+            {%- endif -%}
+        {%- endif -%}
+     {% endpaginate %}
+
+</div>
+

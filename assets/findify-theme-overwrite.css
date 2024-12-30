@@ -1,0 +1,347 @@
+.page-width {
+  transform: unset !important;
+  animation: unset !important;
+  opacity: unset !important;
+}
+
+/* Layout Chnanges Regarding New Findify Integration Start */
+
+.findify-filters--checkbox-search input{
+  font-size: 13px !important;
+  border: 1px solid #666 !important;
+  border-radius:0px !important;
+  height: 40px !important;
+  border-radius:4px!important;
+}
+
+.findify-filters--checkbox-search-icon{
+  top:12px!important;
+}
+
+.findify-product-list{
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border-color)!important;
+}
+
+.findify-product-list .findify-product-card{
+  padding:20px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.findify-image-container{
+    padding-bottom: 75% !important;
+    overflow: hidden !important;
+    padding-top:unset!important;
+}
+
+.findify-cut-text {
+    /* min-height: 110px; */
+    height:unset!important;
+    text-overflow: unset!important;
+    white-space: unset!important;
+    color: #404042 !important;
+    font-family: Encode Sans, sans-serif;
+    text-transform: none;
+    text-align: left;
+    font-size: 14px;
+    line-height: normal;
+    overflow: hidden;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: .21px;
+    margin-left: 5px;
+    line-height:1.2;
+}
+
+.findify-pagination__list{
+   list-style:none;
+}
+
+.findify-pagination__item--current:after, .findify-pagination__item:hover:after{
+  display:none !important;
+}
+
+.findify-pagination__item{
+    background: white;
+    color: var(--primary-button-background)!important;
+    border-radius: 3px;
+    height:unset!important;
+    padding: 8px 11px !important;
+    line-height: 1;
+    width:unset!important;
+}
+
+.findify-pagination__item--current{
+    background: var(--primary-button-background);
+    color: var(--primary-button-text-color)!important;
+    border-radius: 3px;
+    height:unset!important;
+    padding: 8px 11px !important;
+    line-height: 1;
+    width:unset!important;
+}
+
+.findify-pagination__item-arrow{
+  background:white;
+  color: #06a0e3!important; 
+}
+
+.findify-pagination__item-arrow svg path{
+  stroke:#06a0e3!important;
+}
+
+.findify-desktop-modified{
+  padding-bottom:15px;
+}
+
+.findify-content-wrapper {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.custom-findify-price{
+  margin-top:10px;
+}
+
+.custom-findify-price .price--highlight{
+  font-size:14px!important;
+}
+
+/* .custom-findify-price .price-fraction{
+  left:-2px!important;
+} */
+
+@media screen and (min-width: 990px) {
+    .findify-pagination-wrapper {
+        margin-top:50px!important;
+        margin-bottom:0px!important;
+    }
+}
+
+.pagination{
+  padding:0px!important;
+}
+
+.findify-body .card__header.card__header--tight, .findify-body .collection__header{
+  padding:10px 0!important;
+}
+
+@media screen and (max-width: 767px) {
+  .findify-body .collection__description{
+    display:none;
+  }
+
+  .custom-findify-price .product-item__price-list .price{
+    margin-left:0px!important;
+  }
+
+  .custom-findify-search-heading{
+    text-align:center!important;
+  }
+}
+
+@media (max-width: 768px) {
+  .findify-sorting-mobile-list {
+      padding-top: 10px;
+  }
+}
+
+
+.findify-body .collection__products-count {
+    display: none !important;
+}
+
+.findify-pagination__list>li {
+    flex: unset !important;
+    max-width: unset !important;
+}
+
+.custom-findify-search-heading{
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  font-style: var(--heading-font-style);
+  color: var(--heading-color);
+  font-size:36px!important;
+  margin:28px 0!important;
+  text-align:left!important;
+}
+
+.findify-filters-breadcrumbs-clear-all:hover{
+  color:#1fa0e3!important;
+}
+
+@media (min-width: 960px){
+  .findify-filters-wrapper, .findify-filters-sidebar.findify-open{
+    width:345px!important;
+  }
+}
+
+@media (min-width: 960px) and (max-width:1130px) {
+    #findify-product-grid.findify-product-list[data-template='main'] {
+        grid-template-columns: repeat(3, minmax(180px, 1fr))!important;
+    }
+}
+
+@media (min-width: 768px) and (max-width:959px) {
+    #findify-product-grid.findify-product-list[data-template='main'] {
+        grid-template-columns: repeat(2, minmax(180px, 1fr))!important;
+    }
+}
+
+.findify-cut-text:hover{
+  color: #06a0e3!important;
+}
+
+.findify-rating-container svg{
+  width:15px;
+  height:15px;
+}
+
+.findify-rating-container{
+  color: #8c8c8c!important;
+}
+
+.findify-renewed{
+  color: #616265!important;
+}
+@media (min-width: 768px){
+  .findify-search-header-toolbar-actions{
+    visibility:hidden;
+  }
+}
+@media (min-width: 768px) and ( max-width:959px) {
+  .findify-search-header-toolbar-actions {
+    flex: 0 0 220px;
+  }
+}
+@media  (min-width: 960px) {
+
+.findify-search-header-toolbar-actions {
+  flex: 0 0 350px;
+}
+
+.findify-toolbar-block {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+}
+
+button.findify-btn{
+  background: #06a0e3 !important;
+}
+button.findify-btn:hover{
+  background: #38b3e9 !important;
+}
+
+.findify-search-main {
+  gap:5px!important;
+}
+
+.custom-unfilled {
+    color: #fff;
+    stroke: gold;
+}
+
+#findify-filters-custom_fields\.resolution .findify-filters--body-wrapper{
+  text-transform:uppercase!important;
+}
+
+#findify-filters-custom_fields\.custom_condition .findify-filters--body-wrapper{
+  text-transform:capitalize!important;
+}
+
+/* #findify-filters-custom_fields\.Processor .findify-filters--body-wrapper{
+  text-transform:lowercase!important;
+} */
+
+#findify-filters-custom_fields\.workstation_memory_ .findify-filters--body-wrapper{
+  text-transform:uppercase!important;
+}
+
+#findify-filters-custom_fields\.storage_ .findify-filters--body-wrapper{
+  text-transform:uppercase!important;
+}
+
+#findify-filters-custom_fields\.Memory .findify-filters--body-wrapper{
+  text-transform:uppercase!important;
+}
+
+#findify-filters-custom_fields\.workstation_graphic_ .findify-filters--body-wrapper{
+  text-transform:uppercase!important;
+}
+
+.findify-checkbox-filter-wrapper[data-expanded=false] .findify-filters--body-wrapper {
+    max-height: 210px!important;
+}
+
+.findify-checkbox-filter-wrapper[data-expanded=false] .findify-filters--checkbox-search {
+    display: block!important;
+}
+
+.findify-filters-checkbox-item .findify-filters-checkbox-item-value-selected:before{
+  background-image: url(/cdn/shop/files/tick.png?v=1733842074) !important;
+  background-repeat: round !important;
+  border: unset !important;
+  box-shadow: unset !important;
+}
+
+.findify-filters-checkbox-item .findify-filters-checkbox-item-value:before, input.SPCMP_Add{
+  border-radius:3px !important;
+}
+
+.findify-filters-wrapper.findify-fixed::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.findify-checkbox-filter-wrapper[data-expanded=true] .findify-filters--body-wrapper::-webkit-scrollbar{
+  width:0px;
+}
+
+.findify-filters-wrapper.findify-fixed::-webkit-scrollbar-thumb {
+  background: #d4d4d4; 
+  border-radius: 5px; 
+}
+
+.findify-sorting-btn {
+    border-radius: 5px;
+}
+
+.findify-sorting-list>li small{
+  font-size:unset!important;
+}
+
+@media screen and (min-width: 1280px) {
+  .collection__title {
+    margin-bottom: 10px!important;
+  }
+  
+  .findify-body .card__header.card__header--tight, .findify-body .collection__header {
+    padding: 10px 0 0 0 !important;
+  }
+}
+
+.findify-filters-checkbox-item-value, .findify-filters--checkbox-nested-value {
+     padding-right: 0px!important;
+     width:95%!important; 
+}
+
+.findify-loader-path{
+  fill:#c5d5e3;
+}
+
+.search-bar__inner, .snize-ac-results {
+    display: none !important;
+}
+
+.findify-checkbox-filter-wrapper[data-expanded=true] .findify-filters--body-wrapper {
+    overflow-y: unset !important;
+    max-height: unset !important;
+}
+
+/* Layout Chnanges Regarding New Findify Integration End */

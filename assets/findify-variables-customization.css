@@ -1,0 +1,41 @@
+:root {
+  /* Common */
+  --findify-border-color: #eaeaea;
+
+  /* Typography */
+  --findify-text-color: #000000;
+  --findify-text-inverse-color: #ffffff;
+  --findify-text-secondary-color: #7d7d7d;
+  --findify-base-font-size: 14px;
+  --findify-background-color: #ffffff;
+
+  /* CTA */
+  --findify-cta-background-color: transparent;
+  --findify-cta-background-color-hover: #eaeaea;
+  --findify-cta-border-color: var(--findify-border-color);
+  --findify-cta-secondary-background-color: #f7f7f7;
+  --findify-cta-secondary-background-color-hover: #eaeaea;
+  --findify-cta-background-accent: #5396ed;
+
+  /* Inputs */
+  --findify-input-background-color: #ffffff;
+  --findify-input-border-color: #000000;
+
+  /* Filters */
+  --findify-filters-title: var(--findify-text-color);
+  --findify-filters-value: var(--findify-text-color);
+  --findify-filters-separator-color: var(--findify-border-color);
+  --findify-checkbox-border-color: #000000;
+  --findify-checkbox-checked: #000000;
+
+  /* Products */
+  --findify-product-title: var(--findify-text-color);
+  --findify-product-price: var(--findify-text-color);
+
+  /* Rating */
+  --findify-rating-active: #e9be57;
+  --findify-rating-inactive: #c6c6c6;
+
+  /* Sidebar mobile */
+  --findify-sidebar-header-background-color: #000000;
+}

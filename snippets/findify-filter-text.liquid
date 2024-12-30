@@ -1,0 +1,72 @@
+{% liquid
+  assign nest_level = 1
+  assign level_name = name
+
+  if type == "category"
+    assign nest_level_string = nest_level | append: ""
+    assign level_name = level_name | append: nest_level_string
+  endif
+%}
+
+<div class="findify-checkbox-filter-wrapper" {% if filters.size > 6 %}data-expanded="false"{% endif %} data-filter-name="{{ name }}">
+  {% if filters.size > 4 %}
+    {% render 'findify-filter-search-input'
+      , name: name %}
+  {% endif %}
+  <div class="findify-filters--body-wrapper">
+    {%- for filter in filters -%}
+      {% liquid
+        assign filter_props = filter | split: '~~' | first | split: '~'
+        assign value = filter_props[0] | url_decode
+        assign count = filter_props[1]
+        assign is_selected_prop = filter_props[2]
+        if is_selected_prop == 'T'
+          assign is_selected = true
+        else
+          assign is_selected = false
+        endif
+  
+        if filter contains '~~'
+          assign has_children = true
+          assign children_filter = filter | split: '^^' | last
+        endif
+      %}
+  
+      {% render 'findify-filter-checkbox'
+        , name: level_name
+        , type: type
+        , is_selected: is_selected
+        , value: value
+        , text: value
+        , count: count
+        , component: component
+        , has_children: has_children
+      %}
+  
+      {% if children_filter != blank %}
+        {% assign nest_level_number = nest_level | plus: 1 %}
+  
+        {% render 'findify-filter-nested'
+          , children_filter: children_filter
+          , name: name
+          , type: type
+          , component: component
+          , nest_level: nest_level_number %}
+      {% endif %}
+  
+    {%- endfor -%}
+  </div>
+  {% if filters.size > 7 %}
+    <button class="findify-filters-toggle more" onclick="onExpandToggle(event)">
+      {{ 'findify.custom.filter_more' | t }} 
+    </button>
+    <button class="findify-filters-toggle less" onclick="onExpandToggle(event)">
+      {{ 'findify.custom.filter_less' | t }} 
+    </button>
+  {% endif %}
+</div>
+
+<script>
+  const filterName = '{{ name }}';
+  sortFilters(filterName)
+</script>

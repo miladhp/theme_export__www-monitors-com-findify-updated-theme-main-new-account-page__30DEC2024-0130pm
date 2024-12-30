@@ -1,0 +1,96 @@
+<script>
+    function getLocalizationFromSubdomain(subdomain) {
+        const subdomainToLocalizationMap = {
+            "fr": "FR",
+            "de": "DE",
+            "it": "IT",
+            "es": "ES",
+            "el": "EL",
+            "nl": "NL",
+            "pt": "PT",
+            "ar": "AR",
+            "tr": "TR"
+        };
+        return subdomainToLocalizationMap[subdomain] || 'EN';
+    }
+
+    (function () {
+        const browserLanguage = (navigator.language || navigator.userLanguage).toLowerCase();
+        const langCode = browserLanguage.split('-')[0];
+
+        const domain = 'https://www.monitors.com';
+        const pathMapping = {
+            "fr": "fr",
+            "de": "de",
+            "it": "it",
+            "es": "es",
+            "el": "el",
+            "nl": "nl",
+            "pt": "pt",
+            "ar": "ar",
+            "tr": "tr"
+        };
+
+        const hasRedirected = sessionStorage.getItem('hasRedirected');
+
+        // Check if there's already a language prefix in the URL
+        const currentPath = window.location.pathname;
+        const currentLang = currentPath.split('/')[1]; // Get the first segment after '/'
+        const isLanguageInPath = Object.keys(pathMapping).includes(currentLang);
+
+        // Check if the subdomain matches a language prefix
+        const subdomain = window.location.hostname.split('.')[0];
+        const isLanguageInSubdomain = Object.keys(pathMapping).includes(subdomain);
+
+        if (!isLanguageInPath && !isLanguageInSubdomain && langCode in pathMapping && !hasRedirected) {
+            const targetPath = pathMapping[langCode];
+            const currentParams = window.location.search;
+            const targetUrl = `${domain}/${targetPath}${currentPath}${currentParams}`;
+            sessionStorage.setItem('hasRedirected', 'true');
+            window.location.href = targetUrl;
+        }
+    })();
+
+    // Language change dropdown handling
+    function changeLanguage(selectedLang) {
+        const domain = 'https://www.monitors.com';
+        const pathMapping = {
+            "fr": "fr",
+            "de": "de",
+            "it": "it",
+            "es": "es",
+            "el": "el",
+            "nl": "nl",
+            "pt": "pt",
+            "ar": "ar",
+            "tr": "tr"
+        };
+
+        // Check if there's already a language prefix in the URL
+        const currentPath = window.location.pathname;
+        const currentLang = currentPath.split('/')[1]; // Get the first segment after '/'
+        const isLanguageInPath = Object.keys(pathMapping).includes(currentLang);
+
+        // Check if the subdomain matches a language prefix
+        const subdomain = window.location.hostname.split('.')[0];
+        const isLanguageInSubdomain = Object.keys(pathMapping).includes(subdomain);
+
+        const targetPath = pathMapping[selectedLang];
+        const currentParams = window.location.search;
+
+        let targetUrl;
+        if (!isLanguageInPath && !isLanguageInSubdomain) {
+            targetUrl = `${domain}/${targetPath}${currentPath}${currentParams}`;
+        } else if (isLanguageInSubdomain) {
+            // Keep subdomain as is and update the path
+            const newPath = currentPath.replace(/^\/([a-z]{2})/, '');
+            targetUrl = `https://${subdomain}.monitors.com/${targetPath}${newPath}${currentParams}`;
+        } else {
+            // Remove existing language prefix from path
+            const newPath = currentPath.replace(/^\/[a-z]{2}/, '');
+            targetUrl = `${domain}/${targetPath}${newPath}${currentParams}`;
+        }
+
+        window.location.href = targetUrl; // Redirect to the new URL
+    }
+</script>

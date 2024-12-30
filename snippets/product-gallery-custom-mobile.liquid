@@ -1,0 +1,133 @@
+{%- if product.media.size > 0 -%}
+  {%- assign media = product.selected_variant.featured_media | default: product.featured_media -%}
+
+  {%- assign is_media_group = false -%}
+  {%- assign is_media_filtered = false -%}
+  {%- assign media_alt = media.alt -%}
+
+  {%- if media.alt contains '#' -%}
+    {%- assign is_media_group = true -%}
+    {%- assign alt_parts = media.alt | split: '#' -%}
+
+    {%- comment -%}
+      If the custom ALT tag contains two parts (for instance "My custom alt # color_blue") then the first part is actually used
+      as a custom ALT tag
+    {%- endcomment -%}
+
+    {%- if alt_parts.size == 2 and alt_parts.first != blank -%}
+      {%- assign media_alt = alt_parts.first | strip -%}
+    {%- else -%}
+      {%- assign media_alt = product.title -%}
+    {%- endif -%}
+
+    {%- assign media_group_parts = alt_parts.last | split: '_' -%}
+
+    {%- for option in product.options -%}
+      {%- assign downcase_option = option | downcase -%}
+      {%- assign downcase_group_option = media_group_parts.first | strip | downcase -%}
+
+      {%- if downcase_option == downcase_group_option -%}
+        {%- assign option_setting = 'option' | append: forloop.index -%}
+        {%- assign option_value = product.selected_or_first_available_variant[option_setting] | downcase -%}
+
+        {%- assign downcase_group_value = media_group_parts.last | strip | downcase -%}
+        {%- assign media_variant_ids = media.variants | map: 'id' -%}
+
+        {%- if option_value != downcase_group_value -%}
+          {%- unless media_variant_ids contains product.selected_or_first_available_variant.id -%}
+            {%- assign is_media_filtered = true -%}
+          {%- endunless -%}
+        {%- endif -%}
+
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- assign gallery_image_urls = '' -%}
+  {%- assign url_joiner = '$^$' -%}
+  {%- for gallery_media in product.media -%}
+    {%- case gallery_media.media_type -%}
+      {%- when 'image' -%}
+        {%- assign current_image_url = gallery_media | img_url: '1600x' -%}
+        {%- assign gallery_image_urls = gallery_image_urls | append: url_joiner | append: current_image_url -%}
+    {%- endcase -%}
+  {%- endfor -%}
+<div class="card card_custom desk-hide" id="mobile_gallery">
+    <div class="card__section card__section--tight">
+      <div class="product-gallery custom" data-media-id="{{ media.id }}">
+        {%- case media.media_type -%}
+          {%- when 'image' -%}
+            <div class="product-gallery__size-limiter" style="max-width: {{ media.width }}px">
+            {%- assign data_zoom_url = media | image_url: width: 1800 -%}
+            {%- assign data_zoom_width = 1800 | at_most: media.width -%}
+
+             <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: media.aspect_ratio }}%">
+                {{- media | image_url: width: media.width | image_tag: widths: '400,500,600,700,800,900,1000,1100,1200', class: 'product-gallery__image', data-zoom: data_zoom_url, data-zoom-width: data_zoom_width -}}
+             </div>
+            </div>  
+          {% comment %}  <div class="product-gallery__size-limiter" style="max-width: {{ media.width }}px">
+              {%- capture supported_sizes -%}{%- render 'image-size', sizes: '400,500,600,700,800,900,1000,1100,1200', image: media -%}{%- endcapture -%}
+              {%- assign image_url = media | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+              <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: media.aspect_ratio }}%">
+                <img
+                  class="product-gallery__image lazyload image--fade-in skeleton"
+                  loading="lazy"
+                  data-src="{{ image_url }}"
+                  data-widths="[{{ supported_sizes }}]"
+                  data-sizes="auto"
+                  alt="{{ media_alt | escape }}"
+                >
+                <noscript>
+                  <img src="{{ media | img_url: '800x' }}" alt="{{ media_alt | escape }}">
+                </noscript>
+              </div>
+            </div> {% endcomment %}
+        {%- endcase -%}
+      </div>
+    </div>
+ </div>
+{% endif %}   
+<div id="productCustomPopupGallery1" class="desk-hide" style="display:none !important;"></div>
+<script>
+
+    var navsoft_gallery_image_urls = "{{ gallery_image_urls }}";
+    var navsoft_url_joiner = "{{ url_joiner }}";
+    var navsoft_gallery_images = [];
+
+    navsoft_gallery_image_urls = navsoft_gallery_image_urls.split(navsoft_url_joiner);
+
+    navsoft_gallery_image_urls.forEach(function(image_url){
+      if (image_url.trim().length) {
+        navsoft_gallery_images.push(image_url.trim());
+      }
+    });
+  
+   $(document).ready(function() {
+    document.getElementById('viewProductGallerymobile').addEventListener('click', function() {
+        var gallery_modal_id = '';
+
+        if (navsoft_gallery_images.length) {
+          if ($('#dummy-chat-button-iframe').length) {
+            var chatbotIndex = $('#dummy-chat-button-iframe').css('z-index');
+            var modalIndex = Math.floor(chatbotIndex) + 1;
+            $('#productCustomPopupGalleryModal').css('z-index', modalIndex);
+          }
+          $('#productCustomPopupGalleryTitle').html(`{{ product.title }}`);
+          var options = {
+            // thumbLeft:true,
+            // thumbRight:true,
+            // thumbHide:true,
+            // width:300,
+            // height:500,
+          };
+
+          $('#productCustomPopupGallery1').zoomy(navsoft_gallery_images, options, gallery_modal_id);
+        } else {
+          alert('Currently there is no images for this product');
+        }
+      });
+    });
+
+</script>

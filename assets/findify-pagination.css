@@ -1,0 +1,90 @@
+.findify-pagination-wrapper {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+
+.findify-lazy-loading-pagination-container {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: 990px) {
+  .findify-pagination-wrapper {
+    margin-top: 5rem;
+  }
+}
+
+.findify-pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.findify-pagination__list > li {
+  flex: 1 0 4.4rem;
+  max-width: 4.4rem;
+}
+
+.findify-pagination__list > li:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.findify-pagination__item {
+  color: var(--findify-text-color);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 4.4rem;
+  width: 100%;
+  padding: 0;
+  text-decoration: none;
+}
+
+a.findify-pagination__item:hover::after {
+  height: 0.1rem;
+}
+
+.findify-pagination__item .icon-caret {
+  height: 0.6rem;
+}
+
+.findify-pagination__item--current::after {
+  height: 0.1rem;
+}
+
+.findify-pagination__item--current::after,
+.findify-pagination__item:hover::after {
+  content: "";
+  display: block;
+  width: 2rem;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: currentColor;
+}
+
+.findify-pagination__item--next svg {
+  margin-left: -0.2rem;
+  transform: rotate(90deg);
+}
+
+.findify-pagination__item--next:hover svg {
+  transform: rotate(90deg) scale(1.07);
+}
+
+.findify-pagination__item--prev svg {
+  margin-right: -0.2rem;
+  transform: rotate(-90deg);
+}
+
+.findify-pagination__item--prev:hover svg {
+  transform: rotate(-90deg) scale(1.07);
+}
+
+.findify-pagination__item-arrow:hover::after {
+  display: none;
+}

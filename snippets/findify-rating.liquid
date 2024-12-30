@@ -1,0 +1,16 @@
+{% assign value = value | plus: 0 %}
+<div class="findify-rating-container">
+  {% for i in (1..5) %}
+    {%- assign unfilled = '' -%}
+    {% if value < i %}
+      {%- assign unfilled = 'true' -%}
+    {% endif %}
+    {% render 'findify-icon-star'
+      , unfilled: unfilled, count:count %}
+  {% endfor %}
+  {% if count %}
+    {% if count != "0" %}
+      <span>({{ count }})</span>
+    {% endif %}
+  {% endif %}
+</div>

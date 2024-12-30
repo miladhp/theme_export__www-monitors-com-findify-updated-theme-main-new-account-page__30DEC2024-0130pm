@@ -1,0 +1,495 @@
+/*
+    findify-autocomplete-element.css contains required styling for the autocomplete.
+    Feel free to delete this and use your own .css or modify this one. The original copy can be always found in this Git repository: <repository-link>
+*/
+
+body {
+  overflow-x: hidden;
+}
+
+/*
+  hide native shopify autocomplete
+*/
+.predictive-search {
+  display: none !important;
+}
+
+.findify-autocomplete {
+  display: grid;
+  position: absolute;
+  background: var(--findify-background-color);
+  z-index: 9999 !important;
+}
+.findify-autocomplete .findify-zero-result-container {
+  text-align: center;
+}
+.findify-autocomplete.findify-hidden {
+  display: none !important;
+}
+
+.findify-autocomplete .findify-autocomplete-header {
+  display: none;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper h3 {
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 20px;
+}
+
+.findify-autocomplete .findify-products-wrapper h3 {
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: var(--findify-text-color);
+}
+
+.findify-autocomplete .findify-products-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0 18px;
+  display: grid;
+  column-gap: 10px;
+  row-gap: 20px;
+}
+
+.findify-autocomplete .findify-product-card-image-wrapper {
+  height: 90%;
+}
+
+.findify-autocomplete .findify-product-card-image {
+  object-fit: cover;
+  height: 100% !important;
+}
+
+.findify-autocomplete div[data-findify-product-card] {
+  cursor: pointer;
+}
+
+.findify-autocomplete .findify-products-container > div {
+  margin: 0;
+}
+
+.findify-close-autocomplete {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  right: 5px;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+}
+
+.findify-close-autocomplete svg {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.findify-autocomplete-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.findify-autocomplete-title-wrapper a.findify-view-all {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 20px;
+  color: var(--findify-text-secondary-color);
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  margin: 0;
+}
+
+.findify-autocomplete-title-wrapper a.findify-view-all:hover {
+  text-decoration: underline;
+}
+
+.findify-view-all {
+  cursor: pointer;
+  text-align: center;
+  height: 48px;
+  text-decoration: none;
+  font-family: Encode Sans, sans-serif;
+  font-size: 13px;
+  color: #b2b2b2;
+  background: #f3f3f3;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.findify-view-all span {
+  cursor: pointer;
+}
+
+.findify-view-all:hover {
+  text-decoration: underline;
+}
+
+.findify-components-autocomplete--tip__highlight {
+  color: #404040;
+}
+
+.findify-autocomplete .findify-content-wrapper h3 {
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.findify-autocomplete-content .findify-content-wrapper {
+  overflow: hidden;
+  position: relative;
+  width: auto;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper {
+  width: 200px;
+  min-width: 200px;
+  border-right: 1px solid #e2e2e2;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper h2 {
+  padding: 0 24px;
+}
+
+.findify-autocomplete-title-wrapper h2, 
+.findify-autocomplete .findify-suggestions-wrapper h2 {
+  margin-top: 0;
+  margin-bottom: 17px;
+  color: #c6c6c6;
+  font-size: 11px;
+  line-height: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: Encode Sans, sans-serif;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper .findify-suggestion {
+  color: #111;
+  font-family: Encode Sans, sans-serif;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper .findify-suggestion.trending {
+  font-style: italic;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper .findify-suggestion svg {
+  margin-right: 4px;
+  vertical-align: -2px;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper li {
+  cursor: pointer;
+  border-radius: 2px;
+  text-align: left;
+  padding: 10px 17px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.findify-autocomplete .add_to_compare_on_collections_page {
+  display: none;
+}
+
+.findify-autocomplete .findify-suggestions-wrapper li:hover {
+  background: #f3f3f3;
+}
+
+/* horizontal suggestions */
+/* Not currently in use */
+@media (min-width: 767px) {
+  .findify-autocomplete .findify-suggestions-wrapper.findify-suggestions-horizontal ul,
+  .findify-autocomplete.findify-suggestions-horizontal .findify-content-horizontal .findify-content-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    flex-direction: row;
+    gap: 5px;
+  }
+  .findify-content-horizontal {
+    flex: 1;
+    flex-basis: 100%;
+  }
+  .findify-autocomplete .findify-suggestions-wrapper.findify-suggestions-horizontal ul li,
+  .findify-autocomplete.findify-suggestions-horizontal
+    .findify-content-horizontal
+    .findify-content-list
+    .findify-content-card[data-image="false"]
+    .findify-content-title {
+    background: #d3d3d3;
+    padding: 2px 10px;
+    border-radius: 90px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+    display: flex;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .findify-suggestion {
+    cursor: pointer;
+  }
+
+  .findify-autocomplete .findify-suggestions-wrapper.findify-suggestions-horizontal ul li:hover,
+  .findify-autocomplete.findify-suggestions-horizontal
+    .findify-content-horizontal
+    .findify-content-list
+    .findify-content-card[data-image="false"]
+    .findify-content-title:hover {
+    cursor: pointer;
+    background: #d9d9d9;
+  }
+
+  .findify-autocomplete .findify-suggestions-wrapper.findify-suggestions-horizontal ul li a,
+  .findify-autocomplete.findify-suggestions-horizontal .findify-content-horizontal .findify-content-list a {
+    text-decoration: none;
+    color: #000;
+    line-height: 1;
+    padding: 5px;
+  }
+  .findify-autocomplete.findify-suggestions-horizontal .findify-content-horizontal .findify-content-list a {
+    text-decoration: none;
+    display: block;
+    height: auto;
+    padding: 0;
+  }
+  .findify-autocomplete.findify-suggestions-horizontal .findify-content-horizontal .findify-content-list .findify-content-title {
+    padding: 8px 12px;
+  }
+  .findify-autocomplete.findify-suggestions-horizontal .findify-content-horizontal .findify-content-list .findify-content-card[data-image="true"] {
+    width: 150px;
+  }
+}
+
+@media (max-width: 767px) {
+  .findify-autocomplete .findify-suggestions-wrapper.findify-mobile-horizontal ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .findify-autocomplete .findify-suggestions-wrapper.findify-mobile-horizontal ul li {
+    background: #d3d3d3;
+    padding: 2px 10px;
+    border-radius: 90px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: auto;
+    line-height: 1;
+    display: flex;
+    cursor: pointer;
+  }
+
+  .findify-suggestion {
+    cursor: pointer;
+  }
+
+  .findify-autocomplete .findify-suggestions-wrapper.findify-mobile-horizontal ul li:hover {
+    cursor: pointer;
+    background: #d9d9d9;
+  }
+
+  .findify-autocomplete .findify-suggestions-wrapper.findify-mobile-horizontal ul li a {
+    text-decoration: none;
+    color: #000;
+    height: auto;
+    line-height: 1;
+    padding: 5px;
+  }
+}
+
+/* end */
+
+/* dropdown start */
+.findify-autocomplete-dropdown {
+  display: block;
+  width: 700px;
+  padding: 15px 15px;
+}
+
+.findify-autocomplete-dropdown .findify-autocomplete-content {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  width: 100%;
+}
+
+.findify-autocomplete-dropdown .findify-suggestions-wrapper h3 {
+  padding-left: 20px;
+}
+
+.findify-autocomplete-dropdown .findify-suggestions-wrapper ul {
+  padding-left: 20px;
+}
+
+/* dropdown end */
+
+/* fulscreen start */
+
+.findify-autocomplete-fullscreen {
+  width: 100%;
+  padding: 0 0;
+  overflow: auto;
+  box-shadow: 0 5px 10px 0 rgba(71, 89, 113, .5);
+}
+
+.findify-autocomplete-fullscreen .findify-autocomplete-content {
+  display: flex;
+  gap: 15px;
+  margin: 38px 0;
+}
+
+@media (min-width: 767px) {
+  .findify-autocomplete-fullscreen.findify-suggestions-horizontal .findify-autocomplete-content {
+    flex-wrap: wrap;
+    gap: 0;
+    .findify-suggestions-wrapper {
+      flex: 1;
+      flex-basis: 100%;
+    }
+  }
+}
+
+.findify-autocomplete-fullscreen .findify-product-title,
+.findify-autocomplete-fullscreen .product-item__price-list{
+  text-align: center;
+}
+
+.findify-autocomplete-fullscreen .findify-rating-container,
+.findify-autocomplete-fullscreen .findify-free-shipping,
+.findify-autocomplete-fullscreen .findify-renewed{
+  justify-content: center
+}
+
+/* fulscreen end */
+
+.findify-autocomplete.findify-autocomplete-slide-in,
+.findify-autocomplete.findify-autocomplete-slide-in.findify-hidden {
+  right: -100%;
+  display: block !important;
+  opacity: 0;
+  top: 0;
+  padding: 15px;
+  position: fixed;
+  height: 100%;
+  transition: right 0.5s ease-in;
+  overflow: scroll;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in {
+  display: block !important;
+  width: 35%;
+  right: 0;
+  opacity: 1;
+  transition: right 0.5s ease-in;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-autocomplete-header {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-input-wrapper {
+  width: 100%;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-search {
+  width: calc(100% - 30px);
+  height: 40px;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-close-autocomplete {
+  display: none;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-autocomplete-header .findify-close-autocomplete {
+  display: block;
+  right: 15px;
+  top: 0;
+  position: relative;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-products-container {
+  padding-right: 0;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-autocomplete-title-wrapper a.findify-view-all {
+  padding-right: 0;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-products-wrapper {
+  padding-left: 0;
+}
+
+.findify-autocomplete.findify-autocomplete-slide-in .findify-products-container > div {
+  flex-basis: 50%;
+  max-width: 50%;
+}
+
+@media (max-width: 800px) {
+  .findify-view-all {
+    display: none;
+  }
+  .findify-products-wrapper {
+    display: none;
+  }
+  .findify-autocomplete .findify-suggestions-wrapper {
+    min-width: 100%;
+    width: 100%
+  } 
+  .findify-autocomplete .findify-suggestions-wrapper h2 {
+    display: none;
+  }
+  .findify-autocomplete .findify-suggestions-wrapper ul {
+    margin-top: 0;
+  }
+  .findify-autocomplete-fullscreen .findify-autocomplete-content {
+    margin: 0 0;
+  }
+  .findify-autocomplete .findify-suggestions-wrapper li {
+    margin-left: 0;
+    margin-right: 0;
+    border-top: 1px solid #e2e2e2;
+  }
+  .findify-autocomplete-dropdown, .findify-autocomplete-fullscreen {
+    padding: 0 0 0;
+  }
+  .findify-autocomplete-fullscreen {
+    width: calc(100% - 20px);
+  }
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+{% unless product.tags contains 'custom_pagefly_content' %}
+
+  {%- assign description = product.description | replace: '<img', '<img class="lazyload" loading="lazy"' | replace: 'src', 'data-src' -%}
+  <div class="container pd_tabs_wrap">
+    <div class="product_des_wrap" id="Overview">
+      <div class="features">
+        {{description | replace: "Barco", "Barco&reg;"}}
+      </div>
+    </div>
+  </div>
+
+{% endunless %}
+
+{% schema %}
+  {
+    "name": "Product Overview Tabs",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Product Overview Tabs"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

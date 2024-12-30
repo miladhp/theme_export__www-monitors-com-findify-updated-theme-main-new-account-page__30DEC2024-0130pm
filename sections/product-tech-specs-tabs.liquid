@@ -1,0 +1,996 @@
+<div class="container pd_tabs_wrap ">
+
+ {% assign techspecs_option = product.metafields.techspecs_option %}
+ {% if techspecs_option.hide_techspecs != 'yes' %}
+        <div class="product_des_wrap custom-product_des_wrap" id="tech">
+          <div class="tech_wrap">
+            <h2>Tech Specs</h2>
+            <div class="table-responsive tech-specs-expand">
+             <div id="tech-specs-overlay" class="custom-table-overlay"></div>
+              <table class="table" id="tech-specs-table" style="animation: cf-fadein 500ms cubic-bezier(0.11, 0.33, 0.24, 1);">
+                <tbody>
+                  {% assign global = product.metafields.global %}
+                  {% assign monitor = product.metafields.monitor %}
+                  {% assign professional_monitor = product.metafields.monitor %}
+                  {% assign professional_displays = product.metafields.monitor %}     
+                  {% assign workstation = product.metafields.workstation %}
+                  {% assign film_digitizer = product.metafields.film_digitizer %}
+                  {% assign graphic_card = product.metafields.graphic_card %}
+                  {% assign reading_station = product.metafields.reading_station %}
+                  {% assign power_adapters = product.metafields.power_adapters %}
+                  {% assign dictation_mics = product.metafields.dictation_mics %}
+                  {% assign complete_pacs = product.metafields.complete_pacs %}
+
+                  {% unless product.type == 'Complete Reading Station' or product.type == 'Workstation' %}
+                    {% if product.vendor != blank %}
+                    <tr id="Manufacturer_hide">
+                      <td>Manufacturer</td>
+                      <td id="Manufacturer">{{ product.vendor | replace: "Barco", "Barco&reg;"}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if global.mfg_product_number != blank %}
+                    <tr  id="mfg_hide">
+  <!--                     <td>MFG. Product Number</td> -->
+                      <td>MFG Part#</td>
+                      <td id="mfg">{{ global.mfg_product_number }}</td>
+                    </tr>
+                    {% endif %} 
+                  {% endunless %}
+                  {% if product.type == 'Monitor' %}
+                  {% if monitor.screen_type != blank %}
+                  <tr id="Screen_Type_hide" >
+                    <td>Screen Type</td>
+                    <td id="Screen_Type">{{ monitor.screen_type | capitalize }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.resolution != blank %}
+                  <tr id="Resolution_hide" >
+                    <td>Resolution</td>
+                    <td id="Resolution">{{ monitor.resolution }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.pixel_pitch != blank %}
+                  <tr id="Pixel_Pitch_hide" >
+                    <td>Pixel Pitch</td>
+                    <td id="Pixel_Pitch">{{ monitor.pixel_pitch }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.contrast_ratio != blank %}
+                  <tr id="Contrast_Ratio_hide" >
+                    <td>Contrast Ratio</td>
+                    <td id="Contrast_Ratio">{{ monitor.contrast_ratio }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.aspect_ratio_hv != blank %}
+                  <tr id="Aspect_Ratio_hide" >
+                    <td>Aspect Ratio Hv</td>
+                    <td id="Aspect_Ratio">{{ monitor.aspect_ratio_hv }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.calibrated_luminance != blank %}
+                  <tr id="Calibrated_Luminance_hide" >
+                    <td>Calibrated Luminance</td>
+                    <td id="Calibrated_Luminance">{{ monitor.calibrated_luminance }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.max_luminance != blank %}
+                  <tr id="Max_Luminance_hide" >
+                    <td>Max Luminance</td>
+                    <td id="Max_Luminance">{{ monitor.max_luminance }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.calibration != blank %}
+                  <tr id="Calibration_hide" >
+                    <td>Calibration</td>
+                    <td id="Calibration">{{ monitor.calibration }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.backlight_censor != blank %}
+                  <tr id="Backlight_Censor_hide" >
+                    <td>Backlight Sensor</td>
+                    <td id="Backlight_Censor">{{ monitor.backlight_censor }}</td>
+                  </tr>
+                  {% endif %}  
+                  {% if monitor.Front_Sensor != blank %}
+                  <tr id="Front_Sensor_hide" >
+                    <td>Front Sensor</td>
+                    <td id="Front_Sensor">{{ monitor.Front_Sensor }}</td>
+                  </tr>
+                  {% endif %} 
+                  {% if monitor.ambient_light_censor != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Ambient Light Sensor</td>
+                    <td id="Ambient_Screen_Size">{{ monitor.ambient_light_censor }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.backlight != blank %}
+                  <tr id="Screen_Technology_hide" >
+                    <td>Backlight</td>
+                    <td id="Screen_Technology">{{ monitor.backlight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.screen_technology != blank %}
+                  <tr id="Screen_Technology_hide" >
+                    <td>Screen Technology</td>
+                    <td id="Screen_Technology">{{ monitor.screen_technology }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.active_screen_size_diagonal != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Active Screen Size (DIAGONAL)</td>
+                    <td id="Active_Screen_Size">{{ monitor.active_screen_size_diagonal }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.active_screen_size_hxv != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Active Screen Size (H x V)</td>
+                    <td id="Active_Screen_Size_hv">{{ monitor.active_screen_size_hxv }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.video_input_signals != blank %}
+                  <tr id="Video_Input_Signals_hide" >
+                    <td>Video Input Signals</td>
+                    <td id="Video_Input_Signals">{{ monitor.video_input_signals }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.recommended_for != blank %}
+                  <tr id="Recommended_For_hide" >
+                    <td>Recommended For</td>
+                    <td id="Recommended_For">{{ monitor.recommended_for }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor['3D_Tomosynthesis'] != blank %}
+                  <tr id="3D_Tomosynthesis_hide" >
+                    <td>3D Tomosynthesis</td>
+                    <td id="3D_Tomosynthesis">{{ monitor['3D_Tomosynthesis']  }}</td>
+                  </tr>
+                  {% endif %} 
+                  {% if monitor.viewing_angle_hv != blank %}
+                  <tr id="Viewing_Angle_hide" >
+                    <td>Viewing Angle (H, V)</td>
+                    <td id="Viewing_Angle">{{ monitor.viewing_angle_hv }}</td>
+                  </tr>
+                  {% endif %}  
+                  {% if monitor.mount_type != blank %}
+                  <tr id="Mount_Type_hide" >
+                    <td>Mount Type</td>
+                    <td id="Mount_Type">{{ monitor.mount_type }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.Dimensions_WHD != blank %}
+                  <tr id="Dimensions)_hide" >
+                    <td>Dimensions (W x H x D)</td>
+                    <td id="Dimensions">{{ monitor.Dimensions_WHD }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.power_consumption != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Power Consumption</td>
+                    <td id="power_consumption">{{ monitor.power_consumption }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if monitor.power_requirements != blank %}
+                  <tr id="Power_Requirements_hide" >
+                    <td>Power Requirements</td>
+                    <td id="Power_Requirements">{{ monitor.power_requirements }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% endif%}
+
+                  {% if product.type == 'Professional Monitor' %}
+                  {% if professional_monitor.screen_type != blank %}
+                  <tr id="Screen_Type_hide" >
+                    <td>Screen Type</td>
+                    <td id="Screen_Type">{{ professional_monitor.screen_type | capitalize }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.resolution != blank %}
+                  <tr id="Resolution_hide" >
+                    <td>Resolution</td>
+                    <td id="Resolution">{{ professional_monitor.resolution }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.pixel_pitch != blank %}
+                  <tr id="Pixel_Pitch_hide" >
+                    <td>Pixel Pitch</td>
+                    <td id="Pixel_Pitch">{{ professional_monitor.pixel_pitch }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.contrast_ratio != blank %}
+                  <tr id="Contrast_Ratio_hide" >
+                    <td>Contrast Ratio</td>
+                    <td id="Contrast_Ratio">{{ professional_monitor.contrast_ratio }}</td>
+                  </tr>
+                  {% endif %}
+                   {% if professional_monitor.aspect_ratio_hv != blank %}
+                  <tr id="Aspect_Ratio_hide" >
+                    <td>Aspect Ratio Hv</td>
+                    <td id="Aspect_Ratio">{{ professional_monitor.aspect_ratio_hv }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.calibrated_luminance != blank %}
+                  <tr id="Calibrated_Luminance_hide" >
+                    <td>Calibrated Luminance</td>
+                    <td id="Calibrated_Luminance">{{ professional_monitor.calibrated_luminance }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.max_luminance != blank %}
+                  <tr id="Max_Luminance_hide" >
+                    <td>Max Luminance</td>
+                    <td id="Max_Luminance">{{ professional_monitor.max_luminance }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.screen_technology != blank %}
+                  <tr id="Screen_Technology_hide" >
+                    <td>Screen Technology</td>
+                    <td id="Screen_Technology">{{ professional_monitor.screen_technology }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.active_screen_size_diagonal != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Active Screen Size (DIAGONAL)</td>
+                    <td id="Active_Screen_Size">{{ professional_monitor.active_screen_size_diagonal }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.active_screen_size_hxv != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Active Screen Size (H x V)</td>
+                    <td id="Active_Screen_Size">{{ professional_monitor.active_screen_size_hxv }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.video_input_signals != blank %}
+                  <tr id="Video_Input_Signals_hide" >
+                    <td>Video Input Signals</td>
+                    <td id="Video_Input_Signals">{{ professional_monitor.video_input_signals }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.viewing_angle_hv != blank %}
+                  <tr id="Viewing_Angle_hide" >
+                    <td>Viewing Angle (H, V)</td>
+                    <td id="Viewing_Angle">{{ professional_monitor.viewing_angle_hv }}</td>
+                  </tr>
+                  {% endif %}
+                 {% if professional_monitor.mount_type != blank %}
+                  <tr id="Mount_Type_hide" >
+                    <td>Mount Type</td>
+                    <td id="Mount_Type">{{ professional_monitor.mount_type }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.Dimensions_WHD != blank %}
+                  <tr id="Dimensions)_hide" >
+                    <td>Dimensions (W x H x D)</td>
+                    <td id="Dimensions">{{ professional_monitor.Dimensions_WHD }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.power_consumption != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Power Consumption</td>
+                    <td id="Active_Screen_Size">{{ professional_monitor.power_consumption }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.power_requirements != blank %}
+                  <tr id="Power_Requirements_hide" >
+                    <td>Power Requirements</td>
+                    <td id="Power_Requirements">{{ professional_monitor.power_requirements }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.backlight != blank %}
+                  <tr id="Screen_Technology_hide" >
+                    <td>Backlight</td>
+                    <td id="Screen_Technology">{{ professional_monitor.backlight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.ambient_light_censor != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Ambient Light Sensor</td>
+                    <td id="Active_Screen_Size">{{ professional_monitor.ambient_light_censor }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.backlight_censor != blank %}
+                  <tr id="Backlight_Censor_hide" >
+                    <td>Backlight Censor</td>
+                    <td id="Backlight_Censor">{{ professional_monitor.backlight_censor }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.calibration != blank %}
+                  <tr id="Calibration_hide" >
+                    <td>Calibration</td>
+                    <td id="Calibration">{{ professional_monitor.calibration }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_monitor.recommended_for != blank %}
+                  <tr id="Recommended_For_hide" >
+                    <td>Recommended For</td>
+                    <td id="Recommended_For">{{ professional_monitor.recommended_for }}</td>
+                  </tr>
+                  {% endif %}
+                  {% endif%}
+
+                  <!-- professional displays start -->
+                  {% if product.type == 'Professional Displays' or product.type == 'Surgical Displays' %}
+                  {% if professional_displays.screen_type != blank %}
+                  <tr id="Screen_Type_hide" >
+                    <td>Screen Type</td>
+                    <td id="Screen_Type">{{ professional_displays.screen_type | capitalize }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.resolution != blank %}
+                  <tr id="Resolution_hide" >
+                    <td>Resolution</td>
+                    <td id="Resolution">{{ professional_displays.resolution }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.pixel_pitch != blank %}
+                  <tr id="Pixel_Pitch_hide" >
+                    <td>Pixel Pitch</td>
+                    <td id="Pixel_Pitch">{{ professional_displays.pixel_pitch }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.contrast_ratio != blank %}
+                  <tr id="Contrast_Ratio_hide" >
+                    <td>Contrast Ratio</td>
+                    <td id="Contrast_Ratio">{{ professional_displays.contrast_ratio }}</td>
+                  </tr>
+                  {% endif %}
+                   {% if professional_displays.aspect_ratio_hv != blank %}
+                  <tr id="Aspect_Ratio_hide" >
+                    <td>Aspect Ratio Hv</td>
+                    <td id="Aspect_Ratio">{{ professional_displays.aspect_ratio_hv }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.calibrated_luminance != blank %}
+                  <tr id="Calibrated_Luminance_hide" >
+                    <td>Calibrated Luminance</td>
+                    <td id="Calibrated_Luminance">{{ professional_displays.calibrated_luminance }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.max_luminance != blank %}
+                  <tr id="Max_Luminance_hide" >
+                    <td>Max Luminance</td>
+                    <td id="Max_Luminance">{{ professional_displays.max_luminance }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.screen_technology != blank %}
+                  <tr id="Screen_Technology_hide" >
+                    <td>Screen Technology</td>
+                    <td id="Screen_Technology">{{ professional_displays.screen_technology }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.active_screen_size_diagonal != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Active Screen Size (DIAGONAL)</td>
+                    <td id="Active_Screen_Size">{{ professional_displays.active_screen_size_diagonal }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.active_screen_size_hxv != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Active Screen Size (H x V)</td>
+                    <td id="Active_Screen_Size">{{ professional_displays.active_screen_size_hxv }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.video_input_signals != blank %}
+                  <tr id="Video_Input_Signals_hide" >
+                    <td>Video Input Signals</td>
+                    <td id="Video_Input_Signals">{{ professional_displays.video_input_signals }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.viewing_angle_hv != blank %}
+                  <tr id="Viewing_Angle_hide" >
+                    <td>Viewing Angle (H, V)</td>
+                    <td id="Viewing_Angle">{{ professional_displays.viewing_angle_hv }}</td>
+                  </tr>
+                  {% endif %}
+                 {% if professional_displays.mount_type != blank %}
+                  <tr id="Mount_Type_hide" >
+                    <td>Mount Type</td>
+                    <td id="Mount_Type">{{ professional_displays.mount_type }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.Dimensions_WHD != blank %}
+                  <tr id="Dimensions)_hide" >
+                    <td>Dimensions (W x H x D)</td>
+                    <td id="Dimensions">{{ professional_displays.Dimensions_WHD }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.power_consumption != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Power Consumption</td>
+                    <td id="Active_Screen_Size">{{ professional_displays.power_consumption }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.power_requirements != blank %}
+                  <tr id="Power_Requirements_hide" >
+                    <td>Power Requirements</td>
+                    <td id="Power_Requirements">{{ professional_displays.power_requirements }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.backlight != blank %}
+                  <tr id="Screen_Technology_hide" >
+                    <td>Backlight</td>
+                    <td id="Screen_Technology">{{ professional_displays.backlight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.ambient_light_censor != blank %}
+                  <tr id="Active_Screen_Size_hide" >
+                    <td>Ambient Light Sensor</td>
+                    <td id="Active_Screen_Size">{{ professional_displays.ambient_light_censor }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.backlight_censor != blank %}
+                  <tr id="Backlight_Censor_hide" >
+                    <td>Backlight Censor</td>
+                    <td id="Backlight_Censor">{{ professional_displays.backlight_censor }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.calibration != blank %}
+                  <tr id="Calibration_hide" >
+                    <td>Calibration</td>
+                    <td id="Calibration">{{ professional_displays.calibration }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if professional_displays.recommended_for != blank %}
+                  <tr id="Recommended_For_hide" >
+                    <td>Recommended For</td>
+                    <td id="Recommended_For">{{ professional_displays.recommended_for }}</td>
+                  </tr>
+                  {% endif %}
+                  {% endif%}
+                  <!-- professional dispalys end  -->
+
+                  <!-- Complete Reading Station start  -->
+                  {% if product.type == 'Complete Reading Station' %}
+
+                  <tr class="custom-subheading-row">
+                    <th colspan="2" class="custom-subheading-crs">Diagnostic Display(s)</th>
+                  </tr>
+
+                  {% if complete_pacs['Diagnostic_Display_Make_Model'] != blank %}
+                  <tr id="Diagnostic_Display_Make_Model_hide">
+                    <td>Make/Model</td>
+                    <td id="Diagnostic_Display_Make_Model">{{ complete_pacs['Diagnostic_Display_Make_Model'] | replace: "Barco", "Barco&reg;" }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Resolution'] != blank %}
+                  <tr id="Diagnostic_Display_Resolution_hide">
+                    <td>Resolution</td>
+                    <td id="Diagnostic_Display_Resolution">{{ complete_pacs['Diagnostic_Display_Resolution'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Pixel_Pitch'] != blank %}
+                  <tr id="Diagnostic_Display_Pixel_Pitch_hide">
+                    <td>Pixel Pitch</td>
+                    <td id="Diagnostic_Display_Pixel_Pitch">{{ complete_pacs['Diagnostic_Display_Pixel_Pitch'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Contrast_Ratio'] != blank %}
+                  <tr id="Diagnostic_Display_Contrast_Ratio_hide">
+                    <td>Contrast Ratio</td>
+                    <td id="Diagnostic_Display_Contrast_Ratio">{{ complete_pacs['Diagnostic_Display_Contrast_Ratio'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Calibrated_Luminance'] != blank %}
+                  <tr id="Diagnostic_Display_Calibrated_Luminance_hide">
+                    <td>Calibrated Luminance</td>
+                    <td id="Diagnostic_Display_Calibrated_Luminance">{{ complete_pacs['Diagnostic_Display_Calibrated_Luminance'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Max_Luminance'] != blank %}
+                  <tr id="Diagnostic_Display_Max_Luminance_hide">
+                    <td>Max Luminance</td>
+                    <td id="Diagnostic_Display_Max_Luminance">{{ complete_pacs['Diagnostic_Display_Max_Luminance'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Calibration'] != blank %}
+                  <tr id="Diagnostic_Display_Calibration_hide">
+                    <td>Calibration</td>
+                    <td id="Diagnostic_Display_Calibration">{{ complete_pacs['Diagnostic_Display_Calibration'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Backlight_Technology'] != blank %}
+                  <tr id="Diagnostic_Display_Backlight_Technology_hide" >
+                    <td>Backlight Technology</td>
+                    <td id="Diagnostic_Display_Backlight_Technology">{{ complete_pacs['Diagnostic_Display_Backlight_Technology'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Front_Sensor'] != blank %}
+                  <tr id="Diagnostic_Display_Front_Sensor_hide">
+                    <td>Front Sensor</td>
+                    <td id="Diagnostic_Display_Front_Sensor">{{ complete_pacs['Diagnostic_Display_Front_Sensor'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Ambient_Sensor'] != blank %}
+                  <tr id="Diagnostic_Display_Ambient_Sensor_hide">
+                    <td>Ambient Sensor</td>
+                    <td id="Diagnostic_Display_Ambient_Sensor">{{ complete_pacs['Diagnostic_Display_Ambient_Sensor'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Diagnostic_Display_Active_Screen'] != blank %}
+                  <tr id="Diagnostic_Display_Active_Screen_hide">
+                    <td>Active Screen</td>
+                    <td id="Diagnostic_Display_Active_Screen">{{ complete_pacs['Diagnostic_Display_Active_Screen'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                    {% if complete_pacs['Weight_Per_Display'] != blank %}
+                  <tr id="Weight_Per_Display_hide">
+                    <td>Weight (Per Display)</td>
+                    <td id="Weight_Per_Display">{{ complete_pacs['Weight_Per_Display'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  <tr class="custom-subheading-row">
+                    <th colspan="2" class="custom-subheading-workstation">Workstation</th>
+                  </tr>
+
+                  {% if complete_pacs['Workstation_Make_Model'] != blank %}
+                  <tr id="Workstation_Make_Model_hide">
+                    <td>Make/Model</td>
+                    <td id="Workstation_Make_Model">{{ complete_pacs['Workstation_Make_Model'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Workstation_Processor'] != blank %}
+                  <tr id="Workstation_Processor_hide">
+                    <td>Processor</td>
+                    <td id="Workstation_Processor">{{ complete_pacs['Workstation_Processor'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Workstation_Memory'] != blank %}
+                  <tr id="Workstation_Memory_hide">
+                    <td>Memory</td>
+                    <td id="Workstation_Memory">{{ complete_pacs['Workstation_Memory'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Workstation_Storage'] != blank %}
+                  <tr id="Workstation_Storage_hide">
+                    <td>Storage</td>
+                    <td id="Workstation_Storage">{{ complete_pacs['Workstation_Storage'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Workstation_Operating_System'] != blank %}
+                  <tr id="Workstation_Operating_System_hide">
+                    <td>Operating System</td>
+                    <td id="Workstation_Operating_System">{{ complete_pacs['Workstation_Operating_System'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Workstation_WiFi'] != blank %}
+                  <tr id="Workstation_WiFi_hide">
+                    <td>WiFi</td>
+                    <td id="Workstation_WiFi">{{ complete_pacs['Workstation_WiFi'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Ethernet_Ports'] != blank %}
+                  <tr id="Workstation_Ethernet_Ports_hide">
+                    <td>Ethernet Ports</td>
+                    <td id="Workstation_Ethernet_Ports">{{ complete_pacs['Ethernet_Ports'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['GPU_Make_Model'] != blank %}
+                  <tr id="GPU_Model_hide">
+                    <td>GPU Make/Model</td>
+                    <td id="GPU_Model">{{ complete_pacs['GPU_Make_Model'] | replace: "Barco", "Barco&reg;" }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['GPU_Memory'] != blank %}
+                  <tr id="GPU_Memory_hide">
+                    <td>GPU Memory</td>
+                    <td id="GPU_Memory">{{ complete_pacs['GPU_Memory'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Total_Display_Supported'] != blank %}
+                  <tr id="Total_Display_Supported_hide">
+                    <td>Total Display Supported</td>
+                    <td id="Total_Display_Supported">{{ complete_pacs['Total_Display_Supported'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Workstation_Weight'] != blank %}
+                  <tr id="Workstation_Weight_hide">
+                    <td>Weight</td>
+                    <td id="Workstation_Weight">{{ complete_pacs['Workstation_Weight'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  <tr class="custom-subheading-row">
+                    <th colspan="2" class="custom-subheading-auxillary">Auxiliary Display(s)</th>
+                  </tr>
+
+                  {% if complete_pacs['Auxiliary_Display_Make_Model'] != blank %}
+                  <tr id="Auxiliary_Display_Make_Model_hide">
+                    <td>Make/Model</td>
+                    <td id="Auxiliary_Display_Make_Model">{{ complete_pacs['Auxiliary_Display_Make_Model'] | replace: "Barco", "Barco&reg;" }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Auxiliary_Display_Active_Screen'] != blank %}
+                  <tr id="Auxiliary_Display_Active_Screen_hide">
+                    <td>Active Screen</td>
+                    <td id="Auxiliary_Display_Active_Screen">{{ complete_pacs['Auxiliary_Display_Active_Screen'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if complete_pacs['Auxiliary_Display_Resolution'] != blank %}
+                  <tr id="Auxiliary_Display_Resolution_hide">
+                    <td>Resolution</td>
+                    <td id="Auxiliary_Display_Resolution">{{ complete_pacs['Auxiliary_Display_Resolution'] }}</td>
+                  </tr>
+                  {% endif %}
+                    
+                  {% endif %}
+                  <!-- Complete Reading Station end  -->
+
+                  {% if product.type == 'Workstation' %}
+
+                  {% if product.vendor != blank %}
+                    <tr id="Manufacturer_hide">
+                      <td>Manufacturer</td>
+                      <td id="Manufacturer">{{ product.vendor | replace: "Barco", "Barco&reg;"}}</td>
+                    </tr>
+                  {% endif %}
+
+                  {% if workstation['Make_Model'] != blank %}
+                  <tr>
+                    <td>Make/Model</td>
+                    <td>{{workstation['Make_Model'] }}</td>
+                  </tr>
+                  {% endif %}
+                    
+                  {% if global.mfg_product_number != blank %}
+                  <tr  id="mfg_hide">
+<!--                     <td>MFG. Product Number</td> -->
+                    <td>MFG Part#</td>
+                    <td id="mfg">{{ global.mfg_product_number }}</td>
+                  </tr>
+                  {% endif %} 
+
+                  {% if workstation['processor'] != blank %}
+                  <tr>
+                    <td>Processor</td>
+                    <td>{{ workstation['processor'] }}</td>
+                  </tr>
+                  {% endif %}  
+
+                  {% if workstation['memory'] != blank %}
+                  <tr>
+                    <td>Memory</td>
+                    <td>{{ workstation['memory'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if workstation['graphics'] != blank %}
+                  <tr>
+                    <td>Graphics</td>
+                    <td>{{ workstation['graphics'] }}</td>
+                  </tr>
+                  {% endif %}  
+
+                  {% if workstation['storage'] != blank %}
+                  <tr>
+                    <td>Storage</td>
+                    <td>{{ workstation['storage'] }}</td>
+                  </tr>
+                  {% endif %}    
+
+                  {% if workstation['Screen_Resolution_for_Laptops'] != blank %}
+                  <tr>
+                    <td>Display Resolution</td>
+                    <td>{{ workstation['Screen_Resolution_for_Laptops'] }}</td>
+                  </tr>
+                  {% endif %}  
+
+                  {% if workstation['WIFI'] != blank %}
+                  <tr>
+                    <td>WIFI</td>
+                    <td>{{ workstation['WIFI'] }}</td>
+                  </tr>
+                  {% endif %}  
+
+                  {% if workstation['operating_system'] != blank %}
+                  <tr>
+                    <td>Operating System</td>
+                    <td>{{ workstation['operating_system'] }}</td>
+                  </tr>
+                  {% endif %}   
+                    
+                  {% if workstation['Dimensions_WHD'] != blank %}
+                  <tr>
+                    <td>Dimensions (W x H x D)</td>
+                    <td>{{workstation['Dimensions_WHD'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if workstation['Power_Supply'] != blank %}
+                  <tr>
+                    <td>Power Supply</td>
+                    <td>{{ workstation['Power_Supply'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if workstation['Total_Display_Support'] != blank %}
+                  <tr>
+                    <td>Total Display Support</td>
+                    <td>{{ workstation['Total_Display_Support'] }}</td>
+                  </tr>
+                  {% endif %}
+
+                  {% if workstation['Total Display(s) Supported'] != blank %}
+                  <tr>
+                    <td>Total Display(s) Supported</td>
+                    <td>{{ workstation['Total Display(s) Supported'] }}</td>
+                  </tr>
+                  {% endif %}
+                  
+                  {% if workstation['slots'] != blank %}
+                  <tr>
+                    <td>Slots</td>
+                    <td>{{ workstation['slots'] }}</td>
+                  </tr>
+                  {% endif %}  
+                    
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                    
+                  {% endif%}
+
+                  {% if product.type == 'Film Digitizer' %}
+                  {% if film_digitizer.resolution != blank %}
+                  <tr>
+                    <td>Resolution</td>
+                    <td>{{ film_digitizer.resolution }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.scan_rate != blank %}
+                  <tr>
+                    <td>Scan Rate</td>
+                    <td>{{ film_digitizer.scan_rate }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.clinical_optical_density_range != blank %}
+                  <tr>
+                    <td>Clinical Optical Density Range</td>
+                    <td>{{ film_digitizer.clinical_optical_density_range }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.mtbf != blank %}
+                  <tr>                  
+                    <td>MTBF</td>
+                    <td>{{ film_digitizer.mtbf }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.film_sizes != blank %}
+                  <tr>
+                    <td>Film Sizes</td>
+                    <td>{{ film_digitizer.film_sizes }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.auto_film_feeder != blank %}
+                  <tr>
+                    <td>Auto Film Feeder</td>
+                    <td>{{ film_digitizer.auto_film_feeder }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.geometric_accuracy != blank %}
+                  <tr>
+                    <td>Geometric Accuracy</td>
+                    <td>{{ film_digitizer.geometric_accuracy }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.hardware_interface != blank %}
+                  <tr>
+                    <td>Hardware Interface</td>
+                    <td>{{ film_digitizer.hardware_interface }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if film_digitizer.recommended_for != blank %}
+                  <tr>
+                    <td>Recommended For</td>
+                    <td>{{ film_digitizer.recommended_for }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% endif%}
+
+                  {% if product.type == 'Graphic Card' %}
+                  {% if graphic_card.gpu_memory != blank %}
+                  <tr>
+                    <td>GPU Memory</td>
+                    <td>{{ graphic_card.gpu_memory }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if graphic_card.memory_interface != blank %}
+                  <tr>
+                    <td>Memory Interface</td>
+                    <td>{{ graphic_card.memory_interface }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if graphic_card.memory_bandwidth != blank %}
+                  <tr>
+                    <td>Memory Bandwidth</td>
+                    <td>{{ graphic_card.memory_bandwidth }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if graphic_card.power_consumption != blank %}
+                  <tr>
+                    <td>Power Consumption</td>
+                    <td>{{ graphic_card.power_consumption }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if graphic_card.output_ports != blank %}
+                  <tr>
+                    <td>Output Ports</td>
+                    <td>{{ graphic_card.output_ports }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% endif%}
+
+                  {% if product.type == 'Dictation Mics'%}
+                  {% if dictation_mics.type != blank %}
+                  <tr>
+                    <td>Output Ports</td>
+                    <td>{{ dictation_mics.type }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if dictation_mics.connection != blank %}
+                  <tr>
+                    <td>Output Ports</td>
+                    <td>{{ dictation_mics.connection }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% endif %}
+
+                  {% if product.type == 'Power Adapter'%}
+                  {% if power_adapters.ac_Input != blank %}
+                  <tr class="ac">
+                    <td>Output Ports</td>
+                    <td>{{ power_adapters.ac_Input }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if power_adapters.dc_voltage_output != blank %}
+                  <tr>
+                    <td>Output Ports</td>
+                    <td>{{ power_adapters.dc_voltage_output }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if power_adapters.dc_amperage_output != blank %}
+                  <tr>
+                    <td>Output Ports</td>
+                    <td>{{ power_adapters.dc_amperage_output }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if power_adapters.connection_type != blank %}
+                  <tr>
+                    <td>Output Ports</td>
+                    <td>{{ power_adapters.connection_type }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if global.weight != blank %}
+                  <tr id="Weight_hide">
+                    <td>Weight</td>
+                    <td id="Weight">{{ global.weight }}</td>
+                  </tr>
+                  {% endif %}
+                  {% endif%}
+                  <tr id="landhere"></tr>
+                </tbody>
+              </table>
+              <div class="custom-techspecs-btn">
+                <button id="expandBtn" class="button button--small button--ternary">Expand Specifications +</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+</div>
+<style>
+  #tech-specs-table tbody tr:nth-child(n+5) {
+  display: none;
+}
+  #expandBtn{
+    display:block;
+    margin: 0 auto;
+  } 
+#tech-specs-table.custom-table-expand--show tbody tr {
+  animation: cf-fadein 500ms cubic-bezier(0.11, 0.33, 0.24, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes cf-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
+<script>
+  const expandBtn = document.querySelector('#expandBtn');
+  const tableRows = document.querySelectorAll('#tech-specs-table tbody tr');
+  const myTable = document.querySelector('#tech-specs-table');
+  const removeOverlay = document.querySelector('#tech-specs-overlay');
+  
+  if (myTable) {
+    expandBtn.addEventListener('click', function() {
+      $("#tech-specs-overlay").addClass("custom-table-overlay--show");
+      $("#tech-specs-table").addClass("custom-table-expand--show");
+  
+      tableRows.forEach(function(row) {
+        row.style.display = 'table-row';
+        row.classList.add('fade-in');
+      });
+  
+      removeOverlay.classList.remove('custom-table-overlay');
+      expandBtn.style.display = 'none';
+    });
+  }
+</script>
+{% schema %}
+  {
+    "name": "Product Tech Specs Tabs",
+    "settings": [],
+  "presets": [
+    {
+      "name": "Product Tech Specs Tabs"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

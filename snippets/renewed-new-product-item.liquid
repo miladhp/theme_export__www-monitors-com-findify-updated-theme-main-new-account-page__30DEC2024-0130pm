@@ -1,0 +1,528 @@
+{%- comment -%}Color labels used to detect what is a color swatch{%- endcomment -%}
+{%- assign color_label = 'color,colour,couleur,cor,colore,farbe,색,色,カラー,färg,farve,szín,barva' | split: ',' -%}
+
+<div class="product-item {% if horizontal %}product-item--horizontal{% elsif list %}product-item--list{% else %}product-item--vertical{% endif %} {% if complementary_products %}product-item--complementary{% endif %} {% if section.id == 'blog-sidebar' %}product-item--compact{% endif %} {{ grid_classes }}">
+  {%- capture product_labels -%}
+    {%- unless hide_labels -%}
+      {%- for tag in product.tags -%}
+        {%- if tag contains '__label:' -%}
+          <span class="product-label product-label--custom1">{{ tag | split: '__label:' | last }}</span>
+        {%- endif -%}
+
+        {%- if tag contains '__label1:' -%}
+          <span class="product-label product-label--custom1">{{ tag | split: '__label1:' | last }}</span>
+        {%- endif -%}
+
+        {%- if tag contains '__label2:' -%}
+          <span class="product-label product-label--custom2">{{ tag | split: '__label2:' | last }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+      {% if product.variants.first.title contains 'Default'%}
+
+        {%- if settings.show_discount and product.price < product.compare_at_price -%}
+          {%- if settings.discount_mode == 'percentage' -%}
+            {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '%' -%}
+          {%- else -%}
+            {%- capture savings -%}<span>{{ product.compare_at_price | minus: product.price | money }}</span>{%- endcapture -%}
+          {%- endif -%}
+  
+          <span class="product-label product-label--on-sale">{{ 'collection.product.discount_html' | t: savings: savings }}</span>
+        {%- endif -%}
+        
+      {% else %}
+
+        {% for variant in product.variants %}
+          {% if variant.available %}
+            {% if variant.compare_at_price > variant.price %}
+
+              {%- capture savings -%}<span>{{ variant.compare_at_price | minus: variant.price | money_without_trailing_zeros }}</span>{%- endcapture -%}
+
+              <span class="product-label product-label--on-sale {{product.handle}}ddaw">{{ 'collection.product.discount_html' | t: savings: savings }}</span>
+              <style>
+                .product-label--on-sale.{{product.handle}}ddaw ~ .product-label--on-sale.{{product.handle}}ddaw{display:none}
+              </style>
+            {% else %}
+              <style>
+                /* .product-label--on-sale.{{product.handle}}ddaw{display:none} */
+              </style>
+            {%- endif -%}
+  
+          {%- endif -%}
+        {%- endfor -%}
+
+      {% endif %}
+    {%- endunless -%}
+  {%- endcapture -%}
+
+  {%- if product_labels != blank -%}
+    <div class="product-item__label-list">
+      {{- product_labels -}}
+    </div>
+  {%- endif -%}
+
+  {% unless template contains 'collection' %}
+  {% if settings.custom_icon_visibility == true and settings.custom_ribbon_icon != blank and product.tags contains 'mammography' %}
+    <div class="custom-ribbon-icon">
+     <img src="{{ settings.custom_ribbon_icon | image_url }}" loading="lazy" alt="ribbon-icon">
+    </div> 
+  {% endif %}
+  {% endunless %}
+
+  {%- if settings.show_secondary_image and product.media.size > 1 -%}
+    {%- assign show_secondary_media = true -%}
+  {%- else -%}
+    {%- assign show_secondary_media = false -%}
+  {%- endif -%}
+
+  {%- assign filtered_variant = '' -%}
+
+  {%- if product.media.size > 0 -%}
+    {%- assign primary_media = product.featured_media -%}
+
+    <a href="{{ product.url }}" class="product-item__image-wrapper {% if show_secondary_media %}product-item__image-wrapper--with-secondary{% endif %}">
+      <div class="aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}" style="padding-bottom: {{ 100.0 | divided_by: primary_media.preview_image.aspect_ratio }}%">
+        {{- primary_media | image_url: width: primary_media.width | image_tag: loading: 'lazy', fetchsizes: '(max-width: 699px) 100vw, 600px', widths: '200,300,450', data-media-id: primary_media.id, class: 'product-item__primary-image' -}}
+
+        {%- if show_secondary_media -%}
+          {{- product.media[1] | image_url: width: product.media[1].width | image_tag: loading: 'lazy', sizes: '(max-width: 699px) 100vw, 600px', widths: '200,300,400,600,800,1000,1200,1400,1600', class: 'product-item__secondary-image' -}}
+        {%- endif -%}
+      </div>
+    </a>
+  {%- endif -%}
+
+  <div class="product-item__info">
+    <div class="product-item__info-inner">
+      
+      {% if template contains 'collection' %}
+        <div class="add_to_compare_on_collections_page custom-nav-check">
+          <label class="SPCMP_chk_lbl">
+            <input type="checkbox" class="SPCMP_Add " name='SPCMP_chk' spcmp_collids="{{spcmpCollArr | remove_first: ','}}" spcmp_pid="{{product.id}}" spcmp_vid="{{ product.variants.first.id }}" data_collectionId="{{ collection.id }}" >
+            <span class="SPCMP_Add_span">Add To Compare</span>
+          </label>
+        </div>
+      {% endif %}
+      
+      {%- capture price_list -%}
+      <a href="{{ product.url }}">
+        <div class="product-item__price-list price-list"{% unless product.available %}style="opacity:0;" {% endunless %}>
+          {%- if product.price < product.compare_at_price -%}
+            {%- if product.price_varies -%}
+              {%- if settings.currency_code_enabled -%}
+                {%- capture price_min -%}{{ product.price_min | money_with_currency }}{%- endcapture -%}
+                {%- capture price_max -%}{{ product.price_max | money_with_currency }}{%- endcapture -%}
+              {%- else -%}
+                {%- capture price_min -%}{{ product.price_min | money }}{%- endcapture -%}
+                {%- capture price_max -%}{{ product.price_max | money }}{%- endcapture -%}
+              {%- endif -%}
+
+              {% assign availableVariants = product.variants | where: 'available', true %}
+              {% assign numberOfAvailableVariants = availableVariants.size %}
+              {% assign lowest_price = availableVariants | map: 'price' | sort | first %}
+              {% if numberOfAvailableVariants == 1 %}
+                {% assign firstAvailableVariant = availableVariants.first %}
+                
+                {% render 'new-currency-format', price : firstAvailableVariant.price, cart : cart, template : template, product: product %}
+                {% comment %} <span class="price price--highlight tn">{{ firstAvailableVariant.price | money_without_trailing_zeros }}</span {% endcomment %}
+                <span class="price price--compare tn">{{ firstAvailableVariant.compare_at_price | money_without_trailing_zeros }}</span>
+              {% else %}
+                
+                {% render 'new-currency-format', price : lowest_price, cart : cart, template : template, product: product %} 
+                {% comment %} <span class="price price--highlight t3">{{ 'collection.product.from_price_html' | t: price_min: price_min, price_max: price_max }}</span> {% endcomment %}
+                <span class="price price--compare t3">{{ product.compare_at_price_min | money_without_trailing_zeros }}</span>
+              {% endif %}
+              {%- else -%}
+
+              {% render 'new-currency-format', price : product.price , cart : cart, template : template, product: product %}
+              {% comment %} <span class="price price--highlight">{{ product.price | money_without_trailing_zeros }}</span> {% endcomment %}
+              <span class="price price--compare">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+            {%- endif -%}
+          {%- elsif product.price_varies -%}
+            {%- if settings.currency_code_enabled -%}
+              {%- capture price_min -%}{{ product.price_min | money_with_currency }}{%- endcapture -%}
+              {%- capture price_max -%}{{ product.price_max | money_with_currency }}{%- endcapture -%}
+            {%- else -%}
+              {%- capture price_min -%}{{ product.price_min | money }}{%- endcapture -%}
+              {%- capture price_max -%}{{ product.price_max | money }}{%- endcapture -%}
+            {%- endif -%}
+
+            <span class="price">
+              <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
+              {{- 'collection.product.from_price_html' | t: price_min: price_min, price_max: price_max -}}
+            </span>
+          {%- else -%}
+
+            {% if cart.currency.iso_code == 'EUR' or cart.currency.iso_code == 'QAR'  or cart.currency.iso_code == 'RON' or cart.currency.iso_code == 'PLN' or cart.currency.iso_code == 'HUF' or cart.currency.iso_code == 'DKK' or cart.currency.iso_code == 'CZK' or cart.currency.iso_code == 'BAM' %}
+              {% assign mod_price_first = product.price | money_without_currency | split: ',' | first  %}
+              {% assign mod_price_last = product.price | money_without_currency %}
+              {% if mod_price_last contains ',' %}
+                {% assign mod_price_last = mod_price_last | split: ',' | last %}
+              {% else %}
+                {% assign mod_price_last = '' %}
+              {% endif %}
+            {% else %}
+              {% assign mod_price_first = product.price | money_without_currency | split: '.' | first  %}
+              {% assign mod_price_last = product.price | money_without_currency %}
+              {% if mod_price_last contains '.' %}
+                {% assign mod_price_last = mod_price_last | split: '.' | last %}
+              {% else %}
+                {% assign mod_price_last = '' %}
+              {% endif %}
+            {% endif %}
+            
+            <span class="price">
+              <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
+              {%- if settings.currency_code_enabled -%}
+                {{- product.price | money_with_currency -}}
+              {%- else -%}
+               <span class="price-symbol">{{ cart.currency.symbol }}</span>{{ mod_price_first }}<span class="price-fraction">{{ mod_price_last }}</span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+        </div>
+      </a>
+
+        {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+          <div class="product-item__price-info">
+            <div class="unit-price-measurement">
+              <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money }}</span>
+              <span class="unit-price-measurement__separator">/ </span>
+
+              {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+                <span class="unit-price-measurement__reference-value">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}</span>
+              {%- endif -%}
+
+              <span class="unit-price-measurement__reference-unit">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}</span>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- capture vendor -%}
+        {%- if settings.show_vendor -%}
+          {%- assign vendor_handle = product.vendor | handle -%}
+          {%- assign collection_for_vendor = collections[vendor_handle] -%}
+
+          {%- unless collection_for_vendor.empty? -%}
+            <a class="product-item__vendor link" style="display:none;" href="{{ collection_for_vendor.url }}">{{ product.vendor }}</a>
+          {%- else -%}
+            <a class="product-item__vendor link"  style="display:none;" href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a>
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- if settings.product_price_position == 'before_title' -%}
+        {%- if product.metafields.price_option.hide_price != blank -%}
+          {%- assign hide_product_price = product.metafields.price_option.hide_price | strip | downcase -%}
+          {%- if hide_product_price != 'yes' %}
+            {{ price_list }}
+          {%- else -%}
+            <div class="product-item__price-list price-list"><a href="{{ product.url }}" style="color: #404042 !important;font-weight:500;">Request a Quote</a></div>
+          {%- endif -%}
+        {%- else -%}
+          {{ price_list }}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if settings.product_price_position == 'after_title' -%}
+        {{ vendor | replace: 'Barco', 'Barco&reg;' }}
+      {%- endif -%}
+
+      <a href="{{ filtered_variant.url | default: product.url | within: collection }}" class="product-item__title text--strong link">{{ product.title  | replace: "Barco", "Barco&reg;" }}</a>
+      
+      {%- if settings.product_price_position == 'before_title' -%}
+        {{ vendor | replace: 'Barco', 'Barco&reg;' }}
+      {%- endif -%}
+
+      {%- if settings.show_color_swatch and template != 'blog' -%}
+        {%- capture color_swatch -%}
+          {%- capture color_name -%}{{ section.id }}-{{ product.id }}{%- endcapture -%}
+
+          {%- for option in product.options_with_values -%}
+            {%- assign downcased_option = option.name | downcase -%}
+
+            {%- if color_label contains downcased_option -%}
+              {%- assign variant_option = 'option' | append: forloop.index -%}
+              {%- assign value_to_match = filtered_variant[variant_option] | default: option.selected_value -%}
+
+              {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+
+              {%- for value in option.values -%}
+                {%- assign downcased_value = value | downcase -%}
+                {%- capture color_id -%}{{ color_name }}-{{ forloop.index }}{%- endcapture -%}
+
+                {%- for variant in product.variants -%}
+                  {%- if variant[variant_option] == value -%}
+                    {%- assign variant_for_value = variant -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                <div class="color-swatch {% if downcased_value == 'white' or downcased_value == 'blanc' %}color-swatch--white{% endif %}">
+                  {%- if variant_for_value.featured_media -%}
+                    {%- assign image_url = variant_for_value.featured_media | image_url: width: 800 -%}
+                  {%- endif -%}
+
+                  <input class="color-swatch__radio" type="radio" name="{{ color_name }}" id="{{ color_id }}" value="{{ value | escape }}" {% if value_to_match == value %}checked="checked"{% endif %} data-variant-url="{{ variant_for_value.url }}" {% if variant_for_value.featured_media %}data-media-id="{{ variant_for_value.featured_media.id }}" data-image-url="{{ image_url }}" data-image-aspect-ratio="{{ variant_for_value.featured_media.preview_image.aspect_ratio }}"{% endif %} aria-label="{{ value | escape }}">
+                  <label class="color-swatch__item" for="{{ color_id }}" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: downcased_value %}" title="{{ value | escape }}">
+                    <span class="visually-hidden">{{ value }}</span>
+                  </label>
+                  <a href="{{ product.url }}" class="color-swatch__item-link">+{{ option.values.size | minus: forloop.index0 }}</a>
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- if color_swatch != blank -%}
+          <div class="product-item__swatch-list">
+            <div class="color-swatch-list">
+              {{ color_swatch }}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if settings.show_inventory_quantity and product.variants.first.inventory_management != blank and product.template_suffix != 'pre-order' -%}
+        {%- if product.available -%}
+          {%- assign should_calculate_inventory = true -%}
+
+          {%- for variant in product.variants -%}
+            {%- comment -%}
+              If we have one variant that is set to "continue" or that do not have any inventory management, then we skip the calculation of inventory as this
+              means at least one of the variant is always purchasable
+            {%- endcomment -%}
+
+            {%- if variant.inventory_policy == 'continue' or variant.inventory_management == null -%}
+              {%- assign should_calculate_inventory = false -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if should_calculate_inventory and settings.low_inventory_threshold > 0 -%}
+            {%- assign all_inventory = 0 -%}
+
+            {%- for variant in product.variants -%}
+              {%- if variant.inventory_management -%}
+                {%- assign all_inventory = variant.inventory_quantity | at_least: 0 | plus: all_inventory -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if all_inventory <= settings.low_inventory_threshold -%}
+              <span class="product-item__inventory inventory inventory--low">{{ 'collection.product.low_stock_with_quantity_count' | t: count: all_inventory }}</span>
+            {%- else -%}
+              <span class="product-item__inventory inventory inventory--high">{{ 'collection.product.in_stock_with_quantity_count' | t: count: all_inventory }}</span>
+            {%- endif -%}
+          {%- else -%}
+            {%- if product.variants.first.inventory_policy == 'continue' and product.variants.first.inventory_quantity <= 0 and product.variants.first.requires_shipping -%}
+              <span class="product-item__inventory inventory inventory--high">{{ 'collection.product.oversell_stock' | t }}</span>
+            {%- else -%}
+              <span class="product-item__inventory inventory inventory--high">{{ 'collection.product.in_stock' | t }}</span>
+            {%- endif -%}
+          {%- endif -%}
+        {%- else -%}
+          <span class="product-item__inventory inventory">{{ 'collection.product.sold_out' | t }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if request.page_type == 'collection' or request.page_type == 'search' or show_add_to_cart -%}
+      {%- if section.settings.show_quick_view == 'list_grid' or section.settings.show_quick_buy == 'list_grid' or show_add_to_cart -%}
+        {%- assign product_form_classes = 'product-item__action-list button-stack' -%}
+      {%- else -%}
+        {%- assign product_form_classes = 'product-item__action-list product-item__action-list--list-view-only button-stack' -%}
+      {%- endif -%}
+
+      {%- assign form_id = 'product_form_id_' | append: product.id | append: '_' | append: section.id -%}
+
+      {%- if product.template_suffix == 'contact' -%}
+        <div class="{{ product_form_classes }}">
+          <a href="mailto:{{ shop.email }}" class="product-item__action-button button button--small button--primary">
+            {{- 'product.form.contact_us' | t -}}
+          </a>
+        </div>
+      {%- else -%}
+        {%- capture quick_buy_form -%}
+          {%- form 'product', product, id: form_id, class: product_form_classes -%}
+            
+            {%- if settings.show_reviews_badge -%}
+              <a class="product-item__reviews-badge link" href="{{ product.url }}#product-reviews" aria-label="Navigate to product reviews">
+                {%- comment -%}{%- render 'product-rating', product: product -%}{%- endcomment -%}
+                <span
+                  class="stamped-product-reviews-badge stamped-main-badge"
+                  data-product-sku="{{ product.handle }}"
+                  data-id="{{ product.id }}"
+                  data-product-type="{{product.type}}"
+                  data-product-title="{{product.title}}"
+                  style="display:block;"
+                >
+            
+                </span>
+              </a>
+            {%- endif -%}
+
+            {% assign free_shipping = "" %}
+            {% assign renewed_text_m = "" %}
+            {% assign has_new = false %}
+            {% assign has_renewed = false %}
+            
+            {% for tag in product.tags %}
+              {% if tag contains 'FREE SHIPPING'%}
+                {% assign free_shipping = "FREE SHIPPING"  %}
+              {% elsif tag contains 'FREE 2-DAY SHIPPING' %}
+                {% assign free_shipping = "FREE 2-DAY SHIPPING"  %}
+              {% endif %}
+
+              {% if tag == 'new' %}
+                {% assign has_new = true %}
+              {% elsif tag == 'renewed' %}
+                {% assign has_renewed = true %}
+              {% endif %}   
+            {% endfor %}
+
+            {% if free_shipping != "" %}
+            <a href="{{ product.url }}" > <div class="cus-free-shipping-container"> 
+              <svg xmlns="http://www.w3.org/2000/svg" width="34" height="19" viewBox="0 0 34 19" fill="none">
+                <g clip-path="url(#clip0_788_5864)">
+                  <mask id="mask0_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask0_788_5864)">
+                    <path d="M33.5738 11.1118C33.5392 10.9262 33.4146 10.773 33.2477 10.7014C33.0779 10.5346 32.8817 10.3824 32.6951 10.2378C32.5704 10.1413 32.3888 10.0005 32.3177 9.92469C32.2666 9.72318 32.1526 9.24388 32.0327 8.73964C31.8491 7.96728 31.6408 7.09177 31.5281 6.65954C31.2685 5.66412 30.3848 5.40113 29.9538 5.40113H24.7446V0.537109H5.96274V3.97596H7.0624V1.65489H23.6449V5.40113V12.9824H15.5115H7.0624H5.96274V14.1001H9.34863C9.01111 14.4376 8.76731 14.8713 8.65992 15.3571H5.94434V16.4748H8.65995C8.91132 17.6119 9.91202 18.4642 11.1055 18.4642C12.299 18.4642 13.2997 17.6119 13.5511 16.4748H23.6449H25.0788H25.9794C26.2308 17.6119 27.2315 18.4642 28.425 18.4642C29.6185 18.4642 30.6192 17.6119 30.8706 16.4748H32.1185C32.7583 16.4748 33.7101 16.1101 33.7101 15.1053V11.6076C33.71 11.4277 33.6586 11.2636 33.5738 11.1118ZM11.1055 17.3465C10.3295 17.3465 9.6981 16.7047 9.6981 15.9159C9.6981 15.127 10.3295 14.4853 11.1055 14.4853C11.8815 14.4853 12.5129 15.1271 12.5129 15.9159C12.5129 16.7047 11.8815 17.3465 11.1055 17.3465ZM13.5511 15.357C13.4437 14.8713 13.1999 14.4376 12.8624 14.1001H23.6449V15.357H13.5511ZM28.4249 17.3465C27.6489 17.3465 27.0175 16.7047 27.0175 15.9159C27.0175 15.127 27.6489 14.4853 28.4249 14.4853C29.201 14.4853 29.8323 15.1271 29.8323 15.9159C29.8323 16.7047 29.201 17.3465 28.4249 17.3465ZM32.459 15.2861C32.3266 15.3416 32.1674 15.356 32.1156 15.357H30.8705C30.6192 14.2199 29.6185 13.3674 28.4249 13.3674C27.2315 13.3674 26.2307 14.2199 25.9793 15.357H25.0788H24.7446V14.1001V6.51888H29.9538C29.9701 6.51888 30.355 6.52373 30.4652 6.94604C30.5748 7.36635 30.7815 8.23548 30.9638 9.00223C31.1117 9.62434 31.2286 10.1158 31.2723 10.2786C31.3101 10.4193 31.3852 10.5414 31.4875 10.6575H27.7954C27.4917 10.6575 27.2456 10.9077 27.2456 11.2164C27.2456 11.5251 27.4917 11.7753 27.7954 11.7753H32.6103V13.5573H31.7613V14.6751H32.6103V15.1052C32.6103 15.1682 32.6103 15.2225 32.459 15.2861Z" fill="#8C8C8C"/>
+                  </g>
+                  <mask id="mask1_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask1_788_5864)">
+                    <path d="M33.5738 11.1118C33.5392 10.9262 33.4146 10.773 33.2477 10.7014C33.0779 10.5346 32.8817 10.3824 32.6951 10.2378C32.5704 10.1413 32.3888 10.0005 32.3177 9.92469C32.2666 9.72318 32.1526 9.24388 32.0327 8.73964C31.8491 7.96728 31.6408 7.09177 31.5281 6.65954C31.2685 5.66412 30.3848 5.40113 29.9538 5.40113H24.7446V0.537109H5.96274V3.97596H7.0624V1.65489H23.6449V5.40113V12.9824H15.5115H7.0624H5.96274V14.1001H9.34863C9.01111 14.4376 8.76731 14.8713 8.65992 15.3571H5.94434V16.4748H8.65995C8.91132 17.6119 9.91202 18.4642 11.1055 18.4642C12.299 18.4642 13.2997 17.6119 13.5511 16.4748H23.6449H25.0788H25.9794C26.2308 17.6119 27.2315 18.4642 28.425 18.4642C29.6185 18.4642 30.6192 17.6119 30.8706 16.4748H32.1185C32.7583 16.4748 33.7101 16.1101 33.7101 15.1053V11.6076C33.71 11.4277 33.6586 11.2636 33.5738 11.1118ZM11.1055 17.3465C10.3295 17.3465 9.6981 16.7047 9.6981 15.9159C9.6981 15.127 10.3295 14.4853 11.1055 14.4853C11.8815 14.4853 12.5129 15.1271 12.5129 15.9159C12.5129 16.7047 11.8815 17.3465 11.1055 17.3465ZM13.5511 15.357C13.4437 14.8713 13.1999 14.4376 12.8624 14.1001H23.6449V15.357H13.5511ZM28.4249 17.3465C27.6489 17.3465 27.0175 16.7047 27.0175 15.9159C27.0175 15.127 27.6489 14.4853 28.4249 14.4853C29.201 14.4853 29.8323 15.1271 29.8323 15.9159C29.8323 16.7047 29.201 17.3465 28.4249 17.3465ZM32.459 15.2861C32.3266 15.3416 32.1674 15.356 32.1156 15.357H30.8705C30.6192 14.2199 29.6185 13.3674 28.4249 13.3674C27.2315 13.3674 26.2307 14.2199 25.9793 15.357H25.0788H24.7446V14.1001V6.51888H29.9538C29.9701 6.51888 30.355 6.52373 30.4652 6.94604C30.5748 7.36635 30.7815 8.23548 30.9638 9.00223C31.1117 9.62434 31.2286 10.1158 31.2723 10.2786C31.3101 10.4193 31.3852 10.5414 31.4875 10.6575H27.7954C27.4917 10.6575 27.2456 10.9077 27.2456 11.2164C27.2456 11.5251 27.4917 11.7753 27.7954 11.7753H32.6103V13.5573H31.7613V14.6751H32.6103V15.1052C32.6103 15.1682 32.6103 15.2225 32.459 15.2861Z" stroke="white" stroke-width="0.259532" stroke-miterlimit="10"/>
+                  </g>
+                  <mask id="mask2_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask2_788_5864)">
+                    <path d="M2.751 6.23982H11.4218C11.7255 6.23982 11.9716 5.98959 11.9716 5.68096C11.9716 5.37226 11.7255 5.12207 11.4218 5.12207H2.751C2.4473 5.12207 2.20117 5.37226 2.20117 5.68096C2.20117 5.98959 2.4473 6.23982 2.751 6.23982Z" fill="#8C8C8C"/>
+                  </g>
+                  <mask id="mask3_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask3_788_5864)">
+                    <path d="M2.751 6.23982H11.4218C11.7255 6.23982 11.9716 5.98959 11.9716 5.68096C11.9716 5.37226 11.7255 5.12207 11.4218 5.12207H2.751C2.4473 5.12207 2.20117 5.37226 2.20117 5.68096C2.20117 5.98959 2.4473 6.23982 2.751 6.23982Z" stroke="white" stroke-width="0.259532" stroke-miterlimit="10"/>
+                  </g>
+                  <mask id="mask4_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask4_788_5864)">
+                    <path d="M14.8331 8.46315C14.8331 8.15448 14.587 7.9043 14.2833 7.9043H0.583034C0.27937 7.9043 0.0332031 8.15448 0.0332031 8.46315C0.0332031 8.77182 0.27937 9.02201 0.583034 9.02201H14.2833C14.587 9.02201 14.8331 8.77182 14.8331 8.46315Z" fill="#8C8C8C"/>
+                  </g>
+                  <mask id="mask5_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask5_788_5864)">
+                    <path d="M14.8331 8.46315C14.8331 8.15448 14.587 7.9043 14.2833 7.9043H0.583034C0.27937 7.9043 0.0332031 8.15448 0.0332031 8.46315C0.0332031 8.77182 0.27937 9.02201 0.583034 9.02201H14.2833C14.587 9.02201 14.8331 8.77182 14.8331 8.46315Z" stroke="white" stroke-width="0.259532" stroke-miterlimit="10"/>
+                  </g>
+                  <mask id="mask6_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask6_788_5864)">
+                    <path d="M9.44388 11.2434C9.44388 10.9348 9.19771 10.6846 8.89404 10.6846H3.44534C3.14164 10.6846 2.89551 10.9348 2.89551 11.2434C2.89551 11.5521 3.14164 11.8023 3.44534 11.8023H8.89404C9.19767 11.8023 9.44388 11.5521 9.44388 11.2434Z" fill="#8C8C8C"/>
+                  </g>
+                  <mask id="mask7_788_5864" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="0" width="35" height="19">
+                    <path d="M33.7461 0.5H-0.00390625V18.5H33.7461V0.5Z" fill="white"/>
+                  </mask>
+                  <g mask="url(#mask7_788_5864)">
+                    <path d="M9.44388 11.2434C9.44388 10.9348 9.19771 10.6846 8.89404 10.6846H3.44534C3.14164 10.6846 2.89551 10.9348 2.89551 11.2434C2.89551 11.5521 3.14164 11.8023 3.44534 11.8023H8.89404C9.19767 11.8023 9.44388 11.5521 9.44388 11.2434Z" stroke="white" stroke-width="0.259532" stroke-miterlimit="10"/>
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip0_788_5864">
+                    <rect width="33.75" height="18" fill="white" transform="translate(0 0.5)"/>
+                  </clipPath>
+                </defs>
+            </svg>
+            <span class="cust-free-ship-text">{{ free_shipping }}</span>
+            </div></a>
+           {% endif %}
+
+            {% if has_new and has_renewed %}
+              {% assign renewed_text_m = "New & Renewed" %}
+              {% elsif has_new %}
+                  {% assign renewed_text_m = "New" %}
+              {% elsif has_renewed %}
+                  {% assign renewed_text_m = "Renewed" %}
+            {% endif %} 
+  
+            {% if renewed_text_m != "" %}  
+              <a href="{{ product.url }}">   <div class="cust-new-renewed-container">
+                  <span class="cust-new-renew-title">Available as:</span>
+                  <span class="cust-new-renew-text">
+                    {{ renewed_text_m }}
+                  </span>
+                </div> </a>
+            {% endif %}
+      
+            {%- if settings.product_price_position == 'after_title' -%}
+              {%- if product.metafields.price_option.hide_price != blank -%}
+                {%- assign hide_product_price = product.metafields.price_option.hide_price | strip | downcase -%}
+                {%- if hide_product_price != 'yes' %}
+                  {{ price_list }}
+                {%- else -%}
+                  <div class="product-item__price-list price-list"><a href="{{ product.url }}" style="color: #404042 !important;font-weight:500;">Request a Quote</a></div>
+                {%- endif -%}
+              {%- else -%}
+                {{ price_list }}
+              {%- endif -%}
+            {%- endif -%}
+            
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+            {%- if section.settings.show_quick_buy == 'list_grid' or show_add_to_cart -%}
+              {%- if complementary_products -%}
+                {%- assign quick_buy_classes = 'product-item__action-button button button--small button--ternary' -%}
+              {%- else -%}
+                {%- assign quick_buy_classes = 'product-item__action-button button button--small button--primary button--secondary' -%}
+              {%- endif -%}
+            {%- else -%}
+              {%- assign quick_buy_classes = 'product-item__action-button product-item__action-button--list-view-only button button--small button--primary button--secondary' -%}
+            {%- endif -%}
+
+            {%- if product.available -%}
+              {%- if product.variants.size == 1 -%}
+                <button type="submit" class="{{ quick_buy_classes }}" data-action="add-to-cart">
+                  {%- if product.template_suffix == 'pre-order' -%}
+                    {{- 'collection.product.pre_order' | t -}}
+                  {%- else -%}
+                    {{- 'collection.product.add_to_cart' | t -}}
+                  {%- endif -%}
+                </button>
+              {%- else -%}
+                <a href="{{ product.url }}" class="{{ quick_buy_classes }}">{{ 'collection.product.choose_options' | t }}</a>
+              {%- endif -%}
+            {%- else -%}
+              <button class="{{ quick_buy_classes | replace: 'button--primary', 'button--disabled' }}" disabled>{{ 'collection.product.sold_out' | t }}</button>
+            {%- endif -%}
+
+            {%- if section.settings.show_quick_view == 'list_grid' -%}
+              {%- assign quick_view_classes = 'product-item__action-button button button--small button--ternary hidden-phone' -%}
+            {%- else -%}
+              {%- assign quick_view_classes = 'product-item__action-button product-item__action-button--list-view-only button button--small button--ternary hidden-phone' -%}
+            {%- endif -%}
+
+            <button type="button" class="{{ quick_view_classes }}" data-action="open-modal" data-secondary-action="open-quick-view" aria-controls="modal-quick-view-{{ section.id }}" data-product-url="{{ product.url }}" style="display: block;">{{ 'collection.product.quick_view' | t }}</button>
+          {%- endform -%}
+        {%- endcapture -%}
+
+        {%- if complementary_products != true -%}
+          {{- quick_buy_form -}}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}
+  The complementary product has an exception, where the form is shown outside
+  {%- endcomment -%}
+
+  {%- if complementary_products and show_add_to_cart -%}
+    {{- quick_buy_form -}}
+  {%- endif -%}
+</div>

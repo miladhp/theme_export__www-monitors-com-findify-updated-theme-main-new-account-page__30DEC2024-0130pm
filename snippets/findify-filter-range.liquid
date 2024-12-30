@@ -1,0 +1,79 @@
+<div class="findify-filters--body-wrapper">
+  {% for filter in filters %}
+    {% if forloop.index != forloop.length %}
+      {% liquid
+        assign filter_props = filter | split: '~'
+        assign value = filter_props[0] | url_decode
+        assign value_display = filter_props[1]
+        assign count = filter_props[2]
+        assign is_selected_prop = filter_props[3]
+
+        if is_selected_prop == 'T'
+          assign is_selected = true
+        else
+          assign is_selected = false
+        endif
+
+        assign fake_price = 123
+        assign money_price = fake_price | times: 100 | money
+        assign currency = money_price | replace: fake_price, '' | replace: ',00', ''
+
+        if value contains 'to'
+          assign toValue = value | split: 'to' | last
+          assign value = 'to|' | append: toValue
+          assign under_text = 'findify.filters.under' | t
+          assign toDisplay = value_display | split: 'to' | last
+          if name == 'price'
+            assign toDisplay = toDisplay | times: 100 | money
+          endif
+          assign text = under_text | append: ' ' | append: toDisplay
+        elsif value contains 'from'
+          assign fromValue = value | split: 'from' | last
+          assign and_up_text = 'findify.filters.and_up' | t
+          assign value = 'from|' | append: fromValue
+          assign fromDisplay = value_display | split: 'from' | last
+          if name == 'price'
+            assign fromDisplay = fromDisplay | times: 100 | money
+          endif
+          assign text = fromDisplay | append: ' ' | append: and_up_text
+        else
+          assign fromValue = value | split: ':' | first
+          assign toValue = value | split: ':' | last
+          assign value = 'from|' | append: fromValue | append: '-' | append: 'to|' | append: toValue
+          assign fromDisplay = value_display | split: ':' | first
+          assign toDisplay = value_display | split: ':' | last
+          if name == 'price'
+            assign toDisplay = toDisplay | times: 100 | money
+            assign fromDisplay = fromDisplay | times: 100 | money
+          endif
+          assign text = fromDisplay | append: ' - ' | append: toDisplay
+        endif
+      %}
+
+      {% render 'findify-filter-checkbox'
+        , name: name
+        , type: type
+        , is_selected: is_selected
+        , value: value
+        , text: text
+        , count: count
+        , component: component
+      %}
+    {% endif %}
+
+    {% if forloop.last and component == 'range' %}
+
+      {% render 'findify-filter-price-range'
+        , name: name
+        , currency: currency
+        , min: min
+        , max: max
+      %}
+
+    <!-- uncomment to use price slider -->
+      <!--
+      {% render 'findify-filter-range-slider', min: min, max: max, name: name, from: sliderFrom, to: sliderTo %}
+    -->
+    {% endif %}
+  {% endfor %}
+</div>

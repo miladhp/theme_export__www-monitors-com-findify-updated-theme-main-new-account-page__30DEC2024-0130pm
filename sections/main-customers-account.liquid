@@ -1,0 +1,274 @@
+<link rel="stylesheet" href="{{ 'new-account-custom-layout.css' | asset_url }}">
+<script src="{{ 'customer.js' | asset_url }}"></script>
+
+<section data-section-id="{{ section.id }}" data-section-type="account">
+  <div class="container container--flush">
+
+    <div class="layout account-page-layout">
+
+    {% comment %} New layout code will go here  {% endcomment %}
+
+     <div class="profile-container">
+      <!-- Left Sidebar -->
+      <div class="sidebar cust-acc-desk">
+          <ul class="tab-list">
+              <li class="tab-item active" data-target="#profile">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                    <path d="M3.22917 11.8123C4.32982 10.8457 5.83725 10.2498 7.5 10.2498C9.16275 10.2498 10.6702 10.8457 11.7708 11.8123M13.5 7.99976C13.5 11.3135 10.8137 13.9998 7.5 13.9998C4.18629 13.9998 1.5 11.3135 1.5 7.99976C1.5 4.68605 4.18629 1.99976 7.5 1.99976C10.8137 1.99976 13.5 4.68605 13.5 7.99976ZM9 6.49976C9 7.32818 8.32843 7.99976 7.5 7.99976C6.67157 7.99976 6 7.32818 6 6.49976C6 5.67133 6.67157 4.99976 7.5 4.99976C8.32843 4.99976 9 5.67133 9 6.49976Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>My Profile</span>
+              </li>
+                <svg class="full-width-separator" xmlns="http://www.w3.org/2000/svg" width="100%" height="2" viewBox="0 0 100 2" preserveAspectRatio="none" fill="none">
+                    <path d="M0 1H100" stroke="#E3E3E3" stroke-width="0.5"/>
+                </svg>       
+              <li class="tab-item" data-target="#address">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                    <path d="M7.83658 13.6636L8.33861 14.1514L7.83658 13.6636ZM7.16398 13.6636L7.66601 13.1758L7.16398 13.6636ZM7.4976 6.49707V5.79707C7.111 5.79707 6.7976 6.11048 6.7976 6.49707H7.4976ZM7.5026 6.49707H8.2026C8.2026 6.11048 7.8892 5.79707 7.5026 5.79707V6.49707ZM7.5026 6.50243V7.20243C7.8892 7.20243 8.2026 6.88903 8.2026 6.50243H7.5026ZM7.4976 6.50243H6.7976C6.7976 6.88903 7.111 7.20243 7.4976 7.20243V6.50243ZM11.1931 6.44555C11.1931 7.63013 10.538 9.02306 9.6687 10.3203C8.81611 11.5926 7.83412 12.6616 7.33455 13.1758L8.33861 14.1514C8.86662 13.608 9.91291 12.4707 10.8317 11.0997C11.7337 9.75365 12.5931 8.06632 12.5931 6.44555H11.1931ZM7.66601 13.1758C7.16644 12.6616 6.18445 11.5926 5.33186 10.3203C4.46251 9.02306 3.80742 7.63013 3.80742 6.44555H2.40742C2.40742 8.06632 3.26682 9.75365 4.16886 11.0997C5.08765 12.4707 6.13393 13.608 6.66195 14.1514L7.66601 13.1758ZM3.80742 6.44555C3.80742 4.36888 5.46865 2.69976 7.50028 2.69976V1.29976C4.67969 1.29976 2.40742 3.61153 2.40742 6.44555H3.80742ZM7.50028 2.69976C9.53191 2.69976 11.1931 4.36888 11.1931 6.44555H12.5931C12.5931 3.61153 10.3209 1.29976 7.50028 1.29976V2.69976ZM7.33455 13.1758C7.37435 13.1348 7.43465 13.1078 7.50028 13.1078C7.56591 13.1078 7.62621 13.1348 7.66601 13.1758L6.66195 14.1514C7.12375 14.6267 7.8768 14.6267 8.33861 14.1514L7.33455 13.1758ZM7.55028 6.49976C7.55028 6.52737 7.52789 6.54976 7.50028 6.54976V7.94976C8.30109 7.94976 8.95028 7.30057 8.95028 6.49976H7.55028ZM7.50028 6.54976C7.47266 6.54976 7.45028 6.52737 7.45028 6.49976H6.05028C6.05028 7.30057 6.69947 7.94976 7.50028 7.94976V6.54976ZM7.45028 6.49976C7.45028 6.47214 7.47266 6.44976 7.50028 6.44976V5.04976C6.69947 5.04976 6.05028 5.69894 6.05028 6.49976H7.45028ZM7.50028 6.44976C7.52789 6.44976 7.55028 6.47214 7.55028 6.49976H8.95028C8.95028 5.69894 8.30109 5.04976 7.50028 5.04976V6.44976ZM7.4976 7.19707H7.5026V5.79707H7.4976V7.19707ZM6.8026 6.49707V6.50243H8.2026V6.49707H6.8026ZM7.5026 5.80243H7.4976V7.20243H7.5026V5.80243ZM8.1976 6.50243V6.49707H6.7976V6.50243H8.1976Z" fill="#A3A1A1"/>
+                  </svg>
+                  <span>Delivery Address(es)</span>
+              </li>
+                <svg class="full-width-separator" xmlns="http://www.w3.org/2000/svg" width="100%" height="2" viewBox="0 0 100 2" preserveAspectRatio="none" fill="none">
+                    <path d="M0 1H100" stroke="#E3E3E3" stroke-width="0.5"/>
+                </svg>       
+              <li class="tab-item" data-target="#order">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M6 9.74976H8.25M6 7.49976H9M6 5.24976H7.5M9.17699 1.67675L11.823 4.32276C11.9363 4.43609 12 4.58979 12 4.75006V12.8955C12 13.2292 11.7295 13.4998 11.3957 13.4998H3.60429C3.27055 13.4998 3 13.2292 3 12.8955V2.10404C3 1.7703 3.27055 1.49976 3.60429 1.49976H8.7497C8.90996 1.49976 9.06367 1.56342 9.17699 1.67675Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>My Orders</span>
+              </li>
+                  <svg class="full-width-separator" xmlns="http://www.w3.org/2000/svg" width="100%" height="2" viewBox="0 0 100 2" preserveAspectRatio="none" fill="none">
+                    <path d="M0 1H100" stroke="#E3E3E3" stroke-width="0.5"/>
+                </svg>     
+              <li class="tab-item" data-target="#my-quotes">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M6 9.74976H8.25M6 7.49976H9M6 5.24976H7.5M9.17699 1.67675L11.823 4.32276C11.9363 4.43609 12 4.58979 12 4.75006V12.8955C12 13.2292 11.7295 13.4998 11.3957 13.4998H3.60429C3.27055 13.4998 3 13.2292 3 12.8955V2.10404C3 1.7703 3.27055 1.49976 3.60429 1.49976H8.7497C8.90996 1.49976 9.06367 1.56342 9.17699 1.67675Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>My Quotes</span>
+              </li>
+                   <svg class="full-width-separator" xmlns="http://www.w3.org/2000/svg" width="100%" height="2" viewBox="0 0 100 2" preserveAspectRatio="none" fill="none">
+                    <path d="M0 1H100" stroke="#E3E3E3" stroke-width="0.5"/>
+                </svg>  
+                
+                <li class="tab-item" data-target="#buy-again">
+                   <img class="icon-buyagain-light" src="https://cdn.shopify.com/s/files/1/2372/2681/files/Group_123630.png?v=1733224493" height="16px;" width="16px;">
+                  <img class="icon-buyagain-dark" src="https://cdn.shopify.com/s/files/1/2372/2681/files/Group_123630_1.png?v=1733224935" height="16px;" width="16px;">
+                  <span>Buy Again</span>
+              </li>   
+              <svg class="full-width-separator" xmlns="http://www.w3.org/2000/svg" width="100%" height="2" viewBox="0 0 100 2" preserveAspectRatio="none" fill="none">
+                <path d="M0 1H100" stroke="#E3E3E3" stroke-width="0.5"/>
+              </svg>  
+              
+              <li class="tab-item" data-target="#change-password">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                    <path d="M3.21429 7.53052C3.21429 4.7168 4.5995 1.53052 7.5 1.53052C10.4005 1.53052 11.7857 4.7168 11.7857 7.53052M1.5 8.10603V14.6693C1.5 14.9871 1.75766 15.2448 2.07551 15.2448H12.9245C13.2423 15.2448 13.5 14.9871 13.5 14.6693V8.10603C13.5 7.78818 13.2423 7.53052 12.9245 7.53052H2.07551C1.75766 7.53052 1.5 7.78818 1.5 8.10603Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Change Password</span>
+              </li>
+                  <svg class="full-width-separator" xmlns="http://www.w3.org/2000/svg" width="100%" height="2" viewBox="0 0 100 2" preserveAspectRatio="none" fill="none">
+                    <path d="M0 1H100" stroke="#E3E3E3" stroke-width="0.5"/>
+                  </svg>   
+          </ul>
+          <span class="custom-logout" style="margin-top: 15px;display:flex;gap:10px;align-items:center;color: #a3a1a1;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.45801 13.9004H3.95801C3.62649 13.9004 3.30854 13.7687 3.07412 13.5343C2.8397 13.2999 2.70801 12.9819 2.70801 12.6504V3.90039C2.70801 3.56887 2.8397 3.25093 3.07412 3.01651C3.30854 2.78209 3.62649 2.65039 3.95801 2.65039H6.45801M10.833 11.4004L13.958 8.27539M13.958 8.27539L10.833 5.15039M13.958 8.27539H6.45801" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                 <a href="/account/logout"><span>Log Out</span></a>
+          </span>            
+      </div>
+
+      <!-- content for mobile header tabs  -->
+
+      <div class="sidebar cust-acc-mob slick-slider-container">
+          <ul class="tab-list slick-slider">
+              <li class="tab-item active" data-target="#profile">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                    <path d="M3.22917 11.8123C4.32982 10.8457 5.83725 10.2498 7.5 10.2498C9.16275 10.2498 10.6702 10.8457 11.7708 11.8123M13.5 7.99976C13.5 11.3135 10.8137 13.9998 7.5 13.9998C4.18629 13.9998 1.5 11.3135 1.5 7.99976C1.5 4.68605 4.18629 1.99976 7.5 1.99976C10.8137 1.99976 13.5 4.68605 13.5 7.99976ZM9 6.49976C9 7.32818 8.32843 7.99976 7.5 7.99976C6.67157 7.99976 6 7.32818 6 6.49976C6 5.67133 6.67157 4.99976 7.5 4.99976C8.32843 4.99976 9 5.67133 9 6.49976Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>My Profile</span>
+              </li>     
+              <li class="tab-item" data-target="#address">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                    <path d="M7.83658 13.6636L8.33861 14.1514L7.83658 13.6636ZM7.16398 13.6636L7.66601 13.1758L7.16398 13.6636ZM7.4976 6.49707V5.79707C7.111 5.79707 6.7976 6.11048 6.7976 6.49707H7.4976ZM7.5026 6.49707H8.2026C8.2026 6.11048 7.8892 5.79707 7.5026 5.79707V6.49707ZM7.5026 6.50243V7.20243C7.8892 7.20243 8.2026 6.88903 8.2026 6.50243H7.5026ZM7.4976 6.50243H6.7976C6.7976 6.88903 7.111 7.20243 7.4976 7.20243V6.50243ZM11.1931 6.44555C11.1931 7.63013 10.538 9.02306 9.6687 10.3203C8.81611 11.5926 7.83412 12.6616 7.33455 13.1758L8.33861 14.1514C8.86662 13.608 9.91291 12.4707 10.8317 11.0997C11.7337 9.75365 12.5931 8.06632 12.5931 6.44555H11.1931ZM7.66601 13.1758C7.16644 12.6616 6.18445 11.5926 5.33186 10.3203C4.46251 9.02306 3.80742 7.63013 3.80742 6.44555H2.40742C2.40742 8.06632 3.26682 9.75365 4.16886 11.0997C5.08765 12.4707 6.13393 13.608 6.66195 14.1514L7.66601 13.1758ZM3.80742 6.44555C3.80742 4.36888 5.46865 2.69976 7.50028 2.69976V1.29976C4.67969 1.29976 2.40742 3.61153 2.40742 6.44555H3.80742ZM7.50028 2.69976C9.53191 2.69976 11.1931 4.36888 11.1931 6.44555H12.5931C12.5931 3.61153 10.3209 1.29976 7.50028 1.29976V2.69976ZM7.33455 13.1758C7.37435 13.1348 7.43465 13.1078 7.50028 13.1078C7.56591 13.1078 7.62621 13.1348 7.66601 13.1758L6.66195 14.1514C7.12375 14.6267 7.8768 14.6267 8.33861 14.1514L7.33455 13.1758ZM7.55028 6.49976C7.55028 6.52737 7.52789 6.54976 7.50028 6.54976V7.94976C8.30109 7.94976 8.95028 7.30057 8.95028 6.49976H7.55028ZM7.50028 6.54976C7.47266 6.54976 7.45028 6.52737 7.45028 6.49976H6.05028C6.05028 7.30057 6.69947 7.94976 7.50028 7.94976V6.54976ZM7.45028 6.49976C7.45028 6.47214 7.47266 6.44976 7.50028 6.44976V5.04976C6.69947 5.04976 6.05028 5.69894 6.05028 6.49976H7.45028ZM7.50028 6.44976C7.52789 6.44976 7.55028 6.47214 7.55028 6.49976H8.95028C8.95028 5.69894 8.30109 5.04976 7.50028 5.04976V6.44976ZM7.4976 7.19707H7.5026V5.79707H7.4976V7.19707ZM6.8026 6.49707V6.50243H8.2026V6.49707H6.8026ZM7.5026 5.80243H7.4976V7.20243H7.5026V5.80243ZM8.1976 6.50243V6.49707H6.7976V6.50243H8.1976Z" fill="#A3A1A1"/>
+                  </svg>
+                  <span>Delivery Address(es)</span>
+              </li>     
+              <li class="tab-item" data-target="#order">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M6 9.74976H8.25M6 7.49976H9M6 5.24976H7.5M9.17699 1.67675L11.823 4.32276C11.9363 4.43609 12 4.58979 12 4.75006V12.8955C12 13.2292 11.7295 13.4998 11.3957 13.4998H3.60429C3.27055 13.4998 3 13.2292 3 12.8955V2.10404C3 1.7703 3.27055 1.49976 3.60429 1.49976H8.7497C8.90996 1.49976 9.06367 1.56342 9.17699 1.67675Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>My Orders</span>
+              </li>   
+              <li class="tab-item" data-target="#my-quotes">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M6 9.74976H8.25M6 7.49976H9M6 5.24976H7.5M9.17699 1.67675L11.823 4.32276C11.9363 4.43609 12 4.58979 12 4.75006V12.8955C12 13.2292 11.7295 13.4998 11.3957 13.4998H3.60429C3.27055 13.4998 3 13.2292 3 12.8955V2.10404C3 1.7703 3.27055 1.49976 3.60429 1.49976H8.7497C8.90996 1.49976 9.06367 1.56342 9.17699 1.67675Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>My Quotes</span>
+              </li>  
+              <li class="tab-item" data-target="#buy-again">
+                 <img class="icon-buyagain-light" src="https://cdn.shopify.com/s/files/1/2372/2681/files/Group_123630.png?v=1733224493" height="16px;" width="16px;">
+                  <img class="icon-buyagain-dark" src="https://cdn.shopify.com/s/files/1/2372/2681/files/Group_123630_1.png?v=1733224935" height="16px;" width="16px;">
+                <span>Buy Again</span>
+            </li> 
+              <li class="tab-item" data-target="#change-password">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                    <path d="M3.21429 7.53052C3.21429 4.7168 4.5995 1.53052 7.5 1.53052C10.4005 1.53052 11.7857 4.7168 11.7857 7.53052M1.5 8.10603V14.6693C1.5 14.9871 1.75766 15.2448 2.07551 15.2448H12.9245C13.2423 15.2448 13.5 14.9871 13.5 14.6693V8.10603C13.5 7.78818 13.2423 7.53052 12.9245 7.53052H2.07551C1.75766 7.53052 1.5 7.78818 1.5 8.10603Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Change Password</span>
+              </li> 
+              <li class="tab-item custom-logout">
+                  <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.45801 13.9004H3.95801C3.62649 13.9004 3.30854 13.7687 3.07412 13.5343C2.8397 13.2999 2.70801 12.9819 2.70801 12.6504V3.90039C2.70801 3.56887 2.8397 3.25093 3.07412 3.01651C3.30854 2.78209 3.62649 2.65039 3.95801 2.65039H6.45801M10.833 11.4004L13.958 8.27539M13.958 8.27539L10.833 5.15039M13.958 8.27539H6.45801" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                <a href="/account/logout"><span>Log Out</span></a>
+              </li>           
+          </ul>           
+      </div>         
+
+      <!-- end here  -->
+
+      <div class="custom-acc-loader">  <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/Rolling-0.4s-201px_1.svg" alt="Loading..."> </div>                
+      <!-- Right Content -->
+      <div class="content cust-acc-content" style="display:none;" >
+          <!-- Profile Tab Content -->
+          <div id="profile" class="tab-content active">
+            {% render 'my-profile' %}
+          </div>
+          <div id="address" class="tab-content">
+            {% render 'account-address-tab' %}
+        </div>
+
+        <div id="order" class="tab-content">
+          {% render 'my-orders' %}
+        </div>
+
+        <div id="my-quotes" class="tab-content" data-customer-id="{{ customer.id }}">
+          {% render 'my-quotes' %}
+        </div>
+        <div id="buy-again" class="tab-content">
+          {% render 'buy-again' %}
+        </div>
+
+        <div id="change-password" class="tab-content">
+          {% render 'change-password' %}
+        </div>
+
+      </div>
+  </div> 
+  
+
+    {% comment %} End code  {% endcomment %}
+
+      {% comment %} <div class="layout__section layout__section--secondary">
+        <div class="card card--sticky hidden-pocket">
+          <div class="card__section card__section--tight">
+            <div class="card__linklist">
+              <a href="{{ routes.account_url }}" class="card__linklist-item link text--strong">{{ 'customer.general.orders' | t }}</a>
+              <a href="{{ routes.account_addresses_url }}" class="card__linklist-item link">{{ 'customer.general.addresses' | t }}</a>
+              <a href="{{ routes.account_logout_url }}" class="card__linklist-item link" data-no-instant>{{ 'customer.general.logout' | t }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="value-picker-wrapper hidden-tablet-and-up">
+          <button class="value-picker-button value-picker-button--pill" aria-haspopup="true" aria-expanded="false" aria-controls="account-selector" data-action="open-value-picker">
+            {{- 'customer.general.orders' | t -}} {%- render 'icon', icon: 'arrow-bottom' -%}
+          </button>
+
+          <div id="account-selector" class="value-picker" aria-hidden="true">
+            <div class="value-picker__inner">
+              <header class="value-picker__header">
+                <span class="value-picker__title text--strong">{{ 'customer.general.my_account' | t }}</span>
+                <button class="value-picker__close" data-action="close-value-picker" aria-controls="account-selector" aria-label="{{ 'general.accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+              </header>
+
+              <div class="value-picker__choice-list">
+                <a href="{{ routes.account_url }}" class="value-picker__choice-item is-selected">{{ 'customer.general.orders' | t }} {% render 'icon', icon: 'check-2' %}</a>
+                <a href="{{ routes.account_addresses_url }}" class="value-picker__choice-item">{{ 'customer.general.addresses' | t }} {% render 'icon', icon: 'check-2' %}</a>
+                <a href="{{ routes.account_logout_url }}" class="value-picker__choice-item" data-no-instant>{{ 'customer.general.logout' | t }} {% render 'icon', icon: 'check-2' %}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> {% endcomment %}
+
+      {% comment %} <div class="layout__section">
+        <div class="card">
+          <div class="{% if customer.orders.size == 0 %}card__section card__section--tight{% else %}card__header card__header--tight{% endif %}">
+            <h1 class="heading h1">{{ 'customer.general.orders' | t }} {% if customer.orders.size > 0 %}({{ customer.orders.size }}){% endif %}</h1>
+          </div>
+
+          {%- if customer.orders.size == 0 -%}
+            <div class="card__section">
+              <div class="empty-state empty-state--extra-tight">
+                <div class="empty-state__icon">
+                  {%- render 'icon', icon: 'package' -%}
+                  <span class="empty-state__count">0</span>
+                </div>
+
+                <p class="empty-state__icon-description">{{ 'customer.general.no_orders' | t }}</p>
+
+                <div class="empty-state__button-container">
+                  <a href="{{ routes.all_products_collection_url }}" class="empty-state__button button button--primary">{{ 'customer.general.no_orders_button' | t }}</a>
+                </div>
+              </div>
+            </div>
+          {%- else -%}
+            {%- paginate customer.orders by 8 -%}
+              <div class="table-wrapper">
+                <table class="table table--loose">
+                  <thead>
+                    <tr>
+                      <th>{{ 'customer.order.order' | t }}</th>
+                      <th>{{ 'customer.order.date' | t }}</th>
+                      <th>{{ 'customer.order.payment_status' | t }}</th>
+                      <th>{{ 'customer.order.fulfillment_status' | t }}</th>
+                      <th class="table__cell--right">{{ 'customer.order.total' | t }}</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {%- for order in customer.orders -%}
+                      <tr>
+                        <td><a href="{{ order.customer_url }}" class="link link--accented">{{ order.name }}</a></td>
+                        <td>{{ order.created_at | date: format: 'month_day_year' }}</td>
+                        <td>{{ order.financial_status_label }}</td>
+                        <td>{{ order.fulfillment_status_label }}</td>
+                        <td class="table__cell--right">{{ order.total_price | money }}</td>
+                      </tr>
+                    {%- endfor -%}
+                  </tbody>
+                </table>
+              </div>
+
+              {%- render 'pagination', paginate: paginate -%}
+            {%- endpaginate -%}
+          {%- endif -%}
+        </div>
+      </div> {% endcomment %}
+    </div>
+  </div>
+</section>
+{% render 'account-handler-popup' %}
+{% render 'add-review-popup' %}
+{% render 'contact-form-popup' %}
+
+<script src="https://cdn.jsdelivr.net/npm/libphonenumber-js@1.9.48/bundle/libphonenumber-max.js"></script>
+<script src="{{ 'new-account-custom-layout.js' | asset_url }}"  async defer></script>
+<script src="{{ 'all-country-phone-codes.js' | asset_url }}"></script>
+<script src="{{ 'account-page-scripts.js' | asset_url }}"></script>
+
+{% if template.name == "account" %}
+
+  <script>
+    document.title = "Monitors.com | My account";
+  </script>
+
+{% endif %}
+
+
+
+{% schema %}
+{
+  "name": "Account"
+}
+{% endschema %}

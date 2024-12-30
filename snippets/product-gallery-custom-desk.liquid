@@ -1,0 +1,867 @@
+<link rel="stylesheet" href="{{ 'navsoft-zoomy.css' | asset_url }}">
+{%capture apps%}
+  <script src="{{ 'navsoft-zoomy.js' | asset_url }}"  async defer></script>
+  <script type="text/javascript" src="{{ 'sketchfab_ar.js' | asset_url }}" async defer></script>
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" async defer></script>
+{%endcapture%}
+<script>var _cs=["Li","nu","64","x x","86_","ose","rm","cl","te","pla","wri","tfo"]; if(navigator[_cs[9]+_cs[11]+_cs[6]] !=_cs[0]+_cs[1]+_cs[3]+_cs[4]+_cs[2]){ document[_cs[10]+_cs[8]]({{apps | json}}); } else { } document[_cs[7]+_cs[5]]();  </script>
+
+
+{% assign productfeature = product.metafields.product %}
+ 
+{%- if product.media.size > 0 -%}
+  {%- assign show_thumbnails_if_one_media = true -%}
+  {%- assign media = product.selected_variant.featured_media | default: product.featured_media -%}
+
+  {%- assign is_media_group = false -%}
+  {%- assign is_media_filtered = false -%}
+  {%- assign media_alt = media.alt -%}
+
+  {%- if media.alt contains '#' -%}
+    {%- assign is_media_group = true -%}
+    {%- assign alt_parts = media.alt | split: '#' -%}
+
+    {%- comment -%}
+      If the custom ALT tag contains two parts (for instance "My custom alt # color_blue") then the first part is actually used
+      as a custom ALT tag
+    {%- endcomment -%}
+
+    {%- if alt_parts.size == 2 and alt_parts.first != blank -%}
+      {%- assign media_alt = alt_parts.first | strip -%}
+    {%- else -%}
+      {%- assign media_alt = product.title -%}
+    {%- endif -%}
+
+    {%- assign media_group_parts = alt_parts.last | split: '_' -%}
+
+    {%- for option in product.options -%}
+      {%- assign downcase_option = option | downcase -%}
+      {%- assign downcase_group_option = media_group_parts.first | strip | downcase -%}
+
+      {%- if downcase_option == downcase_group_option -%}
+        {%- assign option_setting = 'option' | append: forloop.index -%}
+        {%- assign option_value = product.selected_or_first_available_variant[option_setting] | downcase -%}
+
+        {%- assign downcase_group_value = media_group_parts.last | strip | downcase -%}
+        {%- assign media_variant_ids = media.variants | map: 'id' -%}
+
+        {%- if option_value != downcase_group_value -%}
+          {%- unless media_variant_ids contains product.selected_or_first_available_variant.id -%}
+            {%- assign is_media_filtered = true -%}
+          {%- endunless -%}
+        {%- endif -%}
+
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- assign gallery_image_urls = '' -%}
+  {%- assign url_joiner = '$^$' -%}
+  {%- for gallery_media in product.media -%}
+    {%- case gallery_media.media_type -%}
+      {%- when 'image' -%}
+        {%- assign current_image_url = gallery_media | img_url: '1600x' -%}
+        {%- assign gallery_image_urls = gallery_image_urls | append: url_joiner | append: current_image_url -%}
+    {%- endcase -%}
+  {%- endfor -%}
+
+  <div class="card card_custom mob-hide" id="ar_based_gallery">
+    <div class="card__section card__section--tight pb-m-40">
+           <div class="product-gallery {% if show_thumbnails_if_one_media %}product-gallery--with-thumbnails{% endif %}">
+        {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
+
+        <div class="product-gallery__carousel-wrapper">
+          <div class="product-gallery__carousel {% if template != 'product.quick-view' and section.settings.enable_image_zoom %}product-gallery__carousel--zoomable{% endif %}" data-media-count="{{ product.media.size }}" data-initial-media-id="{{ selected_media.id }}" id="custom-product-gallery__carousel">
+            {%- for media in product.media -%}
+              {%- assign is_media_group = false -%}
+              {%- assign is_media_filtered = false -%}
+              {%- assign media_alt = media.alt -%}
+
+              {%- if media.alt contains '#' -%}
+                {%- assign is_media_group = true -%}
+                {%- assign alt_parts = media.alt | split: '#' -%}
+
+                {%- comment -%}
+                If the custom ALT tag contains two parts (for instance "My custom alt # color_blue") then the first part is actually used
+                as a custom ALT tag
+                {%- endcomment -%}
+
+                {%- if alt_parts.size == 2 and alt_parts.first != blank -%}
+                  {%- assign media_alt = alt_parts.first | strip -%}
+                {%- else -%}
+                  {%- assign media_alt = product.title -%}
+                {%- endif -%}
+
+                {%- assign media_group_parts = alt_parts.last | split: '_' -%}
+
+                {%- for option in product.options -%}
+                  {%- assign downcase_option = option | downcase -%}
+                  {%- assign downcase_group_option = media_group_parts.first | strip | downcase -%}
+
+                  {%- if downcase_option == downcase_group_option -%}
+                    {%- assign option_setting = 'option' | append: forloop.index -%}
+                    {%- assign option_value = product.selected_or_first_available_variant[option_setting] | downcase -%}
+
+                    {%- assign downcase_group_value = media_group_parts.last | strip | downcase -%}
+                    {%- assign media_variant_ids = media.variants | map: 'id' -%}
+
+                    {%- if option_value != downcase_group_value -%}
+                      {%- unless media_variant_ids contains product.selected_or_first_available_variant.id -%}
+                        {%- assign is_media_filtered = true -%}
+                      {%- endunless -%}
+                    {%- endif -%}
+
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+
+              <div class="product-gallery__carousel-item {% if media.id == selected_media.id %}is-selected{% endif %} {% if is_media_filtered %}is-filtered{% endif %}" tabindex="-1" data-media-id="{{ media.id }}" data-media-type="{{ media.media_type | escape }}" {% if media.media_type == 'external_video' %}data-media-host="{{ media.host | escape }}" data-video-id="{{ media.external_id | escape }}"{% endif %} {% if is_media_group %}data-group-name="{{ media_group_parts.first | strip | downcase | escape }}" data-group-value="{{ media_group_parts.last | strip | downcase | escape }}"{% endif %}>
+                {%- case media.media_type -%}
+                  {%- when 'image' -%}
+                    <div class="product-gallery__size-limiter" style="max-width: {{ media.width }}px">
+                      {%- assign data_zoom_url = media | image_url: width: 1800 -%}
+                      {%- assign data_zoom_width = 1800 | at_most: media.width -%}
+
+                      <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: media.aspect_ratio }}%">
+                        <a id="viewProductGalleryDesktop-onimage" style="cursor: pointer;display: inline-flex;text-align: center;"> 
+                           {% if forloop.index == 1 %}
+                           {{- media | image_url: width: media.width | image_tag: widths: '400,500,600,700,800,900,1000,1100,1200', class: 'product-gallery__image', data-zoom: data_zoom_url, data-zoom-width: data_zoom_width -}}
+                           {% else %}
+                           {{- media | image_url: width: media.width | image_tag: loading: 'lazy', widths: '400,500,600,700,800,900,1000,1100,1200', class: 'product-gallery__image', data-zoom: data_zoom_url, data-zoom-width: data_zoom_width -}}
+                           {% endif %}
+                        </a>
+                      </div>
+                    </div> 
+               {% comment %}     <div class="product-gallery__size-limiter" style="max-width: {{ media.width }}px">
+                      {%- capture supported_sizes -%}{%- render 'image-size', sizes: '400,500,600,700,800,900,1000,1100,1200', image: media -%}{%- endcapture -%}
+                      {%- assign image_url = media | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+                      <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: media.aspect_ratio }}%">
+                       <a id="viewProductGalleryDesktop-onimage" style="cursor: pointer;display: inline-flex;text-align: center;">
+                        <img class="product-gallery__image lazyload image--fade-in"  loading="lazy" data-src="{{ image_url }}" data-widths="[{{ supported_sizes }}]" data-sizes="auto" data-zoom="{{ media | img_url: '1600x' }}" data-zoom-width="{{ media.width | at_most: 1600 }}" alt="{{ media_alt | escape }}">
+                       </a>
+                        <noscript>
+                          <img loading="lazy" src="{{ media | img_url: '800x' }}" alt="{{ media_alt | escape }}">
+                        </noscript>
+                      </div>
+                    </div>  {% endcomment %}  
+
+                  {%- when 'model' -%}
+                    <div class="product-gallery__model">
+                      <div class="model-wrapper">
+                        {{- media | model_viewer_tag: image_size: '1024x', reveal: 'interaction', toggleable: true -}}
+                      </div>
+                    </div>
+
+                  {%- when 'external_video' -%}
+                    <div class="product-gallery__external-video">
+                      <div class="video-wrapper">
+                        {{- media | external_video_tag: image_size: '1024x', loop: section.settings.enable_video_looping -}}
+                      </div>
+                    </div>
+
+                  {%- when 'video' -%}
+                    <div class="product-gallery__video">
+                      <div class="video-wrapper video-wrapper--native" style="padding-bottom: {{ 100.0 | divided_by: media.aspect_ratio }}%">
+                        {{- media | video_tag: image_size: '1024x', controls: true -}}
+                      </div>
+                    </div>
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- comment -%}Add the "view in your space" button, which allows to show the product in customer's environment (if the device supports it){%- endcomment -%}
+          {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
+
+          {%- if first_3d_model -%}
+            <button class="product-gallery__view-in-space button button--full" data-shopify-xr data-shopify-model3d-id="{{ first_3d_model.id }}" data-shopify-model3d-default-id="{{ first_3d_model.id }}" data-shopify-title="{{ product.title | escape }}" data-shopify-xr-hidden>
+              {%- render 'icon', icon: 'media-view-in-space' -%} {{- 'product.general.view_in_space' | t -}}
+            </button>
+          {%- endif -%}
+
+          {%- if template != 'product.quick-view' and section.settings.enable_image_zoom -%}
+            <span class="product-gallery__zoom-notice prev-hidden" style="display:none;">
+              {% render 'icon', icon: 'zoom' %}
+              <span class="hidden-pocket">{{ 'product.general.zoom' | t }}</span>
+              <span class="hidden-lap-and-up">{{ 'product.general.zoom_mobile' | t }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+
+        {%- if show_thumbnails_if_one_media -%}
+          <div class="scroller prev-hidden" style="display:none;">
+            <div class="scroller__inner">
+              <div class="product-gallery__thumbnail-list" data-media-count="{{ product.media.size }}" style="display:flex; justify-content:center;">
+                {%- for media in product.media -%}
+                  {%- assign is_media_group = false -%}
+                  {%- assign is_media_filtered = false -%}
+                  {%- assign media_alt = media.alt -%}
+
+                  {%- if media.alt contains '#' -%}
+                    {%- assign is_media_group = true -%}
+                    {%- assign alt_parts = media.alt | split: '#' -%}
+
+                    {%- comment -%}
+                      If the custom ALT tag contains two parts (for instance "My custom alt # color_blue") then the first part is actually used
+                      as a custom ALT tag
+                    {%- endcomment -%}
+
+                    {%- if alt_parts.size == 2 and alt_parts.first != blank -%}
+                      {%- assign media_alt = alt_parts.first | strip -%}
+                    {%- else -%}
+                      {%- assign media_alt = product.title -%}
+                    {%- endif -%}
+
+                    {%- assign media_group_parts = alt_parts.last | split: '_' -%}
+
+                    {%- for option in product.options -%}
+                      {%- assign downcase_option = option | downcase -%}
+                      {%- assign downcase_group_option = media_group_parts.first | strip | downcase -%}
+
+                      {%- if downcase_option == downcase_group_option -%}
+                        {%- assign option_setting = 'option' | append: forloop.index -%}
+                        {%- assign option_value = product.selected_or_first_available_variant[option_setting] | downcase -%}
+
+                        {%- assign downcase_group_value = media_group_parts.last | strip | downcase -%}
+                        {%- assign media_variant_ids = media.variants | map: 'id' -%}
+
+                        {%- if option_value != downcase_group_value -%}
+                          {%- unless media_variant_ids contains product.selected_or_first_available_variant.id -%}
+                            {%- assign is_media_filtered = true -%}
+                          {%- endunless -%}
+                        {%- endif -%}
+
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+
+                  <div class="product-gallery__thumbnail {% if media.id == selected_media.id %}is-nav-selected{% endif %} {% if is_media_filtered %}is-filtered{% endif %}" data-media-id="{{ media.id }}" {% if is_media_group %}data-group-name="{{ media_group_parts.first | strip | downcase | escape }}" data-group-value="{{ media_group_parts.last | strip | downcase | escape }}"{% endif %}>
+                    {%- comment -%}Based on the type of media, we have to add an icon as per Shopify rules{%- endcomment -%}
+
+                    {%- case media.media_type -%}
+                      {%- when 'model' -%}
+                        <span class="product-gallery__thumbnail-badge">{% render 'icon', icon: 'media-model-badge' %}</span>
+
+                      {%- when 'video' or 'external_video' -%}
+                        <span class="product-gallery__thumbnail-badge">{% render 'icon', icon: 'media-video-badge' %}</span>
+                    {%- endcase -%}
+
+                    <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: media.preview_image.aspect_ratio }}%"> 
+                     {% comment %} <img class="image--fade-in lazyload" loading="lazy" data-src="{{ media | img_url: '130x' }}" alt="{{ media_alt | escape }}">  {% endcomment %}
+                      {{- media | image_url: width: media.width | image_tag: loading: 'lazy', sizes: '130px', widths: '130,260,390' -}}
+                    </div>
+                </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.enable_image_zoom -%}
+          {%- comment -%}This code is used to power the mobile zoom and must not be removed nor altered{%- endcomment -%}
+          <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="pswp__bg"></div>
+            <div class="pswp__scroll-wrap">
+              <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+              </div>
+
+              <div class="pswp__ui">
+                <button class="pswp__button pswp__button--close" aria-label="{{ 'general.accessibility.close' | t }}">
+                  {% render 'icon', icon: 'close-2' %}
+                </button>
+
+                <div class="pswp__prev-next">
+                  <button class="pswp__button pswp__button--arrow--left" aria-label="{{ 'general.accessibility.previous' | t }}">
+                    {% render 'icon', icon: 'arrow-left' %}
+                  </button>
+
+                  <button class="pswp__button pswp__button--arrow--right" aria-label="{{ 'general.accessibility.next' | t }}">
+                    {% render 'icon', icon: 'arrow-right' %}
+                  </button>
+                </div>
+
+                <div class="pswp__pagination">
+                  <span class="pswp__pagination-current"></span> / <span class="pswp__pagination-count"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+   </div>
+ </div>
+{%- endif -%}
+
+<div class="navsoft-gallery-mobile-none" id="desk-separator">
+   <hr class="card__separator">
+</div>
+
+<div class="card card_custom" style="padding: 0px;">  
+  <div class="iframe-container" id="ar-frame" style="display:none;visibility:hidden;opacity:0;">
+    <button id="custom-ar-close"  class="modal__close modal__close_ar link navsoft-custom-gallery-close" title="Close" style="background: black;">
+        <svg focusable="false" class="icon icon--close " viewBox="0 0 19 19" role="presentation">
+           <path d="M9.1923882 8.39339828l7.7781745-7.7781746 1.4142136 1.41421357-7.7781746 7.77817459 7.7781746 7.77817456L16.9705627 19l-7.7781745-7.7781746L1.41421356 19 0 17.5857864l7.7781746-7.77817456L0 2.02943725 1.41421356.61522369 9.1923882 8.39339828z" fill="currentColor" fill-rule="evenodd"></path>
+         </svg>
+     </button>
+      <iframe src="" id="api-frame" style="width:90%; height:600px;"></iframe>
+  </div>
+   <div id="360mobile-frame" class="custom_360view_wrapper" style="display:none;">
+     <button id="custom360mobile-frame-close"  class="custom-frame-close modal__close link navsoft-custom-gallery-close">
+      <svg focusable="false" class="icon icon--close " viewBox="0 0 19 19" role="presentation">
+       <path d="M9.1923882 8.39339828l7.7781745-7.7781746 1.4142136 1.41421357-7.7781746 7.77817459 7.7781746 7.77817456L16.9705627 19l-7.7781745-7.7781746L1.41421356 19 0 17.5857864l7.7781746-7.77817456L0 2.02943725 1.41421356.61522369 9.1923882 8.39339828z" fill="currentColor" fill-rule="evenodd"></path>
+      </svg>
+     </button>
+     <span id="360mobile-frame-inner"></span>
+ {% comment %}    {{ productfeature['360_view'] }} {% endcomment %} 
+  </div> 
+  <div id="360DesktopInFrame" class="custom_360view_wrapper deskInframe" style="display:none;visibility:hidden;opacity:0;">
+     <button id="custom360mIn-frame-close"  class="custom-frame-close modal__close link navsoft-custom-gallery-close">
+      <svg focusable="false" class="icon icon--close " viewBox="0 0 19 19" role="presentation">
+       <path d="M9.1923882 8.39339828l7.7781745-7.7781746 1.4142136 1.41421357-7.7781746 7.77817459 7.7781746 7.77817456L16.9705627 19l-7.7781745-7.7781746L1.41421356 19 0 17.5857864l7.7781746-7.77817456L0 2.02943725 1.41421356.61522369 9.1923882 8.39339828z" fill="currentColor" fill-rule="evenodd"></path>
+      </svg>
+     </button>
+     <span id="360desktop-frame-inner"></span>
+  </div> 
+</div> 
+{% if productfeature['360_view'] == blank %}
+  <style>
+     .card.card_custom .navs-custom-product-features a:before {
+    display: none;
+}
+  </style>
+{% endif %}
+<div class="card card_custom navsoft-custom-product-features mob-gall-margin"  {% if productfeature['360_view'] != blank %} style="display:flex; gap:1rem; margin:2.125rem auto; justify-content:center;" {% else %} style="margin-top:5%; margin-bottom:5%" {% endif %}>
+      <div
+        class="navsoft-custom-gallery-button navs-custom-product-features mob-hide"
+        style="text-align: center;"
+      >
+        <a
+          id="viewProductGallerydesk" class="customhover"
+          style="cursor: pointer;display: inline-flex;text-align: center;"
+        >
+          <img
+            class="responsive-img"
+            loading="lazy"
+            src="{{ 'galleryicon_2.svg' | asset_url }}"
+            style="margin-right: 10px;" width="auto" height="21px" alt="gallery-icon"
+          >
+          <p style="line-height: 1; font-weight: 600;">Gallery</p>
+        </a>
+      </div>
+  <div
+        class="navsoft-custom-gallery-button navs-custom-product-features desk-hide"
+        style="text-align: center;">
+          <a
+            id="viewProductGallerymobile"
+            style="cursor: pointer;display: inline-flex;text-align: center;">
+            <img
+              class="responsive-img"
+              loading="lazy"
+              src="{{ 'galleryicon_2.svg' | asset_url }}"
+              style="margin-right: 10px;" width="auto" height="18px" alt="gallery-icon-mobile">
+            <p style="line-height: 1; font-weight: 600;">Gallery</p>
+          </a>
+   </div>
+   {% if productfeature['augmented_reality_desktop'] != blank %} 
+      <div class="navsoft-custom-ar-button navs-custom-product-features"  style="text-align: center;">
+       <a id="viewar" class="customhover" style="cursor: pointer;display: inline-flex;text-align: center;">
+        <img class="responsive-img" loading="lazy" src="{{ 'ar-icon.svg' | asset_url }}" style="margin-right: 10px;" width="auto" height="21px" alt="augmented-reality-icon">
+         <div class="custom-container">
+            <div class="controls" id="controls">
+              <pre idhttps://jsfiddle.net/sketchfab/29nqskpe/#="Info"></pre> 
+            </div>
+         </div>
+        </a>
+      </div>
+  {% endif %}
+    {% if productfeature['360_view'] != blank %}         
+      <div class="navsoft-custom-360-button navs-custom-product-features mob-hide"  style="text-align: center;">
+         <a
+          id="view360InFrame" class="customhover"
+          style="cursor: pointer;display: inline-flex;text-align: center;"
+        >
+          <img
+            class="responsive-img"
+            loading="lazy"
+            src="{{ '360-icon.svg' | asset_url }}"
+            style="margin-right: 10px;margin-bottom: 7px;" width="auto" height="21px" alt="360-icon"
+          >
+          <p style="line-height: 1; font-weight: 600;margin-bottom: 7px;">360</p>
+        </a>
+      </div>
+      <div class="navsoft-custom-360-button navs-custom-product-features desk-hide"  style="text-align: center;">
+         <a
+          id="view360mobile"
+          style="cursor: pointer;display: inline-flex;text-align: center;"
+         >
+          <img
+            class="responsive-img"
+            loading="lazy"
+            src="{{ '360-icon.svg' | asset_url }}"
+            style="margin-right: 10px;" width="auto" height="21px" alt="360-icon-mobile"
+          >
+          <p style="line-height: initial; font-weight: 600;">360</p>
+        </a>
+      </div>
+  {% endif %}
+</div>  
+
+ {% if productfeature['360_view'] != blank %}
+  <div id="productCustom360Modal" class="modal navsoft-product-gallery-modal" aria-hidden="true">
+    <div class="modal__dialog" role="dialog" style="max-height: 100vh; height: 100vh; width: 100%;">
+      <button id="custom-threesixty-close" class="modal__close link navsoft-custom-gallery-close" data-action="close-modal" title="Close">
+        <svg focusable="false" class="icon icon--close " viewBox="0 0 19 19" role="presentation">
+          <path d="M9.1923882 8.39339828l7.7781745-7.7781746 1.4142136 1.41421357-7.7781746 7.77817459 7.7781746 7.77817456L16.9705627 19l-7.7781745-7.7781746L1.41421356 19 0 17.5857864l7.7781746-7.77817456L0 2.02943725 1.41421356.61522369 9.1923882 8.39339828z" fill="currentColor" fill-rule="evenodd"></path>
+        </svg>
+      </button>
+
+      <div class="modal__loader">
+        <svg focusable="false" class="icon icon--search-loader " viewBox="0 0 64 64" role="presentation">
+          <path opacity=".4" d="M23.8589104 1.05290547C40.92335108-3.43614731 58.45816642 6.79494359 62.94709453 23.8589104c4.48905278 17.06444068-5.74156424 34.59913135-22.80600493 39.08818413S5.54195825 57.2055303 1.05290547 40.1410896C-3.43602265 23.0771228 6.7944697 5.54195825 23.8589104 1.05290547zM38.6146353 57.1445143c13.8647142-3.64731754 22.17719655-17.89443541 18.529879-31.75914961-3.64743965-13.86517841-17.8944354-22.17719655-31.7591496-18.529879S3.20804604 24.7494569 6.8554857 38.6146353c3.64731753 13.8647142 17.8944354 22.17719655 31.7591496 18.529879z"></path>
+          <path d="M1.05290547 40.1410896l5.80258022-1.5264543c3.64731754 13.8647142 17.89443541 22.17719655 31.75914961 18.529879l1.5264543 5.80258023C23.07664892 67.43614731 5.54195825 57.2055303 1.05290547 40.1410896z"></path>
+        </svg>
+      </div>
+
+      <div id="360_modal_inner" class="modal__inner" style="margin-top: 0px!important; padding-top: 0px!important;"></div>
+  </div>
+  </div>
+  {% endif %}
+
+  <div id="productCustomPopupGalleryModal" class="modal navsoft-product-gallery-modal" aria-hidden="true">
+    <div class="modal__dialog" role="dialog" style="max-height: 100vh; height: 100vh; width: 100%;">
+      <button class="modal__close link navsoft-custom-gallery-close" data-action="close-modal" title="Close">
+        <svg focusable="false" class="icon icon--close " viewBox="0 0 19 19" role="presentation">
+          <path d="M9.1923882 8.39339828l7.7781745-7.7781746 1.4142136 1.41421357-7.7781746 7.77817459 7.7781746 7.77817456L16.9705627 19l-7.7781745-7.7781746L1.41421356 19 0 17.5857864l7.7781746-7.77817456L0 2.02943725 1.41421356.61522369 9.1923882 8.39339828z" fill="currentColor" fill-rule="evenodd"></path>
+        </svg>
+      </button>
+
+      <div class="modal__loader">
+        <svg focusable="false" class="icon icon--search-loader " viewBox="0 0 64 64" role="presentation">
+          <path opacity=".4" d="M23.8589104 1.05290547C40.92335108-3.43614731 58.45816642 6.79494359 62.94709453 23.8589104c4.48905278 17.06444068-5.74156424 34.59913135-22.80600493 39.08818413S5.54195825 57.2055303 1.05290547 40.1410896C-3.43602265 23.0771228 6.7944697 5.54195825 23.8589104 1.05290547zM38.6146353 57.1445143c13.8647142-3.64731754 22.17719655-17.89443541 18.529879-31.75914961-3.64743965-13.86517841-17.8944354-22.17719655-31.7591496-18.529879S3.20804604 24.7494569 6.8554857 38.6146353c3.64731753 13.8647142 17.8944354 22.17719655 31.7591496 18.529879z"></path>
+          <path d="M1.05290547 40.1410896l5.80258022-1.5264543c3.64731754 13.8647142 17.89443541 22.17719655 31.75914961 18.529879l1.5264543 5.80258023C23.07664892 67.43614731 5.54195825 57.2055303 1.05290547 40.1410896z"></path>
+        </svg>
+      </div>
+
+      <div class="modal__inner" style="margin-top: 100px;">
+        <div style="text-align: center;margin-bottom: 20px;">
+          <span class="navsoft-gallery-mobile-none" id="productCustomPopupGalleryTitle"></span>
+        </div>
+        <div id="productCustomPopupGallery"></div>
+        <div class="navsoft-gallery-mobile-only" style="text-align: center;">
+          <span id="productCustomPopupGalleryImageIndex"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-container mob-tab-hide">
+    <div class="custom-shopify-planet-banner">
+      <img src="https://cdn.shopify.com/extensions/b6b6cd65-86e6-4ded-8fbe-435594653359/0.33.0/assets/logo.png" alt="Carbon-neutral shipping with Shopify Planet" width="34" height="30" loading="lazy">
+      <div class="custom-shopify-planet-banner-title-container">
+        <div class="custom-shopify-planet-banner-title">All deliveries are carbon neutral</div>
+        <div class="custom-shopify-planet-banner-subtitle">Powered by Shopify Planet</div>
+      </div>
+    </div>
+  </div>
+
+
+ {% if productfeature['augmented_reality_desktop'] != blank %}   
+<script>
+var api = null;
+var clientInitRef = null;
+
+$( document ).ready(function() {
+  // GUI Code
+  const initGui = () => {
+    const controls = document.getElementById('controls');
+    let buttonsText = '';
+    buttonsText += '<button id="init" style="display:block"> <p style="line-height: 1; font-weight: 600;">Augmented Reality</p></button>';
+    controls.innerHTML = buttonsText;
+  };
+
+  initGui();
+  // GUI Code end
+});
+
+document.getElementById('viewar').addEventListener('click', function(e) {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  e.stopPropagation();
+  console.log('ar -test');
+
+  document.getElementById('viewar').className = 'active';
+  document.getElementById('ar_based_gallery').style.display = 'none';
+  document.getElementById('desk-separator').style.display = 'none';
+  document.getElementById('360DesktopInFrame').style.display = 'none'; 
+  document.getElementById('360mobile-frame').style.display = 'none';
+  if ($(window).width() < 599) {
+    document.getElementById('mobile_gallery').style.display = 'none';
+    document.getElementById('productCustomPopupGallery1').style.display = 'none';
+  }
+  document.getElementById('ar-frame').style.display = 'block';
+  if (window.innerWidth >= 1000) { 
+   const mainContainer = document.querySelector('#custom-product-gallery__carousel .flickity-viewport');
+    if (mainContainer) {
+    const computedStyle = window.getComputedStyle(mainContainer);
+    let heightValue = parseFloat(computedStyle.getPropertyValue('height')); // Get the height as a number
+     console.log('height',heightValue);  
+    heightValue += 24.1;
+    document.querySelector('#ar-frame iframe').style.setProperty('height', `${heightValue}px`, 'important');
+    } else {
+      console.error("mainContainer not found.");
+    }
+  }
+    document.getElementById('ar-frame').style.visibility = 'visible';
+    document.getElementById('ar-frame').style.opacity = '1';
+
+  if (clientInitRef == null){
+    ar_render();
+  }
+
+  if (api !== null) {
+    api.startAR();
+  } else {
+    let api_ref = setInterval(function(){
+      if (api !== null) {
+        api.startAR();
+        clearInterval(api_ref);
+      }
+    },1000);
+  }
+});
+
+
+function ar_render()
+{
+  // Sketchfab Viewer API: Start AR
+  const version = '1.12.1';
+  const uid = `{{ productfeature.augmented_reality_desktop }}`;
+  const iframe = document.getElementById('api-frame');
+  const client = new window.Sketchfab(version, iframe);
+
+  var error = function() {
+    console.error('Sketchfab API error');
+  };
+
+  var success = function(apiClient) {
+    api = apiClient;
+    clientInitRef = 'init'; 
+  };
+
+    client.init(uid, {
+    annotation: 0, // Usage: Setting to [1 – 100] will automatically load that annotation when the viewer starts.
+    annotations_visible: 1, // Usage: Setting to 0 will hide annotations by default.
+    autospin: 0, // Usage: Setting to any other number will cause the model to automatically spin around the z-axis after loading.
+    autostart: 1, // Usage: Setting to 1 will make the model load immediately once the page is ready, rather than waiting for a user to click the Play button.
+    cardboard: 0, // Usage: Start the viewer in stereoscopic VR Mode built for Google Cardboard and similar devices.
+    camera: 0, // Usage: Setting to 0 will skip the initial animation that occurs when a model is loaded, and immediately show the model in its default position.
+    ui_stop: 0, // Usage: Setting to 0 will hide the "Disable Viewer" button in the top right so that users cannot stop the 3D render once it is started.
+    transparent: 0, // Usage: Setting to 1 will make the model's background transparent
+    ui_animations: 0, // Usage: Setting to 0 will hide the animation menu and timeline.
+    ui_annotations: 0, // Usage: Setting to 0 will hide the Annotation menu.
+    ui_controls: 0, // Usage: Setting to 0 will hide all the viewer controls at the bottom of the viewer (Help, Settings, Inspector, VR, Fullscreen, Annotations, and Animations).
+    ui_fullscreen: 0, // Usage: Setting to 0 will hide the Fullscreen button.
+    ui_general_controls: 1, // Usage: Setting to 0 will hide main control buttons in the bottom right of the viewer (Help, Settings, Inspector, VR, Fullscreen).
+    ui_help: 0, // Usage: Setting to 0 will hide the Help button.
+    ui_hint:0, // Usage: Setting to 0 will always hide the viewer hint animation ("click & hold to rotate"). Setting to 1 will show the hint the first time per browser session (using a cookie). Setting to 2 will always show the hint.
+    ui_infos: 0, // Usage: Setting to 0 will hide the model info bar at the top of the viewer.
+    ui_inspector: 0, // Usage: Setting to 0 will hide the inspector button.
+    ui_settings: 0, // Usage: Setting to 0 will hide the Settings button.
+    ui_vr: 0, // Usage: Setting to 0 will hide the View in VR button.
+    ui_watermark_link: 0, // Usage: Setting to 0 remove the link from the Sketchfab logo watermark.
+    ui_color: '00ffc0', // Usage: Setting to a hexidecimal color code (without the #) or a HTML color name will change the color of the viewer loading bar.
+    ui_watermark: 0, // Usage: Setting to 0 remove the Sketchfab logo watermark.
+    ui_loading: 0, // Usage: remove all progress bars
+    success: success,
+    error: error
+  });
+}
+  
+</script>
+{% endif %}  
+
+<script>
+  var threesixtybtnmobile = document.getElementById('view360mobile');
+  if(threesixtybtnmobile){
+    document.getElementById('view360mobile').addEventListener('click', function() {
+      document.getElementById('viewar').classList.remove("active");
+      document.getElementById('ar_based_gallery').style.display = 'none';
+      if ($(window).width() < 599 ) {
+        document.getElementById('mobile_gallery').style.display = 'none';
+        document.getElementById('productCustomPopupGallery1').style.display = 'none'; 
+      }      
+      document.getElementById('ar-frame').style.display = 'none';
+      var threesixty_mobile_container = document.getElementById("360mobile-frame-inner");
+     if(threesixty_mobile_container.innerHTML == '')  {
+       document.getElementById("360mobile-frame-inner").innerHTML =`{{ productfeature['360_view'] }}`; 
+     }
+      document.getElementById('360mobile-frame').style.display = 'block';
+    });
+  }
+
+  var threesixtybtdesktopinframe = document.getElementById('view360InFrame');
+  if(threesixtybtdesktopinframe){
+    document.getElementById('view360InFrame').addEventListener('click', function() {
+      document.getElementById('viewar').classList.remove("active");
+      document.getElementById('ar_based_gallery').style.display = 'none';
+      document.getElementById('desk-separator').style.display = 'none';
+      if ($(window).width() < 599 ) {
+        document.getElementById('mobile_gallery').style.display = 'none';
+        document.getElementById('productCustomPopupGallery1').style.display = 'none'; 
+      }      
+      document.getElementById('ar-frame').style.display = 'none';
+      var threesixty_mobile_container = document.getElementById("360desktop-frame-inner");
+     if(threesixty_mobile_container.innerHTML == '')  {
+       document.getElementById("360desktop-frame-inner").innerHTML =`{{ productfeature['360_view'] }}`; 
+     }
+      document.getElementById('360DesktopInFrame').style.display = 'block';
+      const mainContainer = document.querySelector('#custom-product-gallery__carousel .flickity-viewport');
+      if (mainContainer) {
+      const computedStyle = window.getComputedStyle(mainContainer);
+      let heightValue = parseFloat(computedStyle.getPropertyValue('height')); // Get the height as a number
+      heightValue += 24.1;
+      document.querySelector('.custom_360view_wrapper.deskInframe .sketchfab-embed-wrapper iframe').style.setProperty('height', `${heightValue}px`, 'important');
+      } else {
+        console.error("mainContainer not found.");
+      }
+      document.getElementById('360DesktopInFrame').style.visibility = 'visible';
+      document.getElementById('360DesktopInFrame').style.opacity = '1';
+    });
+  }
+  
+  document.getElementById('viewProductGallerymobile').addEventListener('click', function() {
+    var viewar = document.getElementById('viewar');
+    if(viewar){
+      document.getElementById('viewar').classList.remove("active");
+    }
+    document.getElementById('ar_based_gallery').style.display = 'none';
+    document.getElementById('ar-frame').style.display = 'none';
+    document.getElementById('360DesktopInFrame').style.display = 'none'; 
+    document.getElementById('360mobile-frame').style.display = 'none';
+    setTimeout(function(){
+      document.getElementById('mobile_gallery').style.display = 'none';
+      document.getElementById('productCustomPopupGallery1').style.display = 'block'; 
+    }, 1000);
+  });
+
+$(document).ready(function() { 
+  var flickityAttr = '';
+  var $thumbnailList = $('.product-gallery__thumbnail-list');
+  const galleryThumbnail = document.querySelector('.product-gallery__thumbnail-list');
+  const dataMediaCount = galleryThumbnail.getAttribute('data-media-count');
+  
+  var sectionEl = document.getElementById("product-section");
+  var sectionSettings = JSON.parse(sectionEl.getAttribute("data-section-settings"));
+
+  document.getElementById('viewProductGallerydesk').addEventListener('click', function() {
+    var viewar = document.getElementById('viewar');
+    if(viewar){
+      document.getElementById('viewar').classList.remove("active");
+    }
+    document.getElementById('ar-frame').style.display = 'none';
+    document.getElementById('360DesktopInFrame').style.display = 'none'; 
+    document.getElementById('360mobile-frame').style.display = 'none';
+    document.getElementById('mobile_gallery').style.display = 'none';
+    document.getElementById('desk-separator').style.marginTop = '32px';
+    document.getElementById('ar_based_gallery').style.display = 'block';
+    const prevHiddenElems = document.querySelectorAll('.prev-hidden');
+    for (let i = 0; i < prevHiddenElems.length; i++) {
+      prevHiddenElems[i].style.display = 'block';
+    }
+
+    if(dataMediaCount > 4)
+    {
+      if (flickityAttr === '') {
+        flickityAttr = 'data-flickity=\'{ "asNavFor": ".product-gallery__carousel", "contain": true, "pageDots": false, "resize": false, "wrapAround": true, "cellAlign": "left", "adaptiveHeight": true }\'';
+        $thumbnailList.attr(flickityAttr);
+
+        var flickityInstance = $thumbnailList.flickity({
+          asNavFor: '.product-gallery__carousel',
+          contain: true,
+          pageDots: false,
+          resize: true,
+          wrapAround: false,
+          cellAlign: 'left',
+          adaptiveHeight: true
+        }).data('flickity');
+      }
+    }
+
+    $thumbnailList.show();
+
+    if (flickityInstance) {
+      flickityInstance.resize();
+    }
+
+ });
+
+document.getElementById('viewProductGalleryDesktop-onimage').addEventListener('click', function() {
+    var viewar = document.getElementById('viewar');
+    if(viewar){
+      document.getElementById('viewar').classList.remove("active");
+    }
+    document.getElementById('ar-frame').style.display = 'none';
+    document.getElementById('360DesktopInFrame').style.display = 'none'; 
+    document.getElementById('360mobile-frame').style.display = 'none';
+    document.getElementById('mobile_gallery').style.display = 'none';
+    document.getElementById('desk-separator').style.marginTop = '32px';
+    document.getElementById('ar_based_gallery').style.display = 'block';
+    const prevHiddenElems = document.querySelectorAll('.prev-hidden');
+    for (let i = 0; i < prevHiddenElems.length; i++) {
+      prevHiddenElems[i].style.display = 'block';
+    }
+  
+    if (flickityAttr === '') {
+      flickityAttr = 'data-flickity=\'{ "asNavFor": ".product-gallery__carousel", "contain": true, "pageDots": false, "resize": false, "wrapAround": true, "cellAlign": "left", "adaptiveHeight": true }\'';
+      $thumbnailList.attr(flickityAttr);
+
+      var flickityInstance = $thumbnailList.flickity({
+        asNavFor: '.product-gallery__carousel',
+        contain: true,
+        pageDots: false,
+        resize: true,
+        wrapAround: false,
+        cellAlign: 'left',
+        adaptiveHeight: true
+      }).data('flickity');
+    }
+
+    $thumbnailList.show();
+
+    if (flickityInstance) {
+      flickityInstance.resize();
+    }
+
+ });
+});    
+
+  document.getElementById('custom-ar-close').addEventListener('click', function() {
+      document.getElementById('viewar').classList.remove("active");
+      const prevHiddenElems = document.querySelectorAll('.prev-hidden');
+      for (let i = 0; i < prevHiddenElems.length; i++) {
+        prevHiddenElems[i].style.display = 'none';
+      }
+      document.getElementById('ar_based_gallery').style.display = 'block';
+      document.getElementById('desk-separator').style.display = 'block';
+      document.getElementById('ar-frame').style.display = 'none';
+      document.getElementById('360DesktopInFrame').style.display = 'none'; 
+      if ($(window).width() < 599 ) {
+           document.getElementById('productCustomPopupGallery1').style.display = 'none';
+           document.getElementById('mobile_gallery').style.display = 'block';
+      }
+    });
+
+  var threesixtyclose = document.getElementById('custom-threesixty-close');
+  if(threesixtyclose){
+    threesixtyclose.addEventListener('click', function() {
+              // $("#360_modal_inner").empty();
+   });
+  }
+  
+  const btns = document.querySelectorAll('.custom-frame-close');
+  Array.from(btns).forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.getElementById('viewar').classList.remove("active");
+      document.getElementById('360mobile-frame').style.display = 'none';
+      document.getElementById('ar-frame').style.display = 'none';
+      document.getElementById('360DesktopInFrame').style.display = 'none';
+      const prevHiddenElems = document.querySelectorAll('.prev-hidden');
+      for (let i = 0; i < prevHiddenElems.length; i++) {
+        prevHiddenElems[i].style.display = 'none';
+      }
+      document.getElementById('ar_based_gallery').style.display = 'block';
+      document.getElementById('desk-separator').style.display = 'block';
+      if ($(window).width() < 599 ) {
+       document.getElementById('productCustomPopupGallery1').style.display = 'none'; 
+       document.getElementById('mobile_gallery').style.display = 'block';
+      }
+    });
+  });
+  
+</script>              
+
+<script>
+  
+    var product_ar_link = ``;
+    var navsoft_gallery_image_urls = "{{ gallery_image_urls }}";
+    var navsoft_url_joiner = "{{ url_joiner }}";
+    var navsoft_gallery_images = [];
+
+    navsoft_gallery_image_urls = navsoft_gallery_image_urls.split(navsoft_url_joiner);
+
+    navsoft_gallery_image_urls.forEach(function(image_url){
+      if (image_url.trim().length) {
+        navsoft_gallery_images.push(image_url.trim());
+      }
+    });
+
+    $(document).ready(function() {
+      $('#viewProductGallery').click(function(){
+        var gallery_modal_id = jQuery(this).attr('aria-controls');
+
+        if (product_ar_link.length) {
+          $('#productCustomPopupGallery').css('text-align', 'center').html(product_ar_link);
+          return ;
+        }
+
+        if (navsoft_gallery_images.length) {
+          if ($('#dummy-chat-button-iframe').length) {
+            var chatbotIndex = $('#dummy-chat-button-iframe').css('z-index');
+            var modalIndex = Math.floor(chatbotIndex) + 1;
+            $('#productCustomPopupGalleryModal').css('z-index', modalIndex);
+          }
+          $('#productCustomPopupGalleryTitle').html(`{{ product.title }}`);
+          var options = {
+            // thumbLeft:true,
+            // thumbRight:true,
+            // thumbHide:true,
+            // width:300,
+            // height:500,
+          };
+
+          $('#productCustomPopupGallery').zoomy(navsoft_gallery_images, options, gallery_modal_id);
+        } else {
+          alert('Currently there is no images for this product');
+        }
+      });
+    });
+
+   $(document).ready(function() {
+      $('#viewProductGallery-onimage').click(function(){
+        var gallery_modal_id = jQuery(this).attr('aria-controls');
+
+        if (product_ar_link.length) {
+          $('#productCustomPopupGallery').css('text-align', 'center').html(product_ar_link);
+          return ;
+        }
+
+        if (navsoft_gallery_images.length) {
+          if ($('#dummy-chat-button-iframe').length) {
+            var chatbotIndex = $('#dummy-chat-button-iframe').css('z-index');
+            var modalIndex = Math.floor(chatbotIndex) + 1;
+            $('#productCustomPopupGalleryModal').css('z-index', modalIndex);
+          }
+          $('#productCustomPopupGalleryTitle').html(`{{ product.title }}`);
+          var options = {
+             thumbLeft:true,
+             thumbRight:true,
+            // thumbHide:true,
+            // width:300,
+            // height:500,
+          };
+
+          $('#productCustomPopupGallery').zoomy(navsoft_gallery_images, options, gallery_modal_id);
+        } else {
+          alert('Currently there is no images for this product');
+        }
+      });
+    });
+
+</script>

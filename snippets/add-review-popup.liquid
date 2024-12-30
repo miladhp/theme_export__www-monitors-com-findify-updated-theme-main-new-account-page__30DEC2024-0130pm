@@ -1,0 +1,458 @@
+
+
+<style>
+
+    body.show-review-popup  .add-review-popup{
+        opacity: 1;
+        visibility: visible;
+        z-index: 99;
+    }
+    .add-review-popup{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgb(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        transition: opacity 0.5s;
+    }
+    .add-review-popup .review-popup-container{
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        background: #ffffff;
+        height: auto;
+        max-width: 600px;
+        border-radius: 5px;
+        margin: 20px;
+        padding: 20px;
+        min-height: 200px;
+        position: relative;
+    }
+    .add-review-popup .review-popup-container h3{
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+    .add-review-popup .submit-btn button{
+        text-align: center;
+        font-family: 'Encode Sans';
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        border-radius: 5px;
+        border: none;
+        padding: 8px 30px;
+        color: #fcf7f7;
+        background: #06a0e3;
+        max-width: 100px;
+        margin-top: 15px;
+    }
+    .add-review-popup .submit-btn.form-row{
+        align-items: flex-end;
+    }
+    .add-review-popup .review-popup-container .close-btn{
+        display: flex;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .add-review-popup .form-row{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .add-review-popup .form-col{
+      display:flex;
+      flex-direction:column;
+    } 
+    .add-review-popup .form-row label{
+        color: #404042!important;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+    .add-review-popup .form-row label.upload-photo{
+        width: 90px;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px dashed #E5E5E5;
+        border-radius: 5px;
+    }
+
+    .add-review-popup .custom-review-rating{
+        margin-bottom: 10px;
+    }
+
+    .custom-review-form{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .user-rev-details{
+      align-items: flex-start;
+      gap: 20px;
+      align-self: stretch;
+    } 
+
+    .user-rev-fields{
+      align-items: flex-start;
+      gap: 4px;
+      flex: 1 0 0;
+    }
+
+    .custom-review-form input[type=text], .custom-review-form input[type=email] {
+        max-height: 36px;
+        padding: 5px 12px;
+        color: #303030;
+        background: #f2f2f2;
+        border-radius: 8px;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        width: 100%;
+        border: 1px solid transparent;
+    }
+
+    .add-review-popup .custom-review-form textarea{
+        width:100%;
+        border-radius: 5px;
+        border: 1px solid #E1E3E4;
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+    .add-review-popup .custom-review-form textarea::placeholder, .add-review-popup .custom-review-form textarea::-ms-input-placeholder{
+        color: #E1E3E4;
+    }
+
+    .stamped-fa-star-o {
+       color: #ffd700 !important; 
+     }
+
+    .stamped-fa-star-checked {
+        color: #ffd700 !important;
+    }
+
+    .add-review-popup .uploaded-images-container {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .add-review-popup .stamped-file-holder {
+        position: relative;
+        width: 90px;
+        height: 100%;
+        margin-top: 0px;
+    }
+    
+    .add-review-popup .stamped-file-photo img {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        object-fit: cover;
+    }
+    .add-review-popup .stamped-file-photo{
+        width: 90px;
+        height: 100%;
+    }
+    .add-review-popup .upload-container{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .add-review-popup .stamped-file-photo-remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #ffffff;
+        border-radius: 50%;
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .add-review-popup .review-product-info {
+        display: flex;
+        gap: 15px;
+    }
+    .add-review-popup .review-product-info .product-image{
+        width: 62px;
+        aspect-ratio: 1 / 1;
+    }
+    .add-review-popup .review-product-info .product-image img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .add-review-popup .review-product-info .product-title{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .add-review-popup .review-product-info .product-title p{
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-align: left;
+        margin-bottom: 15px;
+    }
+    .add-review-popup .seperator{
+        width: 100%;
+        height: 1px;
+        background-color: #F2F2F2;
+        margin: 10px 0px;
+    }
+    .add-review-popup label{
+        color: #303030;
+        font-feature-settings: 'liga' off, 'clig' off;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+    }
+    .add-review-popup .loader{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: #ffffff36;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        visibility: hidden;
+        opacity: 0;
+        z-index: -1;
+    }
+    .add-review-popup .loader.loader-active{
+        visibility: visible;
+        opacity: 1;
+        z-index: 2;
+    }
+    .add-review-popup .loader img{
+        width: 120px;
+        height: 120px;
+    }
+
+    @media only screen and (max-width: 768px){
+        .add-review-popup .form-row label.upload-photo{
+            width: 60px;
+        }
+        .add-review-popup .stamped-file-holder {
+        width: 60px;
+    }
+    .add-review-popup .stamped-file-photo{
+        width: 60px;
+    }
+
+    }
+</style>
+
+<div class="add-review-popup" id="reviewPopup">
+    <div class="review-popup-container">
+        <div class="close-btn" id="popupCloseBtn">
+            {% render 'icon', icon: 'close' %}
+        </div>
+        <div class="loader">
+            <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/Rolling-0.4s-201px_1.svg" alt="loading gif" class="" laoding="lazy">
+        </div>
+       <h3>Create Review</h3>
+
+       <div class="review-product-info" id="productInfo">
+        
+       </div>
+
+       <div class="seperator"></div>
+      
+       <form action="/reviews" id="custom-review-form" class="custom-review-form" method="POST">
+
+        <input type="hidden" name="author" value="{{ customer.first_name }} {{ customer.last_name }}">
+        <input type="hidden" name="email" value="{{ customer.email }}">
+        <input type="hidden" name="reviewSource" value="api">
+        <input type="hidden" name="loaction" value="">
+        <input type="hidden" name="reviewRecommendProduct" value="">
+
+
+          <div class="form-row custom-review-rating">
+              <label class="stamped-form-label" for="reviewRating">Overall rating</label>
+              <input type="hidden" id="reviewRating" name="reviewRating" required>
+
+               <div id="review-stars" class="stamped-starrating">
+                    <svg class="star" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="38" height="35">
+                        <defs>
+                            <path id="a" d="M19 0l-5.87 11.52L0 13.37l9.5 8.97L7.26 35 19 29.02 30.75 35l-2.24-12.66 9.5-8.97-13.13-1.85z"/>
+                        </defs>
+                        <g fill="none" fill-rule="evenodd"><use fill="#FFF" class="star-fill" xlink:href="#a"/><path stroke="#F8D62D" stroke-opacity=".75" d="M19 1.1l-5.54 10.88L1.1 13.72l8.94 8.44L7.92 34.1 19 28.46l11.08 5.64-2.11-11.94 8.94-8.44-12.36-1.74L19 1.1z"/></g>
+                    </svg>
+                    <svg class="star" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="38" height="35">
+                        <defs>
+                            <path id="a" d="M19 0l-5.87 11.52L0 13.37l9.5 8.97L7.26 35 19 29.02 30.75 35l-2.24-12.66 9.5-8.97-13.13-1.85z"/>
+                        </defs>
+                        <g fill="none" fill-rule="evenodd"><use fill="#FFF" class="star-fill" xlink:href="#a"/><path stroke="#F8D62D" stroke-opacity=".75" d="M19 1.1l-5.54 10.88L1.1 13.72l8.94 8.44L7.92 34.1 19 28.46l11.08 5.64-2.11-11.94 8.94-8.44-12.36-1.74L19 1.1z"/></g>
+                    </svg>
+                    <svg class="star" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="38" height="35">
+                        <defs>
+                            <path id="a" d="M19 0l-5.87 11.52L0 13.37l9.5 8.97L7.26 35 19 29.02 30.75 35l-2.24-12.66 9.5-8.97-13.13-1.85z"/>
+                        </defs>
+                        <g fill="none" fill-rule="evenodd"><use fill="#FFF" class="star-fill" xlink:href="#a"/><path stroke="#F8D62D" stroke-opacity=".75" d="M19 1.1l-5.54 10.88L1.1 13.72l8.94 8.44L7.92 34.1 19 28.46l11.08 5.64-2.11-11.94 8.94-8.44-12.36-1.74L19 1.1z"/></g>
+                    </svg>
+                    <svg class="star" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="38" height="35">
+                        <defs>
+                            <path id="a" d="M19 0l-5.87 11.52L0 13.37l9.5 8.97L7.26 35 19 29.02 30.75 35l-2.24-12.66 9.5-8.97-13.13-1.85z"/>
+                        </defs>
+                        <g fill="none" fill-rule="evenodd"><use fill="#FFF" class="star-fill" xlink:href="#a"/><path stroke="#F8D62D" stroke-opacity=".75" d="M19 1.1l-5.54 10.88L1.1 13.72l8.94 8.44L7.92 34.1 19 28.46l11.08 5.64-2.11-11.94 8.94-8.44-12.36-1.74L19 1.1z"/></g>
+                    </svg>
+                    <svg class="star" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="38" height="35">
+                        <defs>
+                            <path id="a" d="M19 0l-5.87 11.52L0 13.37l9.5 8.97L7.26 35 19 29.02 30.75 35l-2.24-12.66 9.5-8.97-13.13-1.85z"/>
+                        </defs>
+                        <g fill="none" fill-rule="evenodd"><use fill="#FFF" class="star-fill" xlink:href="#a"/><path stroke="#F8D62D" stroke-opacity=".75" d="M19 1.1l-5.54 10.88L1.1 13.72l8.94 8.44L7.92 34.1 19 28.46l11.08 5.64-2.11-11.94 8.94-8.44-12.36-1.74L19 1.1z"/></g>
+                    </svg>
+                </div>
+          </div>
+
+          <div class="seperator"></div>
+
+          <div class="form-row custom-review-rating">
+            <label>Add a photo or video</label>
+            <div class="upload-container">
+                <label class="upload-photo" for="photo_upload">
+                    {% render 'plus-icon-thick' %}
+                </label>
+                <input type="file" id="photo_upload" name="stamped-file-uploader-input" style="display:none;" multiple>
+                <div id="uploaded-images" class="uploaded-images-container"></div>
+            </div>
+          </div>
+
+          <div class="seperator"></div>
+      
+          <div class="form-row">
+              <label for="review_message">Add a written review</label>
+              <textarea id="review_message" name="reviewMessage" rows="5" required placeholder="What did you like or dislike? What did you use this product for?" 
+                data-placeholder="What did you like or dislike? What did you use this product for?" class="toggle-placeholder"></textarea>
+          </div>
+      
+          <div class="form-row submit-btn">
+              <button type="submit" class="button-primary">Submit</button>
+          </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+
+  document.getElementById("review_message").addEventListener("input", function() {
+    this.setAttribute("data-value", this.value);
+  });
+  
+  function setRating(element, ratingValue) {
+    document.getElementById("reviewRating").value = ratingValue;
+    
+    const stars = document.querySelectorAll("#review-stars a");
+    
+    stars.forEach((star, index) => {
+        if (index < ratingValue) {
+            star.classList.add("stamped-fa-star-checked");
+            star.classList.remove("stamped-fa-star-o");
+            star.setAttribute("aria-pressed", "true");
+        } else {
+            star.classList.add("stamped-fa-star-o");
+            star.classList.remove("stamped-fa-star-checked");
+            star.setAttribute("aria-pressed", "false");
+        }
+    });
+}
+
+
+let uploadedFiles = [];
+
+document.getElementById("photo_upload").addEventListener("change", function (event) {
+    const imageContainer = document.getElementById("uploaded-images");
+
+    // Clear the previous images in the container
+    imageContainer.innerHTML = '';
+
+    Array.from(event.target.files).forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const imageHolder = document.createElement("span");
+            imageHolder.classList.add("stamped-file-holder");
+
+            imageHolder.innerHTML = `
+                <div class="stamped-file-photo" data-index="${imageContainer.childElementCount}">
+                    <img src="${e.target.result}" alt="${file.name}">
+                    <span style="display:none;">${file.name}</span>
+                    <div class="stamped-file-photo-remove" data-index="${imageContainer.childElementCount}" onclick="removeImage(${imageContainer.childElementCount})">{% render 'icon', icon: 'close' %}</div>
+                </div>
+            `;
+
+            imageContainer.appendChild(imageHolder);
+            uploadedFiles.push(file);
+        };
+
+        reader.readAsDataURL(file);
+    });
+});
+
+
+function removeImage(index) {
+    const imageToRemove = document.querySelector(`.stamped-file-photo[data-index="${index}"]`).parentNode;
+    imageToRemove.remove();
+    
+    uploadedFiles.splice(index, 1);
+    
+    const remainingImages = document.querySelectorAll(".stamped-file-photo");
+    remainingImages.forEach((image, newIndex) => {
+        image.dataset.index = newIndex;
+        image.querySelector(".stamped-file-photo-remove").setAttribute("onclick", `removeImage(${newIndex})`);
+    });
+}
+
+function prepareReviewData() {
+    const reviewMessage = document.getElementById("review_message").value;
+    const rating = document.getElementById("reviewRating").value;
+
+    const formData = new FormData();
+    formData.append("reviewMessage", reviewMessage);
+    formData.append("reviewRating", rating);
+
+    uploadedFiles.forEach((file, index) => {
+        formData.append(`photoUpload[${index}]`, file);
+    });
+
+    //sendReviewToAPI(formData);
+} 
+
+</script>

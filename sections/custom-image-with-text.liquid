@@ -1,0 +1,341 @@
+<style>
+  @media(min-width: 481px) {
+    #shopify-section--{{ section.id }} .custom-card__separator {
+      margin-top: {{ section.settings.top-margin-desktop }}px;
+      margin-bottom: {{ section.settings.bottom-margin-desktop }}px;
+    }
+  }
+
+  @media(max-width: 480px) {
+    #shopify-section--{{ section.id }} .custom-card__separator {
+      margin-top: {{ section.settings.top-margin-mobile }}px;
+      margin-bottom: {{ section.settings.bottom-margin-mobile }}px;
+    }
+  }
+
+  #shopify-section--{{ section.id }}.section-custom__separator {
+    margin-top: {{ section.settings.section-top-margin-mobile }}px !important;
+  }
+
+  @media only screen and (min-width: 641px) {
+    #shopify-section--{{ section.id }}.section-custom__separator {
+      margin-top: {{ section.settings.section-top-margin-desktop }}px !important;
+    }
+  }
+
+  @media screen and (min-width: 1000px){
+    .image-with-text {
+      justify-content: space-between !important;
+    }
+  }
+</style>
+
+<section class="{%- if section.settings.show_section_margin -%}section{% endif %} {% if section.settings.show_section_top_margin %}section-custom__separator{% endif %}" data-section-id="{{ section.id }}" data-section-type="image-with-text" id="shopify-section--{{ section.id }}">
+  <div class="container">
+    {% for block in section.blocks %}
+      <style>
+        @media only screen and (min-width: 641px) {
+          #shopify-section--{{ section.id }} .custom-title-heading{{forloop.index}} {
+            font-size: {{ block.settings.title_size_desktop }}px !important;
+          }
+
+          #shopify-section--{{ section.id }} .custom-text-heading{{forloop.index}} p {
+            font-size: {{ block.settings.text_size_desktop }}px !important;
+          }
+        }
+
+        @media only screen and (max-width: 640px) {
+          #shopify-section--{{ section.id }} .custom-title-heading{{forloop.index}} {
+            font-size: {{ block.settings.title_size_mobile }}px;
+            color: {{ block.settings.color_heading }};
+          }
+
+          #shopify-section--{{ section.id }} .custom-text-heading{{forloop.index}} p {
+            font-size: {{ block.settings.text_size_mobile }}px;
+            color: {{ block.settings.color_text }};
+          }
+        }
+      </style>
+
+      {%- capture image -%}
+        <div class="image-with-text__image-container" style="width: {{ block.settings.image_width }}%;">
+          {%- if block.settings.image -%}
+            <div class="aspect-ratio" style="padding-bottom: {{ 100.0 | divided_by: block.settings.image.aspect_ratio }}%">
+              {%- capture supported_sizes -%}{%- render 'image-size', sizes: '300,400,500,600,700,800,900,1000,1100,1200', image: block.settings.image -%}{%- endcapture -%}
+              {%- assign image_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+              <img class="lazyload"
+                data-src="{{ image_url }}"
+                data-widths="[{{ supported_sizes }}]"
+                data-sizes="auto" alt="{{ block.settings.image.alt | escape }}"
+                src="https://cdn.shopify.com/s/files/1/2372/2681/files/Rolling-0.4s-201px_1.svg"
+                style="object-fit:contain;border-radius:10px;">
+
+              <noscript>
+                <img src="{{ block.settings.image | img_url: '800x' }}" alt="{{ block.settings.image.alt | escape }}">
+              </noscript>
+            </div>
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+      {%- endcapture -%}
+
+      {%- capture text -%}
+        <div class="image-with-text__text-container">
+          <div class="image-with-text__text-aligner">
+            {%- if block.settings.title != blank -%}
+              <h2 class="heading h3 custom-title-heading{{forloop.index}}">{{ block.settings.title }}</h2>
+            {%- endif -%}
+
+            <div class="rte custom-text-heading{{forloop.index}}">
+              {{ block.settings.content }}
+
+              {%- if block.settings.button_link != blank and block.settings.button_text != blank -%}
+                <a href="{{ block.settings.button_link }}" class="button button--primary">{{ block.settings.button_text | escape }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endcapture -%}
+
+      <div class="image-with-text" style="gap : {{ block.settings.image_gap }}%">
+        {%- if block.settings.image_position == 'left' -%}
+          {{ image }}
+          {{ text | replace: "Barco ", "Barco&reg; " | replace: "Barco's ", "Barco's&reg; " }}
+        {%- else -%}
+          {{ text | replace: "Barco ", "Barco&reg; " | replace: "Barco's ", "Barco's&reg; "}}
+          {{ image }}
+        {%- endif -%}
+      </div>
+
+      {%- if block.settings.show_separator -%}
+        <hr class="card__separator custom-card__separator" style="border-top: 1px solid {{ block.settings.color_title }};">
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "max_blocks": 4,
+  "name": "Custom Image with text",
+  "settings": [
+   {
+      "type": "checkbox",
+      "id": "show_section_margin",
+      "label": "Show Section Margin",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "top-margin-desktop",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Margin Desktop",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "bottom-margin-desktop",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Margin Desktop",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "top-margin-mobile",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Margin Mobile",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "bottom-margin-mobile",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Margin Mobile",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_top_margin",
+      "label": "Show Section Top Margin If Displayed As First Block",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section-top-margin-desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Top Margin Desktop",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section-top-margin-mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Top Margin Mobile",
+      "default": 50
+    }
+  ],
+  "blocks":[
+    {
+      "type":"Image",
+      "name":"Image with text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1200 x 800px .jpg recommended"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 20,
+          "max": 70,
+          "step": 5,
+          "unit": "%",
+          "label": "Image width",
+          "default": 50
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your title"
+        },
+        {
+          "type": "range",
+          "id": "title_size_desktop",
+          "label": "Title Size Desktop",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "default": 34,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "label": "Title Size Mobile",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "default": 21,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "color_heading",
+          "label": "Heading color",
+          "default": "#4d4d4f"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers.<br>Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "range",
+          "id": "text_size_desktop",
+          "label": "Text Size Desktop",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "default": 16,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "text_size_mobile",
+          "label": "Text Size Mobile",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "default": 16,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text color",
+          "default": "#4d4d4f"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_separator",
+          "label": "Horizontal Separator",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "color_title",
+          "label": "Separator color",
+          "default": "#eaeaea"
+        },
+        {
+          "type": "range",
+          "id": "image_gap",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "%",
+          "label": "Image Text Gap",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Image",
+      "name": "Custom Image with text",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

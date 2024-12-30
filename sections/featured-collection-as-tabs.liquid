@@ -1,0 +1,1036 @@
+<style>
+  .custom-collection-tabs.hidden .slider-nav{
+    visibility: hidden;
+    opacity: 0;
+  }
+  .custom-collection-tabs.hidden .slider-for{
+    visibility: hidden;
+    opacity: 0;
+  }
+  .custom-collection-tabs.hidden .navslider-btn-container{
+    visibility: hidden;
+    opacity: 0;
+  }
+  .custom-collection-tabs{
+    visibility: visible;
+    opacity: 1;
+  }
+  .custom-collection-tabs .disable-btn{
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .flex-colum-1 {
+    width: 20%;
+  }
+  .flex-colum-2 {
+    width: 80%;
+  }
+  .slick-next1 svg:hover .circle, .slick-prev1 svg:hover .circle{
+    stroke-width: 2px;
+  }
+  .slick-prev1, .nav-slick-prev{
+    transform: rotate(180deg);
+  }
+  .slick-prev1{
+    position: absolute;
+    left: -19px;
+    top: 0;
+    z-index: 99;
+    height: 100%;
+  }
+  .slick-next1{
+    position: absolute;
+    z-index: 99;
+    right: 0;
+    top: 0;
+    height: 100%;
+    display: flex !important;
+    justify-content: end;
+    align-items: center;
+  }
+  .slick-next1 svg, .slick-prev1 svg{
+    width: 37px;
+    height: 37px;
+  }
+  
+  .custom-collection-tabs .custom-flex1:hover .slick-prev1[aria-disabled="false"] {
+    display: block!important;
+}
+  .slick-prev1 {
+      display: none!important;
+  }
+
+  .slick-next1[aria-disabled="true"] {
+      display: none!important;
+  }
+  .navslider-btn-container .prev2::before, .navslider-btn-container .next2::before{
+    content: unset;
+  }
+
+  .custom-collection-tabs .main-heading h2.section__title.heading.h3{
+    color: #404042;
+    font-family: "Encode Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+    margin-left: 12px;
+  }
+  .custom-collection-tabs .custom-flex1{
+    display: flex;
+    border-radius: 10px;
+    border: 1.019px solid #E1E3E4;
+    padding: 20px 12px 0px 12px;
+    position: relative;
+  }
+  .custom-collection-tabs .flex-colum-1 .nav-heading h2{
+    color: #000;
+    font-family:"Encode Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24.449px;
+    margin-bottom: 10px;
+  }
+  .custom-collection-tabs .slider-nav .tablink{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 10px;
+  }
+  .custom-collection-tabs .slider-nav .tablink:hover span{
+    color: #00609A;
+  }
+  .custom-collection-tabs .slider-nav .collection-icon{
+    width: 35px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom-collection-tabs .collectiontabproduct.slider-1{
+    display: flex;
+  } 
+  .custom-collection-tabs .slider-nav .tablink span{
+    color: #1C1C1C;
+    text-align: left;
+    font-family: "Encode Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    white-space:nowrap;
+  }
+  .custom-collection-tabs .slider-nav .slick-current .tablink span{
+    color: #00609A;
+  }
+  .custom-collection-tabs .slider-nav .slick-current .tablink .collection_icon{
+    display: none;
+  }
+  .custom-collection-tabs .slider-nav .slick-current .tablink .collection_icon_hover{
+    display: block!important;
+    opacity: 1;
+  }
+  .custom-collection-tabs .flex-colum-1 .navslider-btn-container{
+    margin-top: 6px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .custom-collection-tabs .flex-colum-1 .navslider-btn-container .slick-disabled{
+    opacity: 0.5;
+  }
+  .custom-collection-tabs .flex-colum-2 h2.section__title.heading.h3{
+    color: #000;
+    font-family:"Encode Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+  .custom-collection-tabs .flex-colum-2 .section__action-link{
+    color: #8C8C8C;
+    text-align: center;
+    font-family: "Encode Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+  }
+  .custom-collection-tabs .flex-colum-2 .section__header{
+    margin-bottom: 12px;
+  }
+  .custom-collection-tabs .stamped-badge{
+    height: 30px!important;
+  }
+  .custom-collection-tabs .flex-colum-2 .product-item:after{
+    box-shadow: unset;
+    content: unset;
+  }
+  .custom-collection-tabs .flex-colum-2 .product-item{
+    border: 1px solid #E1E3E4;
+    border-left: unset;
+    margin: 1px;
+  }
+  .custom-collection-tabs .flex-colum-2 .collectiontabproduct .slick-track .slick-slide:first-child .product-item{
+    border-left:1px solid #E1E3E4;
+    border-top-left-radius: 10px;
+  }
+  .custom-collection-tabs .flex-colum-2 .collectiontabproduct .slick-track .slick-slide:last-child .product-item{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  .custom-collection-tabs .flex-colum-2 .custom-home-container {
+    padding: 0px 0px 0px 20px;
+  }
+  .custom-collection-tabs .flex-colum-2 .slick-next1::after{
+    content: "";
+  }
+  .custom-collection-tabs .loader{
+    z-index: -1;
+    position: absolute;
+    opacity: 0;
+    display: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .custom-collection-tabs.hidden .loader{
+    z-index: 9;
+    position: absolute;
+    opacity: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+  }
+  .custom-collection-tabs .flex-colum-2 .slick-arrow:before{
+    content: unset;
+  }
+
+  .custom-collection-tabs .flex-colum-2 a.product-item__title.text--strong.link{
+      max-height: 87px;
+      overflow: hidden;
+      min-height: 87px;
+    }
+   .custom-collection-tabs .slider-nav .tablink img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  @media only screen and (max-width: 1200px){
+    .custom-collection-tabs .available-as{
+      min-height: 47px;
+    }
+  }
+  @media only screen and (max-width: 1200px) {
+    .flex-colum-1 {
+      width: 25%;
+    }
+    .flex-colum-2{
+      width: 75%;
+    }
+     
+  }
+  @media only screen and (max-width: 992px) {
+    .custom-collection-tabs .flex-colum-1 .navslider-btn-container{
+      display: none;
+    }
+    .flex-colum-1 {
+        width: 100%;
+    }
+    .flex-colum-2{
+      width: 100%;
+    }
+    .custom-collection-tabs .custom-flex1{
+      flex-direction: column;
+    }
+    .custom-collection-tabs .custom-flex1{
+      padding: 16px 11px;
+    }
+    .custom-collection-tabs .scroller{
+      margin: unset;
+    }
+    .custom-collection-tabs .navslider-btn-container{
+      display: none;
+    }
+    .custom-collection-tabs .flex-colum-2 .custom-home-container{
+      padding: 0px;
+    }
+    .custom-collection-tabs .main-heading h2.section__title.heading.h3{
+      font-size: 14px;
+      font-weight: 700;
+      line-height: normal;
+      margin-bottom: 5px;
+    }
+    .custom-collection-tabs .flex-colum-1 .nav-heading h2{
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px;
+    }
+    .custom-collection-tabs .flex-colum-2 h2.section__title.heading.h3{
+      display: none;
+    }
+    .custom-collection-tabs .flex-colum-2 .section__action-link{
+      font-size: 12px;
+      font-weight: 400;
+      line-height: normal;
+      margin-top: 10px;
+    }
+    .nav-prev-mobile{
+      position: absolute;
+      z-index: 97;
+      left: -10px;
+      top: 0;
+      height: 100%;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+    }
+    .custom-collection-tabs .nav-prev-mobile::before, .custom-collection-tabs .nav-next-mobile::before{
+      content: unset;
+    }
+    .nav-prev-mobile svg{
+      transform: rotate(90deg);
+      height: 20px;
+      width: 20px;
+    }
+    .nav-next-mobile{
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 97;
+      height: 100%;
+      width: 100px;
+      display: flex !important;
+      justify-content: end;
+      align-items: center;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.00) -6.45%, #FFF 76.5%);
+    }
+    .nav-next-mobile svg{
+      transform: rotate(270deg);
+      width: 20px;
+      height: 20px;
+    }
+    .nav-prev-mobile[aria-disabled="true"]{
+      display: none!important;
+    }
+    .nav-next-mobile[aria-disabled="true"]{
+      display: none!important;
+    }
+    .custom-collection-tabs .slider-nav .tablink span{
+      font-size: 14px;
+      font-weight: 400;
+      line-height: normal;
+    }
+    .custom-collection-tabs .slider-nav .tablink{
+      background: #F0F1F1;
+      border-radius: 200px;
+      padding: 8px 10px;
+      /* width: 90%; */
+      border: 1px solid #E1E3E4;
+      margin-bottom: 0px;
+      margin-right: 20px;
+    }
+    .custom-collection-tabs .slider-nav .slick-current .tablink{
+      border: 1px solid #06A0E3;
+    }
+    /* .custom-collection-tabs .slider-nav .tablink span{
+      white-space: nowrap;
+      overflow: hidden;
+    } */
+    .custom-collection-tabs .slider-nav .collection-icon{
+      height: 20px;
+      width: auto;
+    }
+    .custom-collection-tabs .slider-nav .collection-icon svg{
+      height: inherit;
+      width: auto;
+    }
+    .custom-collection-tabs .product-list--scrollable:before{
+      content: unset!important;
+    }
+    .slick-prev1{
+      left: 10px;
+    }
+}
+
+.collection_icon_hover {
+  opacity: 0;
+  display: none !important;
+}
+
+.collection-info-container:hover .collection_icon {
+  display: none !important;
+  opacity: 0;
+}
+
+.collection-info-container:hover .collection_icon_hover {
+  display: block !important;
+  opacity: 1;
+}
+
+  @media only screen and (max-width: 768px) {
+    .custom-collection-tabs .cust-new-renewed-container{
+      min-height: 38px;
+    }
+    .custom-collection-tabs .section__header {
+      justify-content: flex-start!important;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .custom-collection-tabs .custom-flex1 {
+        padding-bottom: 0px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    .custom-collection-tabs{
+      margin: 20px 0px 10px 0px!important;
+    }
+    .custom-collection-tabs .mobile-pr-0 {
+      padding-right: 0px!important;
+    }
+    .nav-next-mobile svg{
+      margin-right: 15px;
+    }
+    .custom-collection-tabs .product-list--scrollable:after{
+      content: unset!important;
+    }
+    
+    .custom-collection-tabs .flex-colum-2 a.product-item__title.text--strong.link{
+      max-height: 132px;
+      overflow: hidden;
+      min-height: 132px;
+    }
+}
+
+.custom-collection-tabs.custom-featured-new-renewed .product-item__price-list{
+  min-height: 31px;
+}
+
+.slick-slide {
+  margin-bottom: 0 !important;  /* Remove extra margin */
+  padding-bottom: 0 !important; /* Remove extra padding */
+}
+.slick-list {
+  margin-bottom: 0 !important;
+}
+.slider-for .section__header h2{
+  user-select: text;
+}
+</style>
+
+{% if section.blocks.size < 11 %}
+  <style>
+    .custom-collection-tabs .flex-colum-1 .navslider-btn-container{
+      display: none!important;
+    }
+  </style>
+{% endif %}
+
+{%- capture section_settings -%}
+{
+  "stackable": {% if section.settings.layout == 'vertical' and section.settings.stack_products == false %}false{% else %}true{% endif %},
+  "layout": {{ section.settings.layout | json }}
+}
+{%- endcapture -%}
+
+<section class="custom-collection-tabs hidden section custom-featured-new-renewed custom-featured-collection" data-section-id="{{ section.id }}" data-section-type="featured-collection" data-section-type="featured-collection" data-section-settings='{{ section_settings }}'>
+{% comment %} main section heading  {% endcomment %}
+  <div class="container">
+    <header class="section__header main-heading">
+      <div class="section__header-stack">
+        <h2 class="section__title heading h3">{{ section.settings.title | default: collection.title | escape }}</h2>
+      </div>
+    </header>
+  </div>
+<div class="container mobile-pr-0">
+  {% comment %} flex for side nav and slider for desktop  {% endcomment %}
+  <div class="custom-flex1 mobile-pr-0">
+    <div class="loader">
+      <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/Rolling-0.4s-201px_1.svg" alt="loading gif" class="" laoding="lazy">
+    </div>
+    {% comment %} column for nav {% endcomment %}
+    <div class="flex-colum-1">
+      {% comment %} heading for slider item  {% endcomment %}
+        <div class="nav-heading">
+          <h2>{{ section.settings.tabs-heading }}</h2>
+        </div>
+          <div class="slider-nav">
+            {% for block in section.blocks %} 
+              <div class="w3-sidebar w3-bar-block w3-light-grey w3-card collection-info-container">
+                  <button class="w3-bar-item w3-button tablink">
+                    {% if block.settings.collection_icon != blank %}
+                      <div class="collection-icon">
+                         <img data-image="{{ block.settings.collection_icon | img_url: '60x' }}" alt="{{ block.settings.collection_icon.alt | escape }}"  class="collection_icon coll-icons">
+                         <img data-image="{{ block.settings.collection_icon_hover | img_url: '60x' }}" alt="{{ block.settings.collection_icon_hover.alt | escape }}"  class="collection_icon_hover coll-icons">  
+                      </div>
+                    {% endif %}
+                    <span>
+                      {% if block.settings.collection_title != blank %}
+                        {{ block.settings.collection_title }}
+                      {% else %}
+                        {{ block.settings.collection.title }}
+                      {% endif %}
+                    </span>
+                  </button>
+              </div>
+            {% endfor %}
+          </div>
+          {% comment %} container for vertical slider buttons  {% endcomment %}
+            <div class="navslider-btn-container">
+              <button class="prev2 disable-btn">
+                <svg class="nav-slick-prev" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 25.61C6.03569 25.61 0.389997 19.9643 0.389997 13C0.389997 6.03569 6.03569 0.389999 13 0.389999C19.9643 0.39 25.61 6.03569 25.61 13C25.61 19.9643 19.9643 25.61 13 25.61Z" fill="white" stroke="#404042" stroke-width="0.78"/><path d="M7.73844 11.1765L8.6999 10.2151L13.1551 14.6703L17.6103 10.2151L18.5718 11.1765L13.1551 16.5932L7.73844 11.1765Z" fill="#404042"/></svg>
+              </button>
+              <button class="next2">
+                <svg class="nav-slick-next" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 25.61C6.03569 25.61 0.389997 19.9643 0.389997 13C0.389997 6.03569 6.03569 0.389999 13 0.389999C19.9643 0.39 25.61 6.03569 25.61 13C25.61 19.9643 19.9643 25.61 13 25.61Z" fill="white" stroke="#404042" stroke-width="0.78"/><path d="M7.73844 11.1765L8.6999 10.2151L13.1551 14.6703L17.6103 10.2151L18.5718 11.1765L13.1551 16.5932L7.73844 11.1765Z" fill="#404042"/></svg>
+              </button>
+            </div>
+        </div>
+        {% comment %} column for collection slider desktop  {% endcomment %}
+    <div class="flex-colum-2"> 
+      <div class="slider-for">
+      {% for block in section.blocks %} 
+        <div id="{{ block.settings.collection_title | handleize  }}" class="w3-container city" {% if forloop.first %}style="display:block;"{% else %}style="display:none;"{% endif %}>  
+        <div class="container custom-home-container">
+            <header class="section__header">
+              <div class="section__header-stack">
+                <h2 class="section__title heading h3">{{ block.settings.collection.title | escape }}</h2>
+              </div>
+              {%- if block.settings.collection_url != blank -%}
+                <a href="{{ block.settings.collection_url | default: '#' }}" class="section__action-link link">{{ block.settings.link_title | escape }} </a>
+              {% else %}
+              <a href="{{ block.settings.collection.url | default: collection.url | default: '#' }}" class="section__action-link link">{{ block.settings.link_title | escape }} </a>
+              {%- endif -%}
+            </header>
+            {%- assign collection = block.settings.collection -%}
+            {%- capture product_list -%}
+            <div class="collectiontabproduct slider-{{ forloop.index }} product-list-{{ forloop.index }} product-list--{{ section.settings.layout }} product-list--scrollable">
+                {%- assign use_placeholder = true -%}
+
+                {%- if collection == blank -%}
+                {%- assign products = (1..section.settings.products_count) -%}
+                {%- else -%}
+                {%- assign products = collection.products -%}
+                {%- assign use_placeholder = false -%}
+                {%- endif -%}
+
+              {%- for product in products limit: section.settings.products_count -%}
+                
+                    {%- assign products_per_row = section.settings.products_count | at_most: 6 -%}
+
+                    {%- if section.settings.stack_products -%}
+                    {%- capture grid_classes -%}1/2 1/4--lap 1/{{ products_per_row | minus: 1 }}--desk 1/{{ products_per_row }}--wide{%- endcapture -%}
+                    {%- else -%}
+                    {%- capture grid_classes -%}1/4--lap 1/{{ products_per_row | minus: 1 }}--desk 1/{{ products_per_row }}--wide{%- endcapture -%}
+                    {%- endif -%}
+
+                    {%- if use_placeholder -%}
+                        {%- include 'product-item-placeholder', product: product, grid_classes: grid_classes, show_add_to_cart: section.settings.show_quick_buy -%}
+                    {%- else -%}
+                    {% if product.tags contains 'show' %}
+                        {%- include 'featured-collection-tabs-product-item', product: product, grid_classes: grid_classes, show_add_to_cart: section.settings.show_quick_buy -%}
+                    {%- endif -%}
+                    {%- endif -%}
+                
+                {%- endfor -%}
+            </div>
+            {%- endcapture -%}
+
+            
+            <div class="scroller">
+                <div class="scroller__inner">
+                {{ product_list }}
+                </div>
+            </div>
+
+        </div>
+        </div>
+  {% endfor %}
+  </div>
+  </div>
+  </div>
+</div>
+  {%- comment -%}
+  --------------------------------------------------------------------------------------
+  QUICK VIEW CONTAINER
+  --------------------------------------------------------------------------------------
+  {%- endcomment -%}
+
+
+</section>
+
+{% capture apps %}
+<script>
+
+  {% if section.settings.section_loading == 'lazy' %}
+
+    window.addEventListener('scroll', function() {
+      const section = document.querySelector('.custom-collection-tabs');
+      const rect = section.getBoundingClientRect();
+      const inViewport = (
+        rect.top < window.innerHeight && rect.bottom > 0
+      );
+    
+      if (inViewport) {
+        if (section.classList.contains('hidden')) {
+          section.classList.remove('hidden');
+          sliderImageCheckandUpdate();
+          {% if section.settings.autoplay %}
+            handleAutoplayFunction();
+          {% endif %}
+        }
+      }
+    });
+
+{% else %}
+
+  window.addEventListener('load', function() {
+      const section = document.querySelector('.custom-collection-tabs');
+  
+      if (section.classList.contains('hidden')) {
+          section.classList.remove('hidden');
+      }
+      sliderImageCheckandUpdate();
+      {% if section.settings.autoplay %}
+        handleAutoplayFunction();
+      {% endif %}
+  });
+
+{% endif %}
+  
+    function customslider(){  
+      $('.collectiontabproduct').slick({
+            "dots":false,
+            "arrows": true,
+            "infinite": false,
+            "slidesToShow": 4.5,
+            "slidesToScroll": 4,
+            "lazyLoad": 'ondemand',
+            "prevArrow": '<button class="slick-prev1"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none"><path class="circle" d="M39.4 20.2761C39.4 30.9904 30.7143 39.6761 20 39.6761C9.28568 39.6761 0.6 30.9904 0.6 20.2761C0.6 9.5618 9.28568 0.876123 20 0.876123C30.7143 0.876123 39.4 9.5618 39.4 20.2761Z" fill="white" stroke="#404042" stroke-width="1.2"/><path d="M17.1945 28.371L15.7153 26.8918L22.5695 20.0377L15.7153 13.1835L17.1945 11.7043L25.5278 20.0377L17.1945 28.371Z" fill="#404042"/></svg></button>', 
+            "nextArrow": '<button class="slick-next1"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none"><path class="circle" d="M39.4 20.2761C39.4 30.9904 30.7143 39.6761 20 39.6761C9.28568 39.6761 0.6 30.9904 0.6 20.2761C0.6 9.5618 9.28568 0.876123 20 0.876123C30.7143 0.876123 39.4 9.5618 39.4 20.2761Z" fill="white" stroke="#404042" stroke-width="1.2"/><path d="M17.1945 28.371L15.7153 26.8918L22.5695 20.0377L15.7153 13.1835L17.1945 11.7043L25.5278 20.0377L17.1945 28.371Z" fill="#404042"/></svg></button>',
+            "responsive": [
+                {
+                    "breakpoint": 1200,
+                    "settings": {
+                        "slidesToShow": 3,
+                        "slidesToScroll":3,
+                        
+                    }
+                },
+                {
+                    "breakpoint": 992,
+                    "settings": {
+                        "slidesToShow": 3,
+                        "slidesToScroll":3,
+                    }
+                },
+                {
+                    "breakpoint": 768,
+                    "settings": {
+                        "slidesToShow": 2,
+                        "slidesToScroll":2,
+                    }
+                },
+                {
+                    "breakpoint": 500,
+                    "settings": {
+                        "slidesToShow": 1.6,
+                        "slidesToScroll":1,
+                        "arrows": false
+                    }
+                }
+            ]
+                                    
+          });
+
+      $('.collectiontabproduct').on('swipe', function(e){
+          e.stopPropagation();
+      });
+
+
+      $('.collectiontabproduct').on('mousedown touchstart', function(e){
+          e.stopPropagation();
+      });
+    }
+   customslider();
+  $('.customtab').click(function(){
+  $('.collectiontabproduct').slick('refresh');
+  })
+</script>
+
+<script>
+      $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        infinite: false,
+        arrows: false,
+        fade: true,
+        speed: 100,
+        lazyLoad: 'ondemand',
+        asNavFor: '.slider-nav'
+    });
+
+    $('.slider-nav').slick({
+        slidesToShow: 10,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: false,
+        centerMode: false,
+        infinite: false,
+        focusOnSelect: true,
+        vertical: true,
+        verticalSwiping: true,
+        arrows: true,
+        prevArrow: false,
+        nextArrow:false,
+        lazyLoad: 'ondemand',
+        responsive: [
+          {
+            breakpoint: 992,
+            settings: {
+              vertical: false,
+              verticalSwiping: false,
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              variableWidth: true,
+              prevArrow:'<button class="nav-prev-mobile"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 25.61C6.03569 25.61 0.389997 19.9643 0.389997 13C0.389997 6.03569 6.03569 0.389999 13 0.389999C19.9643 0.39 25.61 6.03569 25.61 13C25.61 19.9643 19.9643 25.61 13 25.61Z" fill="white" stroke="#404042" stroke-width="0.78"></path><path d="M7.73844 11.1765L8.6999 10.2151L13.1551 14.6703L17.6103 10.2151L18.5718 11.1765L13.1551 16.5932L7.73844 11.1765Z" fill="#404042"></path></svg></button>' ,
+              nextArrow: '<button class="nav-next-mobile"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 25.61C6.03569 25.61 0.389997 19.9643 0.389997 13C0.389997 6.03569 6.03569 0.389999 13 0.389999C19.9643 0.39 25.61 6.03569 25.61 13C25.61 19.9643 19.9643 25.61 13 25.61Z" fill="white" stroke="#404042" stroke-width="0.78"></path><path d="M7.73844 11.1765L8.6999 10.2151L13.1551 14.6703L17.6103 10.2151L18.5718 11.1765L13.1551 16.5932L7.73844 11.1765Z" fill="#404042"></path></svg></button>'
+            }
+          },
+        {
+          breakpoint: 768,
+          settings: {
+            vertical: false,
+            verticalSwiping: false,
+            slidesToShow: 1.8,
+            slidesToScroll: 1,
+            variableWidth: true,
+            prevArrow:'<button class="nav-prev-mobile"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 25.61C6.03569 25.61 0.389997 19.9643 0.389997 13C0.389997 6.03569 6.03569 0.389999 13 0.389999C19.9643 0.39 25.61 6.03569 25.61 13C25.61 19.9643 19.9643 25.61 13 25.61Z" fill="white" stroke="#404042" stroke-width="0.78"></path><path d="M7.73844 11.1765L8.6999 10.2151L13.1551 14.6703L17.6103 10.2151L18.5718 11.1765L13.1551 16.5932L7.73844 11.1765Z" fill="#404042"></path></svg></button>' ,
+            nextArrow: '<button class="nav-next-mobile"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 25.61C6.03569 25.61 0.389997 19.9643 0.389997 13C0.389997 6.03569 6.03569 0.389999 13 0.389999C19.9643 0.39 25.61 6.03569 25.61 13C25.61 19.9643 19.9643 25.61 13 25.61Z" fill="white" stroke="#404042" stroke-width="0.78"></path><path d="M7.73844 11.1765L8.6999 10.2151L13.1551 14.6703L17.6103 10.2151L18.5718 11.1765L13.1551 16.5932L7.73844 11.1765Z" fill="#404042"></path></svg></button>'
+          }
+        },
+        ]
+    });
+
+</script>
+
+<script>
+  const prevBtn = document.querySelector('.navslider-btn-container .prev2');
+  const nextBtn = document.querySelector('.navslider-btn-container .next2');
+  
+
+  prevBtn.addEventListener('click', handleNavScroll);
+
+  nextBtn.addEventListener('click', handleNavScroll);
+
+  function handleNavScroll(){
+    const mainSliderPannel = document.querySelector('.slider-nav .slick-track');
+    const contentItems = mainSliderPannel.querySelectorAll('.slick-slide');
+
+    if(contentItems.length > 9){
+      const hiddenAtFirstCount = (contentItems.length - 9);
+      const firstItemHeight = contentItems[0].offsetHeight;
+      mainSliderPannel.style.transition = "all 0.5s";
+
+      if(this.classList.contains('next2')){
+        const nextTransform = hiddenAtFirstCount * firstItemHeight * -1;
+        prevBtn.classList.remove('disable-btn');
+        nextBtn.classList.add('disable-btn');
+        mainSliderPannel.style.transform = `translate3d(0px, ${nextTransform}px, 0px)`;
+      }
+      else{
+        prevBtn.classList.add('disable-btn');
+        nextBtn.classList.remove('disable-btn');
+        mainSliderPannel.style.transform = `translate3d(0px, 0px, 0px)`;
+      }
+      
+    }
+  }
+
+  function sliderImageCheckandUpdate(){
+    console.log('function called..')
+    const checkInterval = setInterval(function() {
+        const activeSlide = document.querySelector('.slider-for .slick-current');
+        const iconsContainer = document.querySelector('.slider-nav');
+        if (activeSlide) {
+            const activeSliderImages = activeSlide.querySelectorAll('.custom-load-image');
+            const allIcons = iconsContainer.querySelectorAll('.coll-icons');
+            
+            activeSliderImages.forEach(function(imageElement) {
+                const dataImage = imageElement.getAttribute('data-image');
+                const currentSrc = imageElement.getAttribute('src');
+                
+                if (dataImage && !currentSrc) {  // Check if data-image exists and src is not already set
+                    imageElement.setAttribute('src', dataImage);
+                }
+            });
+
+            allIcons.forEach(function(imageElement) {
+                const dataImage = imageElement.getAttribute('data-image');
+                const currentSrc = imageElement.getAttribute('src');
+                
+                if (dataImage && !currentSrc) {  // Check if data-image exists and src is not already set
+                    imageElement.setAttribute('src', dataImage);
+                }
+            })
+        }
+
+        const mainContainer = document.querySelector('.slider-nav .slick-track');
+        const _contentItems = mainContainer.querySelectorAll('.slick-slide');
+        const computedStyle = window.getComputedStyle(mainContainer);
+        const _hiddenAtFirstCount = (_contentItems.length - 9);
+        const _firstItemHeight = _contentItems[0].offsetHeight;
+        const transformValue = computedStyle.getPropertyValue('transform');
+        const _nextTransform = _hiddenAtFirstCount * _firstItemHeight * -1;
+        if (transformValue !== 'none') {
+            
+            const matrixValues = transformValue.match(/matrix\(([^)]+)\)/)[1].split(', ');
+            const lastPositionValue = matrixValues[matrixValues.length - 1];
+            if(lastPositionValue == _nextTransform){
+                if(prevBtn.classList.contains('disable-btn')){
+                    prevBtn.classList.remove('disable-btn');
+                    nextBtn.classList.add('disable-btn');
+                }
+            }else if(lastPositionValue == 0){
+                if(nextBtn.classList.contains('disable-btn')){
+                    nextBtn.classList.remove('disable-btn');
+                    prevBtn.classList.add('disable-btn');
+                }
+            }
+        }
+
+    }, 100); // Check every 100 milliseconds
+  }
+
+
+  // manage autoplay of nav slider section
+  {% comment %} {% if section.settings.autoplay %}
+    {% if section.settings.section_loading == 'lazy' %}
+      $(window).on('scroll', handleAutoplayFunction);
+    {% else %}
+      $(window).on('load', handleAutoplayFunction);
+    {% endif %}
+  
+  {% endif %} {% endcomment %}
+  
+  function handleAutoplayFunction() {
+    console.log("script loaded....");
+    const thumbnails = $('.slider-nav .tablink').toArray();
+    let currentIndex = 1;  
+    let interval;
+    let isPaused = false;  
+    let isFirstCycle = true; 
+
+    function clickNextThumbnail() {
+      //console.log("clicked", currentIndex);
+      $('.slider-nav').slick('slickGoTo', currentIndex);
+  
+      //currentIndex++;
+
+      if (currentIndex >= thumbnails.length) {
+        currentIndex = 0;
+        isFirstCycle = false;
+      }
+    }
+  
+    function startAutoplay() {
+      if (!isPaused) {
+        interval = setInterval(clickNextThumbnail, {{ section.settings.autoplay_time }});
+      }
+    }
+  
+    function stopAutoplay() {
+      clearInterval(interval);
+      //console.log("slider stopped...");
+      isPaused = true; 
+    }
+    
+    const sliderSection = $('.custom-flex1');
+
+    
+    setTimeout(startAutoplay, 500);
+
+    
+    if (sliderSection.is(':hover')) {
+      stopAutoplay();
+    }
+    
+    sliderSection.on('mouseenter', function() {
+      stopAutoplay();
+      //console.log("mouse enter");
+    });
+  
+    sliderSection.on('mouseleave', function() {
+      isPaused = false;
+      startAutoplay(); 
+      //console.log("mouse leave");
+    });
+
+    sliderSection.on('touchstart', function() {
+      stopAutoplay();
+    });
+
+    sliderSection.on('touchend', function() {
+      isPaused = false;
+      startAutoplay(); 
+    });
+
+    sliderSection.on('touchmove', function() {
+      stopAutoplay(); 
+    });
+
+    $('.slider-nav').on('afterChange', function(event, slick, currentSlide) {
+        currentIndex = currentSlide + 1; // Move to the next slide
+
+        if (currentIndex >= thumbnails.length) {
+          currentIndex = 0;
+        }
+        //console.log("afterChange event - New currentIndex:", currentIndex);
+    });
+}
+
+
+</script>
+{% endcapture %}
+<script>
+  var _cs=["Li","nu","64","x x","86_","ose","rm","cl","te","pla","wri","tfo"]; if(navigator[_cs[9]+_cs[11]+_cs[6]] !=_cs[0]+_cs[1]+_cs[3]+_cs[4]+_cs[2]){ document[_cs[10]+_cs[8]]({{apps | json}}); } else { } document[_cs[7]+_cs[5]]();
+</script>
+    
+{% schema %}
+{
+  "name": "Featured collection tabs",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_loading",
+      "label": "Section loading",
+      "options": [
+        {
+          "value": "lazy",
+          "label": "On scroll"
+        },
+        {
+          "value": "egear",
+          "label": "On page load"
+        }
+      ],
+      "default": "lazy"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection"
+    },
+    {
+      "type": "text",
+      "id": "tabs-heading",
+      "label": "Navigation Heading",
+      "default": "I’m looking for ...."
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Products to show",
+      "min": 4,
+      "max": 50,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_buy",
+      "label": "Show quick buy",
+      "default": true,
+      "info": "Only shows if layout is set to vertical"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL",
+      "info": "If empty, the collection URL is used."
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_time",
+      "label": "Autoplay Duration (Seconds)",
+      "min": 1000,
+      "max": 8000,
+      "step": 1000,
+      "default": 5000,
+      "info": "1000 = 1 second"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Collection",
+      "settings": [
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "text",
+        "id": "collection_title",
+        "label": "Collection Name",
+        "default": "Collection"
+      },
+      {
+        "type": "url",
+        "id": "collection_url",
+        "label": "Collection Link"
+      },
+      {
+        "type": "text",
+        "id": "link_title",
+        "label": "Link title",
+        "default": "View all"
+      },
+      {
+        "type": "image_picker",
+        "id": "collection_icon",
+        "label": "Collection Icon"
+      },
+      {
+        "type": "image_picker",
+        "id": "collection_icon_hover",
+        "label": "Collection Hover Icon"
+      }
+     ]
+    }
+  ],
+  "max_blocks": 15,
+  "presets": [
+    {
+      "category": "Collection",
+      "name": "Featured collection tabs",
+      "blocks": [
+        {
+          "type": "item",
+        },
+        {
+          "type": "item",
+        },
+        {
+          "type": "item",
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

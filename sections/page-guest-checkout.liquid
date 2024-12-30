@@ -1,0 +1,239 @@
+<style>
+  @media(min-width:1000px) {
+    .or-bit {
+      position: relative;
+    }
+
+    .or-bit::before {
+      content: "OR";
+      width: 50px;
+      height: 50px;
+      background: #fff;
+      position: absolute;
+      text-align: center;
+      line-height: 50px;
+      right: -25px;
+      z-index: 9;
+      top: 38%;
+    }
+  }
+
+  @media(max-width: 599px) {
+    #custom-guest-checkout {
+      margin-bottom: -25%;
+    }
+  }
+</style>
+
+<section data-section-id="login" data-section-type="login"  id="custom-guest-checkout">
+  {%- assign is_recover_active = false -%}
+
+  {%- form 'recover_customer_password' -%}
+    {%- if form.errors or form.posted_successfully? -%}
+      {%- assign is_recover_active = true -%}
+    {%- endif -%}
+  {%- endform -%}
+
+  <div class="container">
+    <div class="guest-chekout-wrap custom-guest-chekout-wrap layout">
+      <h1 class="MainHeading" style="display:none;">Login</h1>
+
+      <div class="layout__section or-bit">
+        {%- comment -%}
+        --------------------------------------------------------------------------------------------------------------------
+        CUSTOMER LOGIN FORM
+        --------------------------------------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+        {%- if is_recover_active -%}
+          {%- assign login_default_visibility = 'display: none' -%}
+        {%- else -%}
+          {%- assign login_default_visibility = 'display: block' -%}
+        {%- endif -%}
+
+        {%- form 'customer_login', name: 'login', class: 'form form--main', id: 'customer_login', style: login_default_visibility -%}
+          <h2 class="heading">Sign in</h2>
+          <p class="custom-small">Enter your email and password:</p>
+
+          {%- if form.errors -%}
+            <p class="alert alert--error">{{ form.errors.messages['form'] }}</p>
+          {%- endif -%}
+
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input type="email" id="customer[email]" name="customer[email]" class="form__field form__field--text" placeholder="Email" required>
+          </div>
+
+          <div class="form__input-wrapper custom form__input-wrapper--labelled">
+            <input type="password" id="customer[password]" name="customer[password]"class="form__field form__field--text" placeholder="Password" required>
+          </div>
+
+          <p class="desk-hide forget-custom">Lost password? <button type="button" data-action="toggle-login-form" class="link link--accented"> Recover Password</button></p>
+          <input type="hidden" name="checkout_url" value="/checkout?locale=en">
+          <button type="submit" class="button button--primary button--full">Login</button>
+
+          <p class="mob-hide">Lost password? <button type="button" data-action="toggle-login-form" class="link link--accented"> Recover Password</button></p>
+        {%- endform -%}
+
+        {%- comment -%}
+        --------------------------------------------------------------------------------------------------------------------
+        CUSTOMER RECOVERY FORM
+        --------------------------------------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+        {%- if is_recover_active -%}
+          {%- assign recover_default_visibility = 'display: block' -%}
+        {%- else -%}
+          {%- assign recover_default_visibility = 'display: none' -%}
+        {%- endif -%}
+
+        {%- form 'recover_customer_password', name: 'recover', class: 'form form--main', id: 'recover_customer_password', style: recover_default_visibility -%}
+          <header class="form__header">
+            <h1 class="form__title heading h1">{{ 'customer.recover_password.recover_password' | t }}</h1>
+            <p class="form__legend">{{ 'customer.recover_password.description' | t }}</p>
+          </header>
+
+          {%- if form.errors -%}
+            <p class="alert alert--error">{{ form.errors.messages['form'] }}</p>
+          {%- endif -%}
+
+          {%- if form.posted_successfully? -%}
+            <p class="alert alert--center alert--success">{{ 'customer.recover_password.success' | t }}</p>
+          {%- else -%}
+            <div class="form__input-wrapper form__input-wrapper--labelled">
+              <input type="email" id="customer[recover_email]" class="form__field form__field--text" name="email" required="required">
+              <label for="customer[recover_email]" class="form__floating-label">{{ 'customer.recover_password.email' | t }}</label>
+            </div>
+
+            <button type="submit" class="form__submit button button--primary button--full">{{ 'customer.recover_password.submit' | t }}</button>
+          {%- endif -%}
+
+          <div class="form__secondary-action">
+            <p>{{ 'customer.recover_password.remembered_your_password' | t }} <button type="button" data-action="toggle-login-form" class="link link--accented">{{ 'customer.recover_password.back_to_login' | t }}</button></p>
+          </div>
+        {%- endform -%}
+      </div>
+
+      <div class="layout__section">
+        <div class="guest_text">
+          <h2 class="heading">New Customers</h2>
+          <p class="custom-small">New to our site? Create an account and make future purchases easier.</p>
+          <a href="/pages/new-register?return_to=https%3A%2F%2Fmonitors.com%2Fcheckout" class="button button--full button--primary button--secondary">Create Account</a>
+        </div>
+
+        <div class="custom-form_sub">
+          <h1 class="form__title heading h2 custom_heading">Advantages of creating an account:</h1>
+          <ul style="list-style: none;">
+            <li class="custom-flex">
+              <div class="custom-left">
+                <img src="{{ 'file-login-before-checkout.png' | asset_url }}" alt="file" class="custom-login-icon" loading="lazy">
+              </div>
+              <div class="custom-right"> Download and manage your invoices. </div>
+            </li>
+            <li class="custom-flex">
+              <div class="custom-left">
+                <img src="{{ 'form-login-before-checkout.png' | asset_url }}" alt="form" class="custom-login-icon" loading="lazy">
+              </div>
+              <div class="custom-right"> Request quotes </div>
+            </li>
+            <li class="custom-flex">
+              <div class="custom-left">
+                <img src="{{ 'support-login-before-checkout.png' | asset_url }}" alt="support" class="custom-login-icon" loading="lazy">
+              </div>
+              <div class="custom-right"> Open service and support ticktes. </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="custom-layout__section">
+          <div class="guest_text aadid">
+            <h2 class="heading custom-heading2">Guest Checkout</h2>
+            <p>You don't need an account to checkout! You can enter as a guest and place your order.</p>
+            <a href="/checkout?locale=en" class="button button--full button--ternary checkoutGuest">Checkout as Guest</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if (window.location.hash === '#recover-password' || window.location.hash === '#recover') {
+      document.getElementById('customer_login').style.display = 'none';
+      document.getElementById('recover_customer_password').style.display = 'block';
+    }
+  </script>
+</section>
+
+<style>
+  form#customer_login, form#recover_customer_password {
+    margin: 0;
+    text-align: left;
+  }
+
+  .custom-flex {
+    font-size: small;
+    display: flex;
+    margin-bottom: 2%;
+  }
+
+  .custom-right {
+    margin-left: 2%;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .custom-form_sub {
+    margin-top: 30px;
+  }
+
+  .custom-login-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .flits-social-login-container {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .desk-hide {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .mob-hide {
+      display: none;
+    }
+
+    .custom-layout__section {
+      border-top: 1px solid var(--border-color);
+      margin-top: 50px;
+      padding-top: 50px;
+    }
+  }
+
+  @media (max-width: 967px) {
+    .custom-layout__section {
+      border-top: 1px solid var(--border-color);
+      margin-top: 50px;
+      padding-top: 50px;
+    }
+  }
+
+  .guest_text .checkoutGuest:hover {
+    color: #0076bd !important;
+  }
+
+  @media (max-width: 767px) {
+    .guest_text.aadid {
+      margin-top: 0px !important;
+    }
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "New Guest checkout page",
+    "settings": []
+  }
+{% endschema %}

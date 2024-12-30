@@ -1,0 +1,492 @@
+
+<style>
+    .address-container .hide{
+        visibility: hidden;
+        opacity: 0;
+        display: none!important;
+    }
+    {% comment %} .address-container{
+        border-radius: 10px;
+        border: 1px solid #E5E5E5;
+        background: #FFF;
+        max-width: 796px;
+        padding: 20px;
+    } {% endcomment %}
+    .address-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        border: unset;
+        transition: opacity 0.5s;
+    }
+    .address-list .address-element{
+        width: calc(25% - 9px);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #E5E5E5;
+        background: #FFF;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .address-list .add-address.address-element{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 15px;
+        cursor: pointer;
+        border-radius: 9px;
+        border: 1.5px dashed #E5E5E5;
+        min-height: 195px;
+    }
+    .address-list .address-element.default{
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
+        border: 1px solid #BCBCBC;
+        position: relative;
+    }
+    .address-list .address-element h5{
+        color: #404042;
+        font-family: "Encode Sans";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-bottom: 15px;
+    }
+    .address-list .address-element .address{
+        margin-bottom: 22px;
+    }
+    .address-list .address-element p{
+        color: #616265;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-bottom: 0px;
+    }
+    .address-list .address-element .actions ul{
+        display: flex;
+        align-items: center;
+    }
+    .address-list .address-element .actions ul li{
+        list-style: none;
+        padding-right: 8px;
+        border-left: 1px solid #8C8C8C;
+        font-size: 13px;
+        line-height: normal;
+    }
+    .address-list .address-element .actions ul li:first-child{
+        border: unset;
+    }
+    .address-list .address-element .actions ul li:last-child{
+        padding-right: 0px;
+    }
+    .address-list .address-element .actions ul a, .address-list .address-element .actions ul button{
+        color: #8C8C8C;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-left: 7px;
+        cursor: pointer;
+    }
+    .address-list .address-element.default .actions ul li.set-default{
+        display: none!important;
+    }
+    .address-list .address-element .actions ul li:first-child a{
+        margin-left: 0px;
+    }
+    .address-form-container{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .address-form-container form{
+        gap: 20px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .address-form-container .form-block {
+        width: calc(50% - 10px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+    }
+    .address-form-container .form-block label{
+        color: #303030;
+        font-feature-settings: 'liga' off, 'clig' off;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+    }   
+    .address-form-container .form-block input, .address-form-container .form-block select{
+        background-color: #FDFDFD;
+        border: 1px solid #8A8A8A;
+        color: #303030;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-family: "Encode Sans";
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px; /* 153.846% */
+    }
+    .address-form-container .form-block input:focus-visible , .address-form-container .form-block select:focus-visible{
+        background-color: #FDFDFD;
+        border: 1px solid #8A8A8A;
+    }
+    .address-form-container .checkbox-block.form-block{
+        flex-direction: row;
+        gap: 10px;
+        justify-content: flex-start;
+        width: 100%;
+    }
+    .address-add h3, .account-edit-form h3{
+        font-size: 21px;
+        line-height: 1;
+        font-weight: 500;
+        color: var(--heading-color);
+        margin-bottom: 20px;
+    }
+    
+    .address-form-container .submit-button-container button{
+        color: #303030;
+        text-align: center;
+        font-family: 'Encode Sans';
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        background-color: #0000000D;
+        border-radius: 5px;
+        border: none;
+        padding: 8px 16px;
+    }
+    .address-form-container .submit-button-container button#submitAddressForm, .address-form-container .submit-button-container button.submitEditForm{
+        color: #fcf7f7;
+        background: #06a0e3;
+    }
+    .address-form-container .submit-button-container button#submitAddressForm:hover, .address-form-container .submit-button-container button.submitEditForm:hover{
+        background: #38bef7;
+    }
+    .address-form-container .submit-button-container{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+        margin-top: 10px;
+    }
+    .address-list .address-element.default .default-label{
+        display: flex;
+        padding: 2px 10px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        align-self: stretch;
+        border-radius: 20px;
+        border: 1px solid #E5E5E5;
+        background: #F2F2F2;
+        color: #B5B5B5;
+        font-family: "Encode Sans";
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        max-width: 55px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    .address-list .form-set-default{
+        display: none!important;
+    }
+    .address-list .address-element .default-label{
+        display: none;
+    }
+    .address-form-container .submit-button-container button.submitEditForm[disabled]{
+        pointer-events: none;
+        opacity: 0.6;
+        background-color: #e3e3e3;
+        color: #000000;
+    }
+    @media only screen and (max-width: 1250px){
+        .address-list .address-element{
+            width: calc(33.33% - 14px)
+        }
+    }
+    @media only screen and (max-width: 1050px) {
+        .address-list .address-element {
+            width: calc(50% - 10px);
+        }
+    }
+    @media only screen and (max-width: 768px) {
+        .address-list .address-element{
+            width: calc(50% - 12px);
+        }
+        .address-add h3, .account-edit-form h3{
+            font-size:17px;
+        }
+        .address-form-container form{
+            flex-direction: column;
+            gap: 10px;
+        }
+        .address-form-container .form-block{
+            width: 100%;
+        }
+        .account-edit-form{
+            width: 100%;
+        }
+    }
+    @media only screen and (max-width: 600px) {
+        .address-list .address-element{
+            width: 100%;
+            height: 200px;
+        }
+        .address-list:before{
+            content: unset!important;
+        }
+    }
+</style>
+
+<div data-customer-addresses>
+    <div class="address-container" >
+        <div class="address-list" id="addressList">
+            <div class="add-address address-element" id="addAddressBtn">
+                {% render 'plus-icon-thick' %}
+                <h5>Add New Address</h5>
+            </div>
+            {% for address in customer.addresses %}
+                <div class="address-item address-element {% if address == customer.default_address %}default{% endif %}">
+                    <span class="default-label">Default</span>
+                    <h5>{{ address.first_name }} {{ address.last_name }}</h5>
+                    <div class="address">
+                        <p>{{ address.company }}</p>
+                        <p>{{ address.address1 }}</p>
+                        <p>{{ address.address2 }}</p>
+                        <p>{{ address.city }} {{ address.province }} {{ address.zip }}</p>
+                        <p>{{ address.country }}</p>
+                    </div>
+                    <div class="actions">
+                        <ul>
+                            <li>
+                                <a class="edit-address-btn">Edit</a>
+                            </li>
+                            <li>
+                                <form class="address-delete-form" method="post" action="/account/addresses/{{ address.id }}">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button type="submit">Remove</button>
+                                </form>
+                            </li>
+                            <li class="set-default">
+                                {%- form 'customer_address', address, id: 'customer-address-form-{{ form.id }}' -%}
+                                    <div class="form-block form-set-default">
+                                        <input checked type="checkbox" id="address_default__{{ form.id }}" class="checkbox-input" name="address[default]" value="1">
+                                        <label for="default_address_{{ form.id }}">Set as default address</label>
+                                    </div>
+                                    <button type="submit">Set as Default</button>
+                                {% endform %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="account-edit-form hide" id="editForm-{{ forloop.index }}">
+
+                        <h3>Edit Address</h3>
+                        <div class="address-form-container">
+                            {%- form 'customer_address', address -%}
+                            <div class="form-block">
+                                <label for="AddressFirstName_{{ form.id }}">First Name</label>
+                                <input type="text" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" id="AddressFirstName_{{ form.id }}" class="form-input">
+                            </div>
+                
+                            <div class="form-block">
+                                <label for="AddressLastName_{{ form.id }}">Last Name</label>
+                                <input type="text" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" id="AddressLastName_{{ form.id }}" class="form-input">
+                            </div>
+                
+                            <div class="form-block">
+                                <label for="AddressCompany_{{ form.id }}">Company Name</label>
+                                <input type="text" id="AddressCompany_{{ form.id }}" name="address[company]"
+                                value="{{ form.company }}"
+                                autocomplete="organization" class="form-input">
+                            </div>
+                
+                            <div class="form-block">
+                                <label for="AddressPhone_{{ form.id }}">Phone Number</label>
+                                <input type="tel" id="AddressPhone_{{ form.id }}" name="address[phone]"
+                                value="{{ form.phone }}"
+                                autocomplete="tel" class="form-input">
+                            </div>
+                
+                            <div class="form-block">
+                                <label for="AddressAddress1_{{ form.id }}">Address Line 1</label>
+                                <input type="text" id="AddressAddress1_{{ form.id }}" name="address[address1]"
+                                value="{{ form.address1 }}"
+                                autocomplete="address-line1" class="form-input">
+                            </div>
+                
+                            <div class="form-block">
+                                <label for="AddressAddress2_{{ form.id }}">Address Line 2</label>
+                                <input type="text" id="AddressAddress2_{{ form.id }}" name="address[address2]"
+                                value="{{ form.address2 }}"
+                                autocomplete="address-line2" class="form-input">
+                            </div>
+                
+                            <div class="form-block">
+                                <label for="AddressCity_{{ form.id }}">City</label>
+                                <input type="text" id="AddressCity_{{ form.id }}" name="address[city]"
+                                value="{{ form.city }}"
+                                autocomplete="address-level2" class="form-input">
+                            </div>
+                
+                            <div class="form-block dropdown">
+                                <label for="AddressCountry_{{ form.id }}">Country</label>
+                                <select name="address[country]" data-default="{{ form.country }}"
+                                    autocomplete="country" id="AddressCountry_{{ form.id }}" data-address-country-select>
+                                    {{ all_country_option_tags }}
+                                </select>
+                            </div>
+                
+                            <div id="AddressProvinceContainerNew" class="form-block dropdown">
+                                <label for="AddressProvince_{{ form.id }}">State</label>
+                                <select name="address[province]"
+                                    data-default="{{ form.province }}"
+                                    autocomplete="address-level1" id="AddressProvince_{{ form.id }}">
+                                </select>
+                            </div>
+                
+                            <div class="form-block">
+                                <label for="AddressZip_{{ form.id }}">Zip Code</label>
+                                <input type="text" id="AddressZip_{{ form.id }}" name="address[zip]"
+                                value="{{ form.zip }}"
+                                autocapitalize="characters"
+                                autocomplete="postal-code" class="form-input">
+                            </div>
+                            {% unless address == customer.default_address %}
+                            {% comment %}
+                                <div class="form-block checkbox-block">
+                                    <input type="checkbox" id="address_default-{{ form.id }}" class="checkbox-input" name="address[default]" value="1">
+                                    <label for="address_default-{{ form.id }}">Set as default address</label>
+                                </div>
+                            {% endcomment %}
+                            {% endunless %}
+                            <div class="submit-button-container">
+                                <button type="submit" class="submitEditForm">Save Changes</button>
+                                <button type="reset" class="cancelEditForm">Cancel</button>
+                            </div>
+                
+                            {% endform %}
+                        </div>
+
+
+                </div>
+            {% endfor %}
+        </div>
+    
+        {% comment %} Add address form  {% endcomment %}
+    
+        <div class="address-add hide" data-address id="addressAdd">
+            <h3>Add New Address</h3>
+            <div class="address-form-container">
+                {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading', id: 'customerAddressForm' -%}
+                <div class="form-block">
+                    <label for="AddressFirstNameNew">First Name</label>
+                    <input type="text" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" id="AddressFirstNameNew" class="form-input">
+                </div>
+    
+                <div class="form-block">
+                    <label for="AddressLastNameNew">Last Name</label>
+                    <input type="text" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" id="AddressLastNameNew" class="form-input">
+                </div>
+    
+                <div class="form-block">
+                    <label for="AddressCompanyNew">Company Name</label>
+                    <input type="text" id="AddressCompanyNew" name="address[company]"
+                    value="{{ form.company }}"
+                    autocomplete="organization" class="form-input">
+                </div>
+    
+                <div class="form-block">
+                    <label for="AddressPhoneNew">Phone Number</label>
+                    <input type="tel" id="AddressPhoneNew" name="address[phone]"
+                    value="{{ form.phone }}"
+                    autocomplete="tel" class="form-input">
+                </div>
+    
+                <div class="form-block">
+                    <label for="AddressAddress1New">Address Line 1</label>
+                    <input type="text" id="AddressAddress1New" name="address[address1]"
+                    value="{{ form.address1 }}"
+                    autocomplete="address-line1" class="form-input">
+                </div>
+    
+                <div class="form-block">
+                    <label for="AddressAddress2New">Address Line 2</label>
+                    <input type="text" id="AddressAddress2New" name="address[address2]"
+                    value="{{ form.address2 }}"
+                    autocomplete="address-line2" class="form-input">
+                </div>
+    
+                <div class="form-block">
+                    <label for="AddressCityNew">City</label>
+                    <input type="text" id="AddressCityNew" name="address[city]"
+                    value="{{ form.city }}"
+                    autocomplete="address-level2" class="form-input">
+                </div>
+    
+                <div class="form-block dropdown">
+                    <label for="AddressCountryNew">Country</label>
+                    <select name="address[country]" data-default="{{ form.country }}"
+                        autocomplete="country" id="AddressCountryNew" data-address-country-select>
+                        {{ all_country_option_tags }}
+                    </select>
+                </div>
+    
+                <div id="AddressProvinceContainerNew" class="form-block dropdown">
+                    <label for="AddressProvinceNew">State</label>
+                    <select name="address[province]"
+                        data-default="{{ form.province }}"
+                        autocomplete="address-level1" id="AddressProvinceNew">
+                    </select>
+                </div>
+    
+                <div class="form-block">
+                    <label for="AddressZipNew">Zip Code</label>
+                    <input type="text" id="AddressZipNew" name="address[zip]"
+                    value="{{ form.zip }}"
+                    autocapitalize="characters"
+                    autocomplete="postal-code" class="form-input">
+                </div>
+                <div class="form-block checkbox-block">
+                    <input type="checkbox" id="address_default_address_new" class="checkbox-input" name="address[default]" value="1">
+                    {% comment %} <input type="checkbox" id="default_address" class="checkbox-input"> {% endcomment %}
+                    <label for="default_address">Set as default address</label>
+                </div>
+    
+                <div class="submit-button-container">
+                    <button type="submit" id="submitAddressForm">Add Address</button>
+                    <button type="reset" id="cancelAddAddress" class="cancel-form">Cancel</button>
+                </div>
+    
+                {% endform %}
+            </div>
+        </div>
+        {% comment %} end  {% endcomment %}
+    
+    </div>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+  });
+</script>

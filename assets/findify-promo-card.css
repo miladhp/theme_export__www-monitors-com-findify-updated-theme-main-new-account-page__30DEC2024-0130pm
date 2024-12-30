@@ -1,0 +1,94 @@
+.findify-promo-card {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  min-height: 380px;
+}
+
+.findify-promo-card-wrapper {
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  background-size: cover;
+  height: 100%;
+  cursor: pointer;
+  background-position: center;
+  overflow: hidden;
+}
+
+.findify-promo-card-title-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+  flex: 8;
+}
+
+.findify-promo-card-top-header {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.findify-promo-card-subheader {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.findify-promo-card-cta-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  text-transform: uppercase;
+  height: 33px;
+  background: #fff;
+  color: #1b1b1b;
+  border-radius: 4rem;
+  opacity: 0.8;
+  font-size: 13px;
+  padding: 0 15px;
+  margin-bottom: 15px;
+}
+
+.findify-promo-card-cta-button-fullwidth {
+  width: 90%;
+}
+
+.findify-promo-card-title-container-left {
+  align-items: start;
+  margin-left: 10px;
+}
+
+.findify-promo-card-title-container-right {
+  align-items: end;
+  margin-right: 10px;
+}
+
+.findify-promo-card-title-container-center {
+  align-items: center;
+}
+
+.findify-promo-card-title-container-top {
+  justify-content: start;
+  margin-top: 10px;
+}
+
+.findify-promo-card-title-container-bottom {
+  justify-content: end;
+  margin-bottom: 10px;
+}
+
+.findify-promo-card-title-container-middle {
+  justify-content: center;
+}
+
+.findify-promo-card-footer {
+  text-align: center;
+  padding: 10px 20px 0 20px;
+  width: 100%;
+}

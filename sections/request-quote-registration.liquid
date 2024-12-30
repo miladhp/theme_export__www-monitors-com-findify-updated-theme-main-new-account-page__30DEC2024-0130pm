@@ -1,0 +1,1323 @@
+<style type="text/css">
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .log-temp {
+    display: flex;
+    background-color: #ffffff;
+    background-image: -webkit-linear-gradient(0deg, #ffffff 50%, #FAFAFA 50%);
+  }
+
+  .log-temp-cell {
+    width: calc(100%/2);
+    min-height: 100vh;
+  }
+
+  .log-temp-cell.right .log-dec {
+    text-align: center;
+  }
+
+  .log-temp-cell.right {
+    display: flex;
+    justify-content: center;
+  }
+
+  .log-dec {
+    padding: 30px;
+  }
+
+  .log-temp-menu-part {
+    margin: 0 0 30px 0;
+  }
+
+  .log-temp-from-box {
+    padding: 20px;
+  }
+
+  @media(max-width: 1023px) {
+    .log-temp {
+      flex-direction: column;
+      background-color: transparent;
+    }
+
+    .log-temp-cell {
+      width: calc(100%/1);
+      min-height: 50vh;
+    }
+
+    .log-temp-cell.left {
+      background-color: #ffffff;
+    }
+
+    .log-temp-cell.right {
+      background-color: #efefef;
+    }
+  }
+
+  .log-temp-blank-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .log-temp-blank-row .colx {
+    width: calc(100%/2 - 20px);
+  }
+
+  .log-temp-blank-row .colx.frm-btn {
+    text-align: right;
+  }
+
+  .log-temp-from-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 0px 0;
+  }
+
+  .log-temp-from-row.two .log-temp-field {
+    width: calc(100%/2 - 10px);
+  }
+
+  .log-temp-from-row.three .log-temp-field {
+    width: calc(100%/3 - 10px);
+  }
+
+  @media(max-width: 479px) {
+    .log-temp-blank-row {
+      flex-direction: column;
+    }
+
+    .log-temp-blank-row .colx {
+      width: calc(100%/1);
+      margin-bottom: 20px;
+    }
+
+    .log-temp-from-row {
+      flex-direction: column;
+    }
+
+    .log-temp-from-row.two .log-temp-field {
+      width: calc(100%/1);
+      margin: 0 0 10px 0;
+    }
+
+    .log-temp-from-row.three .log-temp-field {
+      width: calc(100%/1);
+      margin: 0 0 10px 0;
+    }
+  }
+
+  .form-custom {
+    margin-left: 60px;
+    margin-right: 60px;
+  }
+
+  .btn1 {
+    margin-top: -14px;
+  }
+
+  .side-text {
+    margin: 0px 0 0px 71px;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .log-temp-cell.right p {
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0 10%;
+  }
+
+  .log-dec .order-summary__sections {
+    width: 100%;
+    min-width: 450px;
+  }
+
+  .log-dec .order-summary__section {
+    width: 100%;
+  }
+
+  .log-dec .order-summary__section .order-summary__section__content {
+    width: 100%;
+  }
+
+  .log-dec .order-summary__section .order-summary__section__content table.product-table {
+    width: 100%;
+    font-size: 12px;
+    color: #323232;
+  }
+
+  .log-dec .order-summary__section .product-thumbnail {
+    width: 4.6em;
+    height: 4.6em;
+    border-radius: 8px;
+    background: #fff;
+    position: relative;
+  }
+
+  .log-dec .order-summary__section .product-thumbnail .product-thumbnail__wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    z-index: 1;
+  }
+
+  .log-dec .order-summary__section .product-thumbnail .product-thumbnail__quantity {
+    font-size: 0.8571428571em;
+    font-weight: 500;
+    line-height: 1.75em;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 1.75em;
+    background-color: rgba(114, 114, 114, 0.9);
+    color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 1.75em;
+    height: 1.75em;
+    padding: 0 0.5833333333em;
+    position: absolute;
+    right: -0.75em;
+    top: -0.75em;
+    z-index: 3;
+  }
+
+  .log-dec .order-summary__section .product__description {
+    text-align: left;
+    width: 100%;
+  }
+
+  .log-dec .order-summary__section .order-summary__small-text {
+    color: #717171;
+  }
+
+  .log-dec .order-summary__section td:last-child, th:last-child {
+    text-align: right;
+  }
+
+  .log-dec .order-summary__section table.total-line-table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .log-dec .order-summary__section table.total-line-table th {
+    text-align: left;
+    font-weight: normal !important;
+  }
+
+  .log-dec .order-summary__section .sidebar .order-summary__small-text {
+    color: #717171;
+  }
+
+  .log-dec .order-summary__section .sidebar .payment-due__currency {
+    color: #717171;
+  }
+
+  .log-dec .order-summary__section .payment-due__currency {
+    font-size: 0.8571428571em;
+    vertical-align: 0.2em;
+    margin-right: 0.5em;
+  }
+
+  .log-dec .order-summary__section .sidebar .payment-due__price {
+    color: #323232;
+  }
+
+  .log-dec .order-summary__section .payment-due__price {
+    font-size: 1.7142857143em;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1em;
+  }
+
+  .log-dec .order-summary__section .sidebar .payment-due-label__total {
+    color: #323232;
+    font-size: 14px;
+  }
+
+  .log-dec .order-summary__section .total-line-table {
+    border-top: #ccc 1px solid;
+    padding-top: 10px;
+  }
+
+  .log-dec .order-summary__section .total-line-table__footer tr.total-line {
+    border-top: #ccc 1px solid;
+    margin-top: 20px;
+    padding-bottom: 10px;
+  }
+
+  .log-dec .order-summary__section .product__description__name {
+    width: 100%;
+    display: block;
+    padding-bottom: 5px;
+  }
+
+  .log-dec .order-summary__section .product__description__variant {
+    width: 100%;
+    clear: both;
+    display: inline-block;
+  }
+
+  .log-before-dec img {
+    max-width: 400px;
+    margin-bottom: 10px;
+  }
+
+  @media(max-width: 1023px) {
+    .log-before-dec {
+      padding-top: 30px;
+    }
+  }
+
+  @media(max-width: 479px) {
+    .log-dec .order-summary__sections {
+      min-width: 320px;
+    }
+
+    .log-condition-msg {
+      width: 100% !important;
+      padding-bottom: 20px;
+    }
+  }
+
+  .breadcrumbs {
+    font-size: .85em;
+    margin: 0 0 2em;
+  }
+
+  .breadcrumbs ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .breadcrumbs li {
+    color: black;
+    display: inline-block;
+  }
+
+  .breadcrumbs li.active {
+    color: #06a0e3 !important;
+  }
+
+  .breadcrumbs li:not(:last-child):after {
+    content: "›\00a0";
+    display: inline-block;
+    padding-left: .75ch;
+    speak: none;
+  }
+
+  .breadcrumbs [aria-current="page"] {
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .cf-button {
+    border-radius: 6px;
+  }
+
+  /* icons with text */
+  .custom-flex {
+    font-size: small;
+    display: flex;
+    margin-bottom: 2%;
+  }
+
+  .custom-right {
+    margin-left: 2%;
+  }
+
+  .custom-form_sub {
+    margin-top: 30px;
+  }
+
+  .custom-login-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  /* hide for mobile devices */
+  @media (max-width: 767px) {
+    .mob-hide {
+      display: none !important;
+    }
+  }
+
+  .custom-inner-heading {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  .log-temp.custom-log-temp .log-temp-cell.right {
+    padding-right: 60px;
+    padding-left: 80px
+  }
+
+  .log-temp.custom-log-temp button {
+    border-radius: 6px;
+  }
+
+  .log-temp.custom-log-temp .checkbox-wrapper input[type=radio]:checked {
+    border-color: #666 !important;
+    background: #fff;
+  }
+
+  .log-temp.custom-log-temp .checkbox-wrapper input[type=radio]:checked:after {
+    background: #666 !important;
+    border: 2px solid #666 !important;
+  }
+
+  .custom-address-checkbox .checkbox input[type=radio]:checked:after {
+    background: #666 !important;
+  }
+
+  .subtotal {
+    font-weight: bold;
+    font-size: 15px
+  }
+
+  .sub-total {
+    font-weight: bold
+  }
+
+  .payment-due-label__total.total {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .log-temp.custom-log-temp .checkbox-wrapper {
+    margin: 8px 0;
+  }
+
+  @media(max-width: 1400px) {
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-left: 30px
+    }
+
+    .log-temp.custom-log-temp .log-temp-cell.right {
+      padding-right: 30px
+    }
+  }
+
+  @media(max-width: 768px) {
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-left: 0;
+    }
+
+    .log-temp.custom-log-temp .log-temp-cell.right {
+      padding-right: 0
+    }
+
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-bottom: 20px;
+    }
+  }
+
+  .order-summary__sections.quate {
+    min-width: 420px !important;
+    max-width: 100% !important;
+  }
+
+  .order-summary__sections.quate .quantity-selector {
+    width: 60.5px !important;
+    background: #ffffff;
+    border: #E1E3E4 1px solid !important;
+    border-radius: 10.66px !important;
+    height: 22px !important;
+    position: relative;
+    z-index: 9;
+    margin-top: -14px;
+  }
+
+  .order-summary__sections.quate .raq-line-item-remove-button{color: #616265;text-align: center;font-family: "Encode Sans";font-size: 13.033px!important;font-style: normal;font-weight: 400!important;line-height: normal!important;margin:0;padding-left:0px !important;padding-right:0px !important;position:relative;left: 40%;padding-top: 10px;}
+  
+  .order-summary__sections.quate .quantity-selector button {
+    padding: 0 5px !important;
+    line-height: inherit;
+    color: #4D4D4F !important;
+  }
+
+  .order-summary__sections.quate .quantity-selector button svg {
+    fill: #4D4D4F;
+  }
+
+  .order-summary__sections.quate .quantity-selector button#raq-line-item-quantity-decrease-btn-2 {
+    padding-right: 2px !important;
+  }
+
+  .order-summary__sections.quate .quantity-selector .icon--plus {
+    width: 9px;
+    height: auto;
+    margin-top: -1px;
+  }
+
+  .order-summary__sections.quate .quantity-selector .icon--minus {
+    width: 9px;
+  }
+
+  .order-summary__sections.quate .quantity-selector .quantity-selector__value {
+    min-width: 15px !important;
+    width: 17px;
+    text-align: center;
+    font-size: 12px !important;
+    margin: 0;
+    padding: 1px 0 0 0;
+  }
+
+  .order-summary__sections.quate .order-summary__section .product-thumbnail {
+    width: 60px !important;
+    height: 60px !important;
+    position: relative;
+  }
+
+  .order-summary__sections.quate .line-item__price--compare {
+    text-decoration: line-through;
+    color: #4D4D4F !important;
+    font-size: 12px !important;
+  }
+
+  .order-summary__sections.quate .line-item__price--compare::before {
+    display: none;
+  }
+
+  .order-summary__sections.quate .order-summary__section {
+    margin-bottom: 20px;
+  }
+
+  .order-summary__sections.quate .order-summary__section .order-summary__emphasis.skeleton-while-loading {
+    display: inline-block;
+    line-height: 1.2;
+  }
+
+  .quate-new-form {
+    padding: 40px 0;
+  }
+
+  .quate-new-form .form.form--main {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .quate-new-form .form.form--main p {
+    text-align: left;
+  }
+
+  .quate-new-form .qt-botton-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .quate-new-form .qt-botton-row-lost button {
+    padding: 0 !important;
+    margin: 0;
+    color: #06a0e3 !important;
+  }
+
+  .snak-bar {
+    display: flex;
+    background: #F7F7F7;
+    color: #616265;
+    font-size: 14px;
+    min-height: 50px;
+    padding: 10px 20px;
+    margin-top: 40px;
+    align-items: center;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .snak-bar span {
+    margin-right: 8px;
+    font-size: 30px;
+    color: #000;
+    line-height: 1;
+  }
+
+  .quote-summary-action {
+    display: none;
+  }
+
+  .order-summary__sections.quate .payment-due-label__total.total {
+    color: #666666;
+  }
+
+  .order-summary__sections.quate .total-line__price payment-due total_final {
+    color: #666666;
+  }
+
+  .order-summary__sections.quate .order-summary__section td.total-line__price {
+    color: #666666;
+  }
+
+  @media(max-width:1023px) {
+    .order-summary__sections.quate {
+      min-width: 100px !important;
+      max-width: 100% !important;
+    }
+
+    .log-temp.custom-log-temp.custon-quate {
+      flex-direction: column-reverse;
+    }
+
+    .quote-action-row {
+      flex-direction: column;
+      justify-content: flex-start !important;
+      min-height: 55px;
+    }
+
+    .quote-summary-action {
+      display: block;
+      width: 100%;
+      padding: 0 20px;
+      border-bottom: #E1E3E4 1px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 55px;
+      color: #06A0E3;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .quote-summary-action .price {
+      font-size: 14px;
+      color: #616265;
+    }
+
+    .quote-summary-action .action-cart {
+      display: flex;
+      align-items: center;
+    }
+
+    .quote-summary-action .action-cart span {
+      margin-right: 8px;
+    }
+
+    .quote-summary-action .action-cart span#request-quote-summary-icon {
+      margin-top: 3px;
+    }
+
+    .quote-summary-action .action-cart-icon {
+      font-size: 24px;
+      margin-top: -5px;
+    }
+
+    .action-cart .action-cart-arrow {
+      transform: rotate(180deg);
+      margin-top: 6px !important;
+    }
+
+    .log-temp-cell.custom-log-temp-cell.left .container {
+      padding: 0 20px !important;
+    }
+
+    .log-temp.custom-log-temp .log-temp-cell.left {
+      padding-left: 0;
+    }
+
+    .log-temp.custom-log-temp .log-temp-cell.right {
+      padding-left: 0;
+      padding-right: 0;
+      border: none;
+    }
+
+    .quote-summary-action-details .log-dec {
+      padding-bottom: 0 !important;
+    }
+
+    .order-summary__sections.quate .order-summary__section {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  @media(max-width:767px) {
+    .order-summary__sections.quate {
+      min-width: 100px !important;
+    }
+
+    .quate-new-form .qt-botton-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .quate-new-form .qt-botton-row-lost p {
+      display: flex;
+      align-items: center;
+    }
+
+    .quate-new-form .qt-botton-row-lost button {
+      max-width: 131px;
+    }
+  }
+
+  @media(max-width:479px) {
+    .quate-new-form .cf-field-container.this-is {
+      width: 100% !important;
+    }
+
+    .order-summary__sections.quate .order-summary__section .product__description {
+      font-size: 12px;
+    }
+  }
+
+  .quote-summary-action-details .log-dec {
+    padding-right: 0;
+  }
+
+  .req-qt-all {
+    background-image: -webkit-linear-gradient(0deg, #ffffff 50%, #FAFAFA 50%);
+  }
+
+  .quote-action-row {
+    border-left: #e1e3e4 1px solid;
+  }
+
+  .req-qt-all .reql {
+    padding-right: 40px;
+  }
+
+  @media(max-width:1023px) {
+    .quote-action-row {
+      background-color: #FAFAFA;
+      border: none !important;
+    }
+
+    .req-qt-all {
+      background-image: none !important;
+      padding-bottom: 40px;
+    }
+
+    .log-temp {
+      background: none !important;
+    }
+
+    .req-qt-all .reql {
+      padding-right: 0px !important;
+    }
+
+    .quote-summary-action-details .log-dec {
+      padding-right: 30px;
+    }
+  }
+
+  @media(max-width:639px) {
+    .quote-action-row .log-dec {
+      padding: 10px 5px;
+    }
+
+    .quote-summary-action {
+      padding: 0 10px;
+    }
+
+    .quote-summary-action .price {
+      font-size: 13px;
+    }
+
+    .quote-summary-action .action-cart span {
+      line-height: 1;
+    }
+
+    .log-dec .order-summary__section .order-summary__section__content {
+      padding-bottom: 15px;
+    }
+
+    .quote-summary-action-details .log-dec {
+      padding-right: 5px;
+    }
+  }
+
+  @media(max-width:359px) {
+    .quote-summary-action .action-cart {
+      max-width: 135px;
+    }
+  }
+
+  /* new layout changes 13-06-2024 */
+.order-summary__sections.quate .order-summary__section .product-thumbnail{width: 192px!important;height: 163px!important;}
+.order-summary__sections.quate .quantity-selector{border-radius: 5px!important;border: 1px solid #E1E3E4!important;background: #FFF!important;margin-left: 25%;width: 103.66px!important;height: 31.43px!important;margin-top:-13px!important;display:flex;justify-content:space-around;}
+span.product__description__name.order-summary__emphasis{color: #404042!important;font-size: 16px!important;font-style: normal;font-weight: 500!important;line-height: normal;}
+.log-dec .custom_cart_div{gap:10px;}
+.log-dec th.product__description {display: flex;flex-direction: column;}
+.log-dec .line-item__price--highlight {vertical-align:top;color: #616265;text-align: right;font-family: "Encode Sans";font-size: 14px;font-style: normal;font-weight: 500;line-height: normal;}
+.log-dec td{vertical-align:top;}
+.log-dec .order-summary__section .product__description{padding-left:30px!important;}
+.log-dec .order-summary__section .order-summary__section__content table.product-table td.product__price{padding-left: 10px !important;}
+.total-line-table .total-line.total-line--subtotal th, .total-line-table .total-line.total-line--subtotal td{padding: 15px 0;}
+.log-dec .order-summary__section .product__description__name {padding-bottom:5px!important;}
+@media screen and (max-width: 768px) {
+.log-dec .order-summary__section .order-summary__section__content table.product-table td{ padding:0px !important;}
+.order-summary__sections.quate .order-summary__section .product-thumbnail {width: 113px !important;height: 101px !important;}
+.order-summary__sections.quate .quantity-selector {width: 85px !important;height: 25px !important;margin-left: 12.5%;}
+.log-dec .order-summary__section .product__description {padding-left: 12px !important;}
+.order-summary__sections.quate .raq-line-item-remove-button{left:0%!important;}
+}
+[data-theme-name=Warehouse] .cf-field input[type=text], [data-theme-name=Warehouse] .cf-field input[type=email], [data-theme-name=Warehouse] .cf-field input[type=number], [data-theme-name=Warehouse] .cf-field input[type=tel], [data-theme-name=Warehouse] .cf-field input[type=password], [data-theme-name=Warehouse] .cf-field select, [data-theme-name=Warehouse] .cf-field textarea {color: #616265!important;} 
+[data-theme-name=Warehouse] .cf-form-inner .cf-form-actions button{background:#06A0E3;}  
+</style>
+
+<section class="req-qt-all" data-section-id="{{ section.id }}" data-section-type="register">
+  <!--Contener Page Wrap Start-->
+  <div class="container">
+    <div class="log-temp custom-log-temp custon-quate">
+      <!--Left Panel Start -->
+      <div class="log-temp-cell custom-log-temp-cell with-custom-bradcrumb reql" style="margin:0px !important;">
+        <div class="">
+          <div class="snak-bar">
+            <span>
+              <img src="https://cdn.shopify.com/s/files/1/2372/2681/files/atention-icon-1.png?v=1678445130" alt="" loading="lazy"/>
+            </span>
+            In order to submit your quote request you will need to have an account.
+          </div>
+          <div class="quate-new-form" id="quote-request-registration-section">
+            <p>Have an account ? <span id="show-quote-request-login-section" style="color: #06a0e3 !important;text-decoration: underline;cursor: pointer;">Sign in</span> to submit your request</p>
+
+            <div class="cf-form">
+              <h2 class="custom-inr-page-heading">Create Your Account</h2>
+              <form data-cf-form="8bt32D"></form>
+            </div>
+          </div>
+          <div class="quate-new-form" id="quote-request-login-section" style="display: none;">
+            <p>New to Monitors.com? <span id="show-quote-request-registration-section" style="color: #06a0e3 !important;text-decoration: underline;cursor: pointer;">Create an account</span> to request a quote</p>
+
+            <div style="animation: cf-fadein 500ms cubic-bezier(0.11, 0.33, 0.24, 1);">
+              {%- comment -%}
+              --------------------------------------------------------------------------------------------------------------------
+              CUSTOMER LOGIN FORM
+              --------------------------------------------------------------------------------------------------------------------
+              {%- endcomment -%}
+
+              {%- if is_recover_active -%}
+                {%- assign login_default_visibility = 'display: none' -%}
+              {%- else -%}
+                {%- assign login_default_visibility = 'display: block' -%}
+              {%- endif -%}
+
+              {%- form 'customer_login', name: 'login', class: 'form form--main', id: 'customer_login', style: login_default_visibility -%}
+                <h2 class="custom-inr-page-heading">Sign in</h2>
+                <p class="custom-small">Enter your email and password:</p>
+                {%- if form.errors -%}
+                  <p class="alert alert--error">{{ form.errors.messages['form'] }}</p>
+                {%- endif -%}
+
+                <div class="form__input-wrapper ">
+                  <input type="email" id="customer[email]" name="customer[email]" class="form__field form__field--text" placeholder="Email" required="">
+                </div>
+
+                <div class="form__input-wrapper ">
+                  <input type="password" id="customer[password]" name="customer[password]" class="form__field form__field--text" placeholder="Password" required="">
+                </div>
+
+                <input type="hidden" name="checkout_url" value="{{ pages['new-addresses'].url }}">
+
+                <div class="qt-botton-row">
+                  <div class="qt-botton-row-lost">
+                    <p class="desk-hide forget-custom">
+                      <span>Lost password?</span>
+                      <button type="button" data-action="toggle-login-form" class="link link--accented" id="show_recover_customer_password"> Recover Password</button>
+                    </p>
+                  </div>
+                  <div>
+                    <button type="submit" class="button button--primary button--full">Login</button>
+                  </div>
+                </div>
+              {%- endform -%}
+
+
+              {%- comment -%}
+              --------------------------------------------------------------------------------------------------------------------
+              CUSTOMER RECOVERY FORM
+              --------------------------------------------------------------------------------------------------------------------
+              {%- endcomment -%}
+
+              {%- if is_recover_active -%}
+                {%- assign recover_default_visibility = 'display: block' -%}
+              {%- else -%}
+                {%- assign recover_default_visibility = 'display: none' -%}
+              {%- endif -%}
+
+              {%- form 'recover_customer_password', name: 'recover', class: 'form form--main', id: 'recover_customer_password', style: recover_default_visibility -%}
+                <div class="quate-new-form">
+                  <h2 class="custom-inr-page-heading">{{ 'customer.recover_password.recover_password' | t }}</h2>
+                  <p class="custom-small">{{ 'customer.recover_password.description' | t }}</p>
+                  {%- if form.errors -%}
+                    <p class="alert alert--error">{{ form.errors.messages['form'] }}</p>
+                  {%- endif -%}
+
+                  {%- if form.posted_successfully? -%}
+                    <p class="alert alert--center alert--success">{{ 'customer.recover_password.success' | t }}</p>
+                  {%- else -%}
+                    <div class="form__input-wrapper">
+                      <input type="email" id="customer[recover_email]" class="form__field form__field--text" name="email" required="required" placeholder="{{ 'customer.recover_password.email' | t }}">
+                    </div>
+
+                    <div class="qt-botton-row">
+                      <div class="qt-botton-row-lost">
+                        <p class="desk-hide forget-custom">
+                          <span>{{ 'customer.recover_password.remembered_your_password' | t }}</span>
+                          <button type="button" data-action="toggle-login-form" class="link link--accented" id="show_customer_login">{{ 'customer.recover_password.back_to_login' | t }}</button>
+                        </p>
+                      </div>
+                      <div>
+                        <button type="submit" class="form__submit button button--primary button--full" style="margin-top:0;">{{ 'customer.recover_password.submit' | t }}</button>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endform -%}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Left Panel End -->
+
+      <!--Right Panel Start -->
+      <div class="log-temp-cell custom-log-temp-cell quote-action-row" style="margin-top:0px!important; margin-bottom:0px!important">
+        <!-- RAQ right side product management section HTML start -->
+        <div class="quote-summary-action" id="request-quote-summary-button">
+          <div class="action-cart">
+            <span class="action-cart-icon">
+              <svg focusable="false" class="icon icon--cart " viewBox="0 0 27 24" role="presentation">
+                  <g transform="translate(0 1)" stroke-width="2" stroke="currentColor" fill="none" fill-rule="evenodd">
+                    <circle stroke-linecap="square" cx="11" cy="20" r="2"></circle>
+                    <circle stroke-linecap="square" cx="22" cy="20" r="2"></circle>
+                    <path d="M7.31 5h18.27l-1.44 10H9.78L6.22 0H0"></path>
+                  </g>
+              </svg>
+            </span>
+            <span id="request-quote-summary-button-txt">Hide quote summary</span>
+            <span id="request-quote-summary-icon">
+              <svg focusable="false" class="icon icon--arrow-bottom " viewBox="0 0 12 8" role="presentation">
+                <path stroke="currentColor" stroke-width="2" d="M10 2L6 6 2 2" fill="none" stroke-linecap="square"></path>
+              </svg>
+            </span>
+          </div>
+          <div class="price">
+            <span id="request-quote-summary-button-total-amount" style="display:none;">
+              {{ cart.currency.iso_code }} {{ cart.total_price | money }}
+            </span>
+          </div>
+        </div>
+
+        <div class="quote-summary-action-details" id="request-quote-details">
+          {%- if cart.item_count == 0 -%}
+            <div class="log-dec">
+              <div class="order-summary__sections quate">
+                <div class="order-summary__section order-summary__section--product-list">
+                  <div class="order-summary__section__content">
+                    <table class="product-table">
+                      <caption class="visually-hidden">Shopping cart</caption>
+                      <thead class="product-table__header">
+                        <tr>
+                          <th scope="col"><span class="visually-hidden">Product image</span></th>
+                          <th scope="col"><span class="visually-hidden">Description</span></th>
+                          <th scope="col"><span class="visually-hidden">Quantity</span></th>
+                          <th scope="col"><span class="visually-hidden">Price</span></th>
+                        </tr>
+                      </thead>
+                      <tbody data-order-summary-section="line-items">
+                        <tr class="product">
+                          <td class="product__price" colspan="4">
+                            <a href="{{ routes.root_url }}" style="color: #06A0E3;">+ Add more items</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="order-summary__section order-summary__section--total-lines" data-order-summary-section="payment-lines">
+                  <table class="total-line-table" style="display:none;">
+                    <tbody class="total-line-table__tbody">
+                      <tr class="total-line total-line--subtotal">
+                        <th class="total-line__name custom" scope="row">Subtotal</th>
+                        <td class="total-line__price">
+                          <span class="order-summary__emphasis skeleton-while-loading" id="raq-line-item-subtotal">
+                            $0.0
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot class="total-line-table__footer">
+                      <tr class="total-line">
+                        <th class="total-line__name payment-due-label" scope="row">
+                          <span class="payment-due-label__total total">Total</span>
+                        </th>
+                        <td class="total-line__price payment-due total_final">
+                          <span class="cart-recap__price-line-price cart-sub-total-price">
+                            <span class="bcpo-cart-original-total total_final" id="raq-line-item-total">
+                              $0.0
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          {%- else -%}
+            <div class="log-dec">
+              <div class="order-summary__sections quate">
+                {%- for line_item in cart.items -%}
+                  <div class="order-summary__section order-summary__section--product-list" id="raq-line-item-div-{{forloop.index}}">
+                    <div class="order-summary__section__content">
+                      <table class="product-table">
+                        <caption class="visually-hidden">Shopping cart</caption>
+                        <thead class="product-table__header">
+                          <tr>
+                            <th scope="col"><span class="visually-hidden">Product image</span></th>
+                            <th scope="col"><span class="visually-hidden">Description</span></th>
+                            <th scope="col"><span class="visually-hidden">Quantity</span></th>
+                            <th scope="col"><span class="visually-hidden">Price</span></th>
+                          </tr>
+                        </thead>
+                        <tbody data-order-summary-section="line-items">
+                          <tr class="product" data-product-id="{{ line_item.product_id }}" data-variant-id="{{ line_item.variant_id }}">
+                            <td class="product__image">
+                              <div class="product-thumbnail ">
+                                <div class="product-thumbnail__wrapper">
+                                  <img alt="{{ line_item.title }}" class="product-thumbnail__image lazyload skeleton" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ line_item.image | img_url: '180x' }}">
+                                </div>
+                                <span class="product-thumbnail__quantity" id="raq-line-item-thumbnail-quantity-{{forloop.index}}" aria-hidden="true" style="display: none;">{{ line_item.quantity}}</span>
+                              </div>
+                              <div class="quantity-selector">
+                                <button type="button" class="raq-line-item-quantity-selector__button" data-action="decrease-quantity-quote" data-line="{{ forloop.index }}" id="raq-line-item-quantity-decrease-btn-{{forloop.index}}">
+                                    {% render 'icon', icon: 'minus' %}
+                                </button>
+                                <input class="quantity-selector__value" id="raq-line-item-quantity-{{forloop.index}}" inputmode="numeric" data-current-value="{{ line_item.quantity }}" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" disabled="disabled">
+                                <button type="button" class="raq-line-item-quantity-selector__button" data-action="increase-quantity-quote" data-line="{{ forloop.index }}">{% render 'icon', icon: 'plus' %}</button>
+                              </div>
+                              <button type="button" class="raq-line-item-remove-button" data-action="remove-quote" data-line="{{ forloop.index }}">Remove</button>
+                            </td>
+                             <th class="product__description" scope="row">
+                              <span class="product__description__name order-summary__emphasis">{{ line_item.product.title }}</span>
+                              <span class="product__description__variant order-summary__small-text" style="display:none;">{{ line_item.variant.title }}</span>
+                              <div class="custom_cart_div">
+                                {% if line_item.variant.metafields.custom.Configuration != blank  %}
+                                  <span class="cart_custom_heading line-item-property__field">Configuration: <span class="cart_custom_text">{{ line_item.variant.metafields.custom.Configuration }}</span><input type="hidden" id="configuration" name="properties[Configuration]" value="{{ line_item.variant.metafields.custom.Configuration }}"></span>
+                                {% endif %}
+                                <span class="cart_img_span"><img src="https://cdn.shopify.com/s/files/1/2372/2681/files/cart_free_delivery.png?v=1706177573" width="27px" height="14px"> <span class="cart_custom_text">FREE Shipping</span></span>
+                               {% if line_item.variant.option1 != blank  %} <span class="cart_custom_heading">Condition: <span class="cart_custom_text">{{ line_item.variant.option1 }}</span></span> {% endif %}
+                                {% if line_item.variant.option2 != blank or line_item.variant.option3 != blank %} <span class="cart_custom_heading">Option: <span class="cart_custom_text">{{ line_item.variant.option2 }} {{ line_item.variant.option3 }}</span></span>{% endif %}
+                                <span class="cart_custom_heading">Availability: <span class="cart_custom_text">
+                                  {%- if line_item.inventory_quantity <= 3 -%}
+                                    <span class="product-form__inventory inventory inventory--low cart_inventory_low">Low stock</span>
+                                  {%- else -%}
+                                    <span class="product-form__inventory inventory inventory--high cart_inventory_high">{{ 'product.form.in_stock' | t }}</span>
+                                  {%- endif -%}
+                                </span></span>
+                              </div>
+                            </th>
+                            <td class="product__quantity">
+                              <span class="visually-hidden" id="raq-line-item-hidden-quantity-{{forloop.index}}">{{ line_item.quantity}}</span>
+                            </td>
+                            <td class="product__price">
+                              <span class="order-summary__emphasis skeleton-while-loading">
+                                <span class="line-item__price--highlight" id="raq-line-item-price-{{forloop.index}}" data-unit-price="{{ line_item.final_price  }}">
+                                  {{ line_item.final_price | times: line_item.quantity | money }}
+                                </span>
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                {%- endfor -%}
+                <div class="order-summary__section order-summary__section--product-list">
+                  <div class="order-summary__section__content">
+                    <table class="product-table">
+                      <caption class="visually-hidden">Shopping cart</caption>
+                      <thead class="product-table__header">
+                        <tr>
+                          <th scope="col"><span class="visually-hidden">Product image</span></th>
+                          <th scope="col"><span class="visually-hidden">Description</span></th>
+                          <th scope="col"><span class="visually-hidden">Quantity</span></th>
+                          <th scope="col"><span class="visually-hidden">Price</span></th>
+                        </tr>
+                      </thead>
+                      <tbody data-order-summary-section="line-items">
+                        <tr class="product">
+                          <td class="product__price" colspan="4">
+                            <a href="{{ routes.root_url }}" style="color: #06A0E3;">+ Add more items</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="order-summary__section order-summary__section--total-lines" data-order-summary-section="payment-lines">
+                  <table class="total-line-table" style="display:none;">
+                    <tbody class="total-line-table__tbody">
+                      <tr class="total-line total-line--subtotal">
+                        <th class="total-line__name custom" scope="row">Subtotal</th>
+                        <td class="total-line__price">
+                          <span class="order-summary__emphasis skeleton-while-loading" id="raq-line-item-subtotal">
+                            {{ cart.items_subtotal_price | money }}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot class="total-line-table__footer">
+                      <tr class="total-line">
+                        <th class="total-line__name payment-due-label" scope="row">
+                          <span class="payment-due-label__total total">Total</span>
+                        </th>
+                        <td class="total-line__price payment-due total_final">
+                          <span class="cart-recap__price-line-price cart-sub-total-price">
+                            <span class="bcpo-cart-original-total total_final" id="raq-line-item-total">
+                              {{ cart.currency.iso_code }} {{ cart.total_price | money }}
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+        <!-- RAQ right side product management section HTML end -->
+      </div>
+      <!--Right Panel Start -->
+    </div>
+  </div>
+  <!--Contener Page Wrap End-->
+</section>
+
+<script>
+  $(document).on('click', '#show_recover_customer_password', function(){
+    $('#customer_login').hide();
+    $('#recover_customer_password').show();
+  });
+
+  $(document).on('click', '#show_customer_login', function(){
+    $('#recover_customer_password').hide();
+    $('#customer_login').show();
+  });
+
+  $(document).on('click', '#show-quote-request-login-section', function(){
+    $('#recover_customer_password').hide();
+    $('#customer_login').show();
+    $('#quote-request-registration-section').hide();
+    $('#quote-request-login-section').show();
+  });
+
+  $(document).on('click', '#show-quote-request-registration-section', function(){
+    $('#quote-request-login-section').hide();
+    $('#quote-request-registration-section').show();
+  });
+
+  /* RAQ right side product management section JS start */
+  $(document).on('click', '#request-quote-summary-button', function(){
+    $('#request-quote-details').toggle();
+
+    if ($('#request-quote-summary-icon').hasClass('action-cart-arrow')) {
+      $('#request-quote-summary-icon').removeClass('action-cart-arrow');
+    } else {
+      $('#request-quote-summary-icon').addClass('action-cart-arrow');
+    }
+
+    let requestQuoteSummaryButtonTxt = $.trim($('#request-quote-summary-button-txt').text());
+
+    if (requestQuoteSummaryButtonTxt == 'Show quote summary') {
+      $('#request-quote-summary-button-txt').text('Hide quote summary');
+    } else {
+      $('#request-quote-summary-button-txt').text('Show quote summary');
+    }
+  });
+
+   $(document).on('click', '.raq-line-item-quantity-selector__button, .raq-line-item-remove-button', function(){
+    let raqItemLine = parseInt($(this).attr('data-line'));
+    let raqItemDataAction = $(this).attr('data-action');
+    let targetRaqItemQuantity = parseInt($(`#raq-line-item-quantity-${raqItemLine}`).val());
+
+    let itemQuantity = 1;
+
+    if (raqItemDataAction.toLowerCase() === 'decrease-quantity-quote') {
+        itemQuantity = targetRaqItemQuantity - 1;
+    } else if (raqItemDataAction.toLowerCase() === 'increase-quantity-quote') {
+        itemQuantity = targetRaqItemQuantity + 1;
+    } else if (raqItemDataAction.toLowerCase() === 'remove-quote') {
+        itemQuantity = 0;
+    }
+
+    raqLineItemQuanityUpdation(raqItemLine, itemQuantity);
+  });
+
+  function raqLineItemQuanityUpdation(raqItemLine, itemQuantity)
+  {
+    document.dispatchEvent(new CustomEvent('theme:loading:start'));
+    fetch("".concat(window.routes.cartChangeUrl, ".js"), {
+      body: JSON.stringify({
+        line: raqItemLine,
+        quantity: itemQuantity
+      }),
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    }).then(function (cart) {
+      cart.json().then(function (content) {
+        if (!parseInt(content.item_count)) {
+          document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+            bubbles: true
+          }));
+
+          window.location.reload();
+        } else if (!parseInt(itemQuantity)) {
+          window.location.reload();
+        }
+
+        if (parseInt(itemQuantity)) {
+          $(`#raq-line-item-thumbnail-quantity-${raqItemLine}`).html(itemQuantity);
+          $(`#raq-line-item-quantity-${raqItemLine}`).val(itemQuantity);
+          $(`#raq-line-item-hidden-quantity-${raqItemLine}`).html(itemQuantity);
+
+        // Highlight: Fetch Unit Price and Calculate Total Price
+        let unitPrice = parseFloat($(`#raq-line-item-price-${raqItemLine}`).data('unit-price')) / 100; // Divide by 100 to convert from cents to dollars
+        let totalPrice = unitPrice * itemQuantity;
+        let raqCurrency = content.currency || 'USD';
+        let raqCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+
+        // Highlight: Format Total Price
+        let formattedTotalPrice = CurrencyClass.formatMoney(totalPrice * 100, raqCurrencyFormat); // Multiply by 100 to convert back to cents for formatting
+
+        // Highlight: Update HTML with Formatted Total Price
+        $(`#raq-line-item-price-${raqItemLine}`).html(formattedTotalPrice);
+        } else {
+          $(`#raq-line-item-div-${raqItemLine}`).remove();
+        }
+
+        let raqCurrency = 'USD';
+        if (content.currency) {
+          raqCurrency = content.currency;
+        }
+
+        if (!parseInt(content.item_count)) {
+          let raqCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+          let default_price = '0.00';
+          let default_formatted_price = CurrencyClass.formatMoney(default_price, raqCurrencyFormat);
+
+          $(`#raq-line-item-subtotal`).html(default_formatted_price);
+          $(`#raq-line-item-total`).html(`${raqCurrency} ${default_formatted_price}`);
+          $(`#request-quote-summary-button-total-amount`).html(`${raqCurrency} ${default_formatted_price}`);
+        }
+
+        if (content.items_subtotal_price) {
+          let subtotal_price = parseFloat(parseFloat(content.items_subtotal_price) / 100).toFixed(2);
+          let raqCurrencyFormat = window.theme.currencyCodeEnabled ? window.theme.moneyWithCurrencyFormat : window.theme.moneyFormat;
+          let formatted_subtotal_price = CurrencyClass.formatMoney(subtotal_price, raqCurrencyFormat);
+
+          $(`#raq-line-item-subtotal`).html(formatted_subtotal_price);
+          $(`#raq-line-item-total`).html(`${raqCurrency} ${formatted_subtotal_price}`);
+          $(`#request-quote-summary-button-total-amount`).html(`${raqCurrency} ${formatted_subtotal_price}`);
+        }
+
+        //updateRaqLineItemUI(raqItemLine, itemQuantity);
+
+        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+          bubbles: true
+        }));
+
+        document.dispatchEvent(new CustomEvent('theme:loading:end'));
+      });
+    }).catch(function (error) {
+      resetRaqLineItemQuantityToOld(raqItemLine);
+      console.log(error);
+      document.dispatchEvent(new CustomEvent('theme:loading:end'));
+    });
+  }
+
+  function updateRaqLineItemUI(raqItemLine, itemQuantity)
+  {
+    if ($(`#raq-line-item-quantity-decrease-btn-${raqItemLine}`).length) {
+      if (parseInt(itemQuantity) == 1) {
+        $(`#raq-line-item-quantity-decrease-btn-${raqItemLine}`).html(getRaqLineItemDeleteIcon());
+      } else {
+        $(`#raq-line-item-quantity-decrease-btn-${raqItemLine}`).html(getRaqLineItemDecreaseIcon());
+      }
+    }
+  }
+
+  function getRaqLineItemDeleteIcon()
+  {
+    return `<svg focusable="false" class="icon" viewBox="0 0 20 20" role="presentation">
+      <path d="M8 3.994C8 2.893 8.895 2 10 2s2 .893 2 1.994h4c.552 0 1 .446 1 .997 0 .55-.448.997-1 .997H4c-.552 0-1-.447-1-.997s.448-.997 1-.997h4zM5 14.508V8h2v6.508a.5.5 0 00.5.498H9V8h2v7.006h1.5a.5.5 0 00.5-.498V8h2v6.508A2.496 2.496 0 0112.5 17h-5C6.12 17 5 15.884 5 14.508z" fill="#5C5F62"/>
+    </svg>`;
+  }
+
+  function getRaqLineItemDecreaseIcon()
+  {
+    return `<svg focusable="false" class="icon icon--minus" viewBox="0 0 10 2" role="presentation">
+      <path d="M10 0v2H0V0z" fill="currentColor"></path>
+    </svg>`;
+  }
+
+  function resetRaqLineItemQuantityToOld(raqItemLine)
+  {
+    let raqItemOldQuantity = parseInt($(`#raq-line-item-quantity-${raqItemLine}`).attr('data-current-value'));
+    $(`#raq-line-item-quantity-${raqItemLine}`).val(raqItemOldQuantity);
+  }
+
+  function number_format(number, decimals, decPoint, thousandsSep)
+  {
+    number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+    const n = !isFinite(+number) ? 0 : +number;
+    const prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
+    const sep = (typeof thousandsSep === 'undefined') ? ',' : thousandsSep;
+    const dec = (typeof decPoint === 'undefined') ? '.' : decPoint;
+    let s = '';
+
+    const toFixedFix = function (n, prec) {
+      if (('' + n).indexOf('e') === -1) {
+        return +(Math.round(n + 'e+' + prec) + 'e-' + prec);
+      } else {
+        const arr = ('' + n).split('e');
+        let sig = '';
+
+        if (+arr[1] + prec > 0) {
+          sig = '+';
+        }
+
+        return (+(Math.round(+arr[0] + 'e' + sig + (+arr[1] + prec)) + 'e-' + prec)).toFixed(prec);
+      }
+    }
+    // @todo: for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec).toString() : '' + Math.round(n)).split('.');
+
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+
+    if ((s[1] || '').length < prec) {
+      s[1] = s[1] || '';
+      s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+
+    return s.join(dec);
+  }
+  /* RAQ right side product management section JS end */
+</script>
+
+{% schema %}
+{
+  "name": "Quote Registration",
+  "settings": []
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

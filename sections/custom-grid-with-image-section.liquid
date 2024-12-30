@@ -1,0 +1,389 @@
+<section class="section custom-grid-with-image" style="background-color: {{ section.settings.color_background }}" id="shopify-section--{{ section.id }}">
+ <div class="container">
+  {%- if section.settings.title != blank -%}
+      <header class="section__header custom-grid-section__header">
+        <h2 class="section__title heading h3">{{ section.settings.title | escape }}</h2>
+      </header>
+  {%- endif -%} 
+  {%- if section.settings.show_separator -%}
+     <hr class="card__separator custom-card__separator">
+  {% endif %} 
+  <div class="row">
+    {%- for block in section.blocks -%}
+      <style>
+          @media (min-width: 641px) {
+            #shopify-section--{{ section.id }}.custom-grid-with-image .custom-item-title{{ forloop.index }}{
+                font-size: {{ block.settings.title_size_desktop }}px !important;
+                color: {{ block.settings.color_heading }};
+             }
+
+            #shopify-section--{{ section.id }}.custom-grid-with-image .custom-short-title{{ forloop.index }}{
+              font-size: {{ block.settings.short_title_size_desktop }}px !important;         
+              color: {{ block.settings.color_short_title }};
+           }
+        
+            #shopify-section--{{ section.id }}.custom-grid-with-image .item .custom-item-desc{{ forloop.index }}{
+               font-size: {{ block.settings.text_size_desktop }}px!important;
+               color: {{ block.settings.color_text }}!important;
+                text-align:left;
+             }
+          }
+        
+          @media (max-width: 640px) {
+             #shopify-section--{{ section.id }}.custom-grid-with-image .custom-item-title{{ forloop.index }}{
+                font-size: {{ block.settings.title_size_mobile }}px !important;
+                color: {{ block.settings.color_heading }};
+             }
+
+            #shopify-section--{{ section.id }}.custom-grid-with-image .custom-short-title{{ forloop.index }}{
+              font-size: {{ block.settings.short_title_size_mobile }}px !important;         
+              color: {{ block.settings.color_short_title }};
+           }
+        
+            #shopify-section--{{ section.id }}.custom-grid-with-image .item .custom-item-desc{{ forloop.index }}{
+               font-size: {{ block.settings.text_size_mobile }}px!important;          
+               color: {{ block.settings.color_text }};
+               text-align:left;
+             }
+          }
+      </style>
+     <div class="item">
+      {%- if block.settings.image -%} 
+       <div class="image-container">
+        <img class="image" src="{{ block.settings.image | image_url }}" loading="lazy">
+       </div>
+       {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      {%- if block.settings.short_title != blank -%}  
+       <h2 class="custom-short-title{{ forloop.index }} custom-short-title">{{ block.settings.short_title | escape }}</h2>
+      {% endif %}
+      {%- if block.settings.title != blank -%}
+       <h2 class="custom-item-title custom-item-title{{ forloop.index }} section__title heading h3">{{ block.settings.title | escape }}</h2>
+      {% endif %} 
+      <span class="custom-item-desc{{ forloop.index }}">{{ block.settings.description}}</span>
+      </div>
+     {%endfor%}
+  </div>
+ </div>
+</section>
+
+<style>
+
+  .image-container {
+    max-width: 100%; 
+    height: auto; 
+    text-align: center;
+  }
+
+  .image-container img{
+    object-fit: cover;
+  }
+  
+   #shopify-section--{{ section.id }}.custom-grid-with-image .row {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     align-content: flex-start;
+    }
+
+   @media (max-width:719px){
+   #shopify-section--{{ section.id }}.custom-grid-with-image .item {
+    flex: 1; 
+    min-width: 100% !important;
+   }
+  }
+
+  @media (min-width:720px){
+   #shopify-section--{{ section.id }}.custom-grid-with-image .item {
+    flex: 1; 
+    min-width: 50%;
+     padding-left: 15px;
+     padding-right: 15px;
+   }
+  }
+
+    @media (min-width:1280px){
+    #shopify-section--{{ section.id }}.custom-grid-with-image .item {
+      flex: 1; 
+      min-width: 25%;
+      text-align: center;
+    }
+  }
+
+ #shopify-section--{{ section.id }}.custom-grid-with-image .item img {
+  max-width: 100%;
+}
+
+ #shopify-section--{{ section.id }}.custom-grid-with-image .item .placeholder-svg {
+   height: auto !important;
+ }
+
+  #shopify-section--{{ section.id }}.custom-grid-with-image .custom-grid-section__header{
+    padding-left: 15px;
+  }
+
+  #shopify-section--{{ section.id }}.custom-grid-with-image .custom-short-title{
+    margin-top: {{ section.settings.short_title_top }}px;
+    margin-bottom: {{ section.settings.short_title_bottom }}px;
+    text-align:left;
+    line-height: 1.33!important;
+    font-weight: 500;
+  }
+
+  #shopify-section--{{ section.id }}.custom-grid-with-image .custom-item-title{
+    margin-top: {{ section.settings.title_top }}px;
+    margin-bottom: {{ section.settings.title_bottom }}px;
+    text-align: left;
+  }
+
+  #shopify-section--{{ section.id }}.custom-grid-with-image .item span{
+    line-height: 1.5!important;
+    letter-spacing: -.2px!important;
+    text-align: left;
+  } 
+
+   @media (max-width: 640px) {
+     #shopify-section--{{ section.id }}.custom-grid-with-image .custom-short-title{
+      margin-top: {{ section.settings.short_title_top_mobile }}px;
+      margin-bottom: {{ section.settings.short_title_bottom_mobile }}px;
+    }
+  
+    #shopify-section--{{ section.id }}.custom-grid-with-image .custom-item-title{
+      margin-top: {{ section.settings.title_top_mobile }}px;
+      margin-bottom: {{ section.settings.title_bottom_mobile }}px;
+    }
+   }
+
+   #shopify-section--{{ section.id }}.custom-grid-with-image .item {
+     margin-bottom:30px;
+   }
+ 
+</style>
+
+{% schema %}
+  {
+    "max_blocks": 8,
+    "name": "Custom grid with Image",
+    "settings": [
+      {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Section Heading"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Section Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_separator",
+        "label": "Horizontal Separator",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "short_title_top",
+        "label": "Short Title Top Margin",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 30,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "short_title_bottom",
+        "label": "Short Title Bottom Margin",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 15,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "title_top",
+        "label": "Title Top Margin",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 15,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "title_bottom",
+        "label": "Title Bottom Margin",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 30,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "short_title_top_mobile",
+        "label": "Short Title Top Margin Mobile",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 30,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "short_title_bottom_mobile",
+        "label": "Short Title Bottom Margin Mobile",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 15,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "title_top_mobile",
+        "label": "Title Top Margin Mobile",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "title_bottom_mobile",
+        "label": "Title Bottom Margin Mobile",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 30,
+        "unit": "px"
+      }
+    ],
+   "blocks": [
+    {
+      "type": "image",
+      "name": "Image with text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "short_title",
+          "label": "Short Title",
+          "default": "short title"
+        },
+        {
+          "type": "range",
+          "id": "short_title_size_desktop",
+          "label": "Short Title Size Desktop",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "default": 16,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "short_title_size_mobile",
+          "label": "Short Title Size Mobile",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "default": 16,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "color_short_title",
+          "label": "Short title color",
+          "default": "#4d4d4f"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your title"
+        },
+        {
+          "type": "range",
+          "id": "title_size_desktop",
+          "label": "Title Size Desktop",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "default": 32,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "label": "Title Size Mobile",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "default": 21,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "color_heading",
+          "label": "Heading color",
+          "default": "#4d4d4f"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Your description</p>"
+        }, 
+        {
+          "type": "range",
+          "id": "text_size_desktop",
+          "label": "Text Size Desktop",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "default": 16,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "text_size_mobile",
+          "label": "Text Size Mobile",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "default": 16,
+          "unit": "px"
+        },  
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text color",
+          "default": "#4d4d4f"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom grid with Image"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
