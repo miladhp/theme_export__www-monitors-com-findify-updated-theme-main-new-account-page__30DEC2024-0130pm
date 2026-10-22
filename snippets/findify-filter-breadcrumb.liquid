@@ -60,7 +60,7 @@
           {% when 'range' %}
             {% case name %}
               {% when 'reviews.average_score' %}
-                {% render 'findify-filter-rating-value', selected: true, value: from | append: 'to' | append: to %}
+                {% render 'findify-filter-rating-value', selected: true, value: from, append: to %}
               {% else %}
                 {% liquid
                   if name == 'price'
@@ -209,4 +209,15 @@
       showMore();
 
   </script>
-{% endif %}
+{% endif %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'findify-filter-rating-value', selected: true, value: from | append:
+    'to' | append: to %}"
+  to: "{% render 'findify-filter-rating-value', selected: true, value: from, append:
+    to %}"
+  position: 2137..2220
+{%- endcomment -%}

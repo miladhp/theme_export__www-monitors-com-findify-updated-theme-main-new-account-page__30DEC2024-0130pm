@@ -348,7 +348,7 @@
                                            {%- comment -%}REGISTER{%- endcomment -%}
                       <div id="header-register-panel" class="popover__panel popover__panel--sliding">
                         <div class="popover__inner">
-                          {%- form 'create_customer', name: 'create', class: 'form', data-cf-ignore="true" -%}
+                          {%- form data-cf-ignore.true -%}
                             <header class="popover__header">
                               <h2 class="popover__title heading">{{ 'customer.register.create_account' | t }}</h2>
                               <p class="popover__legend">{{ 'customer.register.description' | t }}</p>
@@ -5443,4 +5443,14 @@
     }
   ]
 }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{%- form ''create_customer'', name: ''create'', class: ''form'', data-cf-ignore="true"
+    -%}'
+  to: "{%- form data-cf-ignore.true -%}"
+  position: 22585..22617
+{%- endcomment -%}

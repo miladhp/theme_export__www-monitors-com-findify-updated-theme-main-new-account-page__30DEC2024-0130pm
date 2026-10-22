@@ -4,24 +4,42 @@
   include 'findify-product-card-params'
 -%}
 
-{%- render 'findify-product-card'
-  , id: id
-  , class: class
-  , widget: widget
-  , page: page
-  , product_url: product_url
-  , current_variant: current_variant,
-  , product: product,
-  , showHoverImage: showHoverImage
-  , brand: brand,
-  , reviews: reviews
-  , reviews_count: reviews_count
-  , selected_variant_id: selected_variant_id
-  , colormap: colormap
-  , variants: variants
-  , showColorSwatchesOnDesktop: showColorSwatchesOnDesktop
-  , showColorSwatchesOnMobile: showColorSwatchesOnMobile
-  , colorSwatchesStyleDesktop: colorSwatchesStyleDesktop
-  , colorSwatchesStyleMobile: colorSwatchesStyleMobile
-  , colorSwatchesVisibility: colorSwatchesVisibility
--%}
+{%- render 'findify-product-card', id: id, class: class, widget: widget, page: page, product_url: product_url, current_variant: current_variant, product: product, showHoverImage: showHoverImage, brand: brand, reviews: reviews, reviews_count: reviews_count, selected_variant_id: selected_variant_id, colormap: colormap, variants: variants, showColorSwatchesOnDesktop: showColorSwatchesOnDesktop, showColorSwatchesOnMobile: showColorSwatchesOnMobile, colorSwatchesStyleDesktop: colorSwatchesStyleDesktop, colorSwatchesStyleMobile: colorSwatchesStyleMobile, colorSwatchesVisibility: colorSwatchesVisibility -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%- render 'findify-product-card'
+      , id: id
+      , class: class
+      , widget: widget
+      , page: page
+      , product_url: product_url
+      , current_variant: current_variant,
+      , product: product,
+      , showHoverImage: showHoverImage
+      , brand: brand,
+      , reviews: reviews
+      , reviews_count: reviews_count
+      , selected_variant_id: selected_variant_id
+      , colormap: colormap
+      , variants: variants
+      , showColorSwatchesOnDesktop: showColorSwatchesOnDesktop
+      , showColorSwatchesOnMobile: showColorSwatchesOnMobile
+      , colorSwatchesStyleDesktop: colorSwatchesStyleDesktop
+      , colorSwatchesStyleMobile: colorSwatchesStyleMobile
+      , colorSwatchesVisibility: colorSwatchesVisibility
+    -%}
+  to: "{%- render 'findify-product-card', id: id, class: class, widget: widget, page:
+    page, product_url: product_url, current_variant: current_variant, product: product,
+    showHoverImage: showHoverImage, brand: brand, reviews: reviews, reviews_count:
+    reviews_count, selected_variant_id: selected_variant_id, colormap: colormap, variants:
+    variants, showColorSwatchesOnDesktop: showColorSwatchesOnDesktop, showColorSwatchesOnMobile:
+    showColorSwatchesOnMobile, colorSwatchesStyleDesktop: colorSwatchesStyleDesktop,
+    colorSwatchesStyleMobile: colorSwatchesStyleMobile, colorSwatchesVisibility: colorSwatchesVisibility
+    -%}"
+  position: 306..913
+{% endcomment %}

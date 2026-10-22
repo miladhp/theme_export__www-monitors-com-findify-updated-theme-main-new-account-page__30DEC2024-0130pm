@@ -55,7 +55,7 @@
   {% endif %}
 {% endfor %}
 
-{%- capture 'product_add_on_section_async_first_style' -%}
+{%- capture product_add_on_section_async_first_style -%}
   {%- if product_total_no_of_variants == 1 and product.selected_or_first_available_variant.available == false -%}
     {{- 'display: none;' -}}
   {%- else -%}
@@ -639,4 +639,13 @@
       }
     }
   });
-</script>
+</script>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- capture 'product_add_on_section_async_first_style' -%}"
+  to: "{%- capture product_add_on_section_async_first_style -%}"
+  position: 2675..2731
+{%- endcomment -%}

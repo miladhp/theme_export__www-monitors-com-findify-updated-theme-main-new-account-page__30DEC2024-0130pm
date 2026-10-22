@@ -15,11 +15,7 @@
       </button>
     </div>
 
-    {%
-      render 'findify-query' terms: terms, results_count: results_count, is_collection: is_collection,       , terms: terms
-      , corrected_q: corrected_q
-      , query_type: query_type
-    %}
+    {% render 'findify-query', terms: terms, results_count: results_count, is_collection: is_collection, corrected_q: corrected_q, query_type: query_type %}
 
     <div class="findify-toolbar-block">
       {% if use_grid_toggler == 'true' %}
@@ -67,3 +63,19 @@
 
   filterSidebar();
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+          render 'findify-query' terms: terms, results_count: results_count, is_collection: is_collection,       , terms: terms
+          , corrected_q: corrected_q
+          , query_type: query_type
+        %}
+  to: "{% render 'findify-query', terms: terms, results_count: results_count, is_collection:
+    is_collection, corrected_q: corrected_q, query_type: query_type %}"
+  position: 532..684
+{% endcomment %}

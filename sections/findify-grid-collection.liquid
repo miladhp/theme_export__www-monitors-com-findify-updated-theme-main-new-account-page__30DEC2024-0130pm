@@ -73,14 +73,7 @@
           {% render 'findify-loader' %}
         </div>
 
-        {% render 'findify-filters'
-          , component_id: findify_filters_component_id,
-          , active_filters: active_filters
-          , color_layout: color_layout 
-          , one_open_filter: one_open_filter
-          , all_filters_collapsed: all_filters_collapsed
-          , all_filters_hidden: all_filters_hidden
-        %}
+        {% render 'findify-filters', component_id: findify_filters_component_id, active_filters: active_filters, color_layout: color_layout, one_open_filter: one_open_filter, all_filters_collapsed: all_filters_collapsed, all_filters_hidden: all_filters_hidden %}
 
         <div class="findify-products-section" data-product-list="false">
           
@@ -207,3 +200,19 @@
     "settings": []
   }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'findify-filters'\n          , component_id: findify_filters_component_id,\n
+    \         , active_filters: active_filters\n          , color_layout: color_layout
+    \n          , one_open_filter: one_open_filter\n          , all_filters_collapsed:
+    all_filters_collapsed\n          , all_filters_hidden: all_filters_hidden\n        %}"
+  to: "{% render 'findify-filters', component_id: findify_filters_component_id, active_filters:
+    active_filters, color_layout: color_layout, one_open_filter: one_open_filter,
+    all_filters_collapsed: all_filters_collapsed, all_filters_hidden: all_filters_hidden
+    %}"
+  position: 4082..4336
+{% endcomment %}

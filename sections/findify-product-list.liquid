@@ -7,19 +7,22 @@
 <div>
     {% for findify_product in findify_product_list %}
         {% include 'findify-product-card-params' %}
-        {%- render 'findify-product-card'
-  , id: id
-  , class: class
-  , widget: widget
-  , page: page
-  , product_url: product_url
-  , current_variant: current_variant,
-  , product: product,
-  , showHoverImage: showHoverImage
-  , brand: brand,
-  , reviews: reviews
-  , reviews_count: reviews_count
-  , selected_variant_id: selected_variant_id
--%}
+        {%- render 'findify-product-card', id: id, class: class, widget: widget, page: page, product_url: product_url, current_variant: current_variant, product: product, showHoverImage: showHoverImage, brand: brand, reviews: reviews, reviews_count: reviews_count, selected_variant_id: selected_variant_id -%}
     {% endfor %}
-</div>
+</div>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'findify-product-card'\r\n  , id: id\r\n  , class: class\r\n  ,
+    widget: widget\r\n  , page: page\r\n  , product_url: product_url\r\n  , current_variant:
+    current_variant,\r\n  , product: product,\r\n  , showHoverImage: showHoverImage\r\n
+    \ , brand: brand,\r\n  , reviews: reviews\r\n  , reviews_count: reviews_count\r\n
+    \ , selected_variant_id: selected_variant_id\r\n-%}"
+  to: "{%- render 'findify-product-card', id: id, class: class, widget: widget, page:
+    page, product_url: product_url, current_variant: current_variant, product: product,
+    showHoverImage: showHoverImage, brand: brand, reviews: reviews, reviews_count:
+    reviews_count, selected_variant_id: selected_variant_id -%}"
+  position: 513..814
+{%- endcomment -%}
